@@ -7,7 +7,7 @@ import SideBarMenu from './SideBarMenu';
 const SideBarContent = () => (
   <div className="sidebar">
     <UserInfo />
-    <SearchBar />
+    {/* <SearchBar /> */}
     <SideBarMenu />
   </div>
 );
