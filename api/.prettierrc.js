@@ -1,4 +1,4 @@
-module.exports = {
+ module.exports= {
     bracketSpacing: true,
     singleQuote: true,
     trailingComma: "all",
@@ -6,5 +6,4 @@ module.exports = {
     tabWidth: 2,
     printWidth: 100,
     endOfLine: "auto"
-}
-
+  }
