@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "lint": "eslint migrations/ models/ --fix"
+    "lint": "eslint migrations/ models/ --fix",
+    "dev": "nodemon ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -14,6 +15,7 @@
     "express": "~4.16.1",
     "faker": "^5.5.3",
     "morgan": "~1.9.1",
+    "nodemon": "^2.0.7",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.6.2",
