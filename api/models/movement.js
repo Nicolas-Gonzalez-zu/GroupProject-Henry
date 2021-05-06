@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Movement extends Model {
     /**
@@ -10,18 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Movement.belongsTo(models.Budget,{
-        as:'budget',
-        foreignKey:'budget_id'
-      })
-      Movement.belongsTo(models.Customer,{
-        as:'customer',
-        foreignKey:'customer_id'
-      })
-      Movement.belongsTo(models.Wallet,{
-        as:'origin_wallet',
-        foreignKey:'wallet_id'
-      })
+      Movement.belongsTo(models.Budget, {
+        as: 'budget',
+        foreignKey: 'budget_id',
+      });
+      Movement.belongsTo(models.Customer, {
+        as: 'customer',
+        foreignKey: 'customer_id',
+      });
+      Movement.belongsTo(models.Wallet, {
+        as: 'origin_wallet',
+        foreignKey: 'wallet_id',
+      });
     }
   }
   Movement.init({
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     customer_id: DataTypes.INTEGER,
     wallet_id: DataTypes.INTEGER,
-    budget_id: DataTypes.INTEGER
+    budget_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Movement',

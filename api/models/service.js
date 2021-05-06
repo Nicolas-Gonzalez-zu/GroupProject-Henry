@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Service extends Model {
     /**
@@ -10,17 +10,17 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Service.belongsToMany(models.Invoice,{
-        through:'InvoiceServices',
-        foreignKey:'service_id'
-      })
+      Service.belongsToMany(models.Invoice, {
+        through: 'InvoiceServices',
+        foreignKey: 'service_id',
+      });
     }
   }
   Service.init({
     name: DataTypes.STRING,
     price: DataTypes.INTEGER,
     description: DataTypes.STRING,
-    img_url: DataTypes.STRING
+    img_url: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Service',

@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Transfer extends Model {
     /**
@@ -10,18 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Transfer.belongsTo(models.Customer,{
-        as:'customer',
-        foreignKey:'customer_id'
-      })
-      Transfer.belongsTo(models.Wallet,{
-        as:'origin_wallet',
-        foreignKey:'origin_wallet_id'
-      })
-      Transfer.belongsTo(models.Wallet,{
-        as:'destination_wallet',
-        foreignKey:'destination_wallet_id'
-      })
+      Transfer.belongsTo(models.Customer, {
+        as: 'customer',
+        foreignKey: 'customer_id',
+      });
+      Transfer.belongsTo(models.Wallet, {
+        as: 'origin_wallet',
+        foreignKey: 'origin_wallet_id',
+      });
+      Transfer.belongsTo(models.Wallet, {
+        as: 'destination_wallet',
+        foreignKey: 'destination_wallet_id',
+      });
     }
   }
   Transfer.init({
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     generation_date: DataTypes.DATE,
     customer_id: DataTypes.INTEGER,
     origin_wallet_id: DataTypes.INTEGER,
-    destination_wallet_id: DataTypes.INTEGER
+    destination_wallet_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Transfer',
