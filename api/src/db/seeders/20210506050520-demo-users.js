@@ -1,4 +1,5 @@
 const faker = require('faker');
+const bcryptUtils = require('../../app/utils/bcryptUtils');
 
 const generateDemoUsers = (cuantity) => {
   const demoUsers = [];
@@ -8,7 +9,7 @@ const generateDemoUsers = (cuantity) => {
       last_name: faker.name.lastName(),
       phone: faker.phone.phoneNumber(),
       email: faker.internet.email(),
-      password: faker.internet.password(),
+      password: bcryptUtils.encrypt('123456789'),
       createdAt: faker.date.past(),
       updatedAt: faker.date.future(),
     });
