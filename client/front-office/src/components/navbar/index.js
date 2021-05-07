@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { NavLink } from 'react-router-dom';
+
 import ShoppingCart from './ShoppingCart';
 import SupportItem from './SupportItem';
 
@@ -11,9 +14,9 @@ const NavBar = () => (
         </a>
       </li>
       <li className="nav-item d-none d-sm-inline-block">
-        <a href="./index3.html" className="nav-link">
+        <NavLink to="/" className="nav-link">
           Home
-        </a>
+        </NavLink>
       </li>
       <SupportItem />
     </ul>

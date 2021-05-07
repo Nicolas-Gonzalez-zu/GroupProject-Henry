@@ -1,6 +1,12 @@
 import React from 'react';
 
+import { Route } from 'react-router-dom';
+
 import ContentHeader from './ContentHeader';
+
+import Profile from '../profile/Profile';
+import Account from '../account/Account';
+import Wallet from '../wallet/Wallet';
 
 const ContentWrapper = () => (
   <div className="content-wrapper">
@@ -8,10 +14,37 @@ const ContentWrapper = () => (
 
     <section className="content">
       <div className="card">
-        <div className="card-header">
-          <h3 className="card-title">Nombre acción ej (Editar)</h3>
-        </div>
-        <div className="card-body">Aquí viene el contenido principal</div>
+        <Route exact path="/">
+          <div>dashboard</div>
+        </Route>
+
+        <Route exact path="/profile">
+          <Profile />
+        </Route>
+
+        <Route exact path="/wallet">
+          <Wallet />
+        </Route>
+
+        <Route exact path="/account">
+          <Account />
+        </Route>
+
+        <Route exact path="/movements">
+          <div>movements</div>
+        </Route>
+
+        <Route exact path="/reports">
+          <div>reports</div>
+        </Route>
+
+        <Route exact path="/shop">
+          <div>shop</div>
+        </Route>
+
+        <Route exact path="/services">
+          <div>services</div>
+        </Route>
       </div>
     </section>
   </div>
