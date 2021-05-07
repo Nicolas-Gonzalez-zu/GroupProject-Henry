@@ -19,10 +19,6 @@ function App() {
           <SideBar />
         </Route>
 
-        <Route exact path="/">
-          <Footer />
-        </Route>
-
         <Route path="/">
           <ContentWrapper />
         </Route>
@@ -53,6 +49,9 @@ function App() {
 
         <Route exact path="/services">
           <ContentWrapper />
+        </Route>
+        <Route exact path="/">
+          <Footer />
         </Route>
       </BrowserRouter>
     </>
