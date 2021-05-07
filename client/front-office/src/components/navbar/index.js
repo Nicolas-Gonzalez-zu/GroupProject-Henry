@@ -1,9 +1,10 @@
 import React from 'react';
-import Notifications from './Notifications';
+import ShoppingCart from './ShoppingCart';
+import SupportItem from './SupportItem';
 
 const NavBar = () => (
   <nav className="main-header navbar navbar-expand navbar-white navbar-light">
-    <ul className="navbar-nav">
+    <ul className="navbar-nav ">
       <li className="nav-item">
         <a className="nav-link" data-widget="pushmenu" href="/" role="button">
           <i className="fas fa-bars" />
@@ -14,15 +15,11 @@ const NavBar = () => (
           Home
         </a>
       </li>
-      <li className="nav-item d-none d-sm-inline-block">
-        <a href="/" className="nav-link">
-          Contact
-        </a>
-      </li>
+      <SupportItem />
     </ul>
 
     <ul className="navbar-nav ml-auto">
-      <Notifications />
+      <ShoppingCart />
       <li className="nav-item">
         <a
           className="nav-link"
@@ -31,7 +28,8 @@ const NavBar = () => (
           href="/"
           role="button"
         >
-          <i className="fas fa-power-off" />
+          <span className="m-2">Log out</span>
+          <i className="fas fa-door-open" />
         </a>
       </li>
     </ul>
