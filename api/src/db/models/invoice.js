@@ -1,6 +1,4 @@
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Invoice extends Model {
@@ -20,13 +18,16 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Invoice.init({
-    payment_method: DataTypes.STRING,
-    amount: DataTypes.INTEGER,
-    status: DataTypes.STRING,
-  }, {
-    sequelize,
-    modelName: 'Invoice',
-  });
+  Invoice.init(
+    {
+      payment_method: DataTypes.STRING,
+      amount: DataTypes.INTEGER,
+      status: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'Invoice',
+    },
+  );
   return Invoice;
 };

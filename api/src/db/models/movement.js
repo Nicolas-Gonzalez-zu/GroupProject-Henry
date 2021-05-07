@@ -1,6 +1,4 @@
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Movement extends Model {
@@ -24,17 +22,20 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Movement.init({
-    amount: DataTypes.INTEGER,
-    type: DataTypes.STRING,
-    generation_date: DataTypes.DATE,
-    description: DataTypes.STRING,
-    customer_id: DataTypes.INTEGER,
-    wallet_id: DataTypes.INTEGER,
-    budget_id: DataTypes.INTEGER,
-  }, {
-    sequelize,
-    modelName: 'Movement',
-  });
+  Movement.init(
+    {
+      amount: DataTypes.INTEGER,
+      type: DataTypes.STRING,
+      generation_date: DataTypes.DATE,
+      description: DataTypes.STRING,
+      customer_id: DataTypes.INTEGER,
+      wallet_id: DataTypes.INTEGER,
+      budget_id: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Movement',
+    },
+  );
   return Movement;
 };

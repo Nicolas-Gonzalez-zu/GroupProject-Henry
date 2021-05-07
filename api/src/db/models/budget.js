@@ -1,6 +1,4 @@
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Budget extends Model {
@@ -20,13 +18,16 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Budget.init({
-    name: DataTypes.STRING,
-    amount: DataTypes.INTEGER,
-    customer_id: DataTypes.INTEGER,
-  }, {
-    sequelize,
-    modelName: 'Budget',
-  });
+  Budget.init(
+    {
+      name: DataTypes.STRING,
+      amount: DataTypes.INTEGER,
+      customer_id: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Budget',
+    },
+  );
   return Budget;
 };

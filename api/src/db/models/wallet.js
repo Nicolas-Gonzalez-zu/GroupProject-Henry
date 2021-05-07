@@ -1,6 +1,4 @@
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Wallet extends Model {
@@ -28,13 +26,16 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Wallet.init({
-    name: DataTypes.STRING,
-    balance: DataTypes.INTEGER,
-    customer_id: DataTypes.INTEGER,
-  }, {
-    sequelize,
-    modelName: 'Wallet',
-  });
+  Wallet.init(
+    {
+      name: DataTypes.STRING,
+      balance: DataTypes.INTEGER,
+      customer_id: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Wallet',
+    },
+  );
   return Wallet;
 };

@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Plans', {
+    await queryInterface.createTable('Benefits', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,11 +10,8 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      price: {
+      id_code: {
         type: Sequelize.INTEGER,
-      },
-      status: {
-        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
@@ -27,6 +24,6 @@ module.exports = {
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('Plans');
+    await queryInterface.dropTable('Benefits', { cascade: true });
   },
 };

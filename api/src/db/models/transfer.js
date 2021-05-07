@@ -1,6 +1,4 @@
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Transfer extends Model {
@@ -24,15 +22,18 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Transfer.init({
-    amount: DataTypes.INTEGER,
-    generation_date: DataTypes.DATE,
-    customer_id: DataTypes.INTEGER,
-    origin_wallet_id: DataTypes.INTEGER,
-    destination_wallet_id: DataTypes.INTEGER,
-  }, {
-    sequelize,
-    modelName: 'Transfer',
-  });
+  Transfer.init(
+    {
+      amount: DataTypes.INTEGER,
+      generation_date: DataTypes.DATE,
+      customer_id: DataTypes.INTEGER,
+      origin_wallet_id: DataTypes.INTEGER,
+      destination_wallet_id: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Transfer',
+    },
+  );
   return Transfer;
 };
