@@ -19,37 +19,8 @@ function App() {
           <SideBar />
         </Route>
 
-        <Route path="/">
-          <ContentWrapper />
-        </Route>
+        <ContentWrapper />
 
-        <Route exact path="/profile">
-          <ContentWrapper />
-        </Route>
-
-        <Route exact path="/wallet">
-          <ContentWrapper />
-        </Route>
-
-        <Route exact path="/account">
-          <ContentWrapper />
-        </Route>
-
-        <Route exact path="/movements">
-          <ContentWrapper />
-        </Route>
-
-        <Route exact path="/reports">
-          <ContentWrapper />
-        </Route>
-
-        <Route exact path="/shop">
-          <ContentWrapper />
-        </Route>
-
-        <Route exact path="/services">
-          <ContentWrapper />
-        </Route>
         <Route exact path="/">
           <Footer />
         </Route>

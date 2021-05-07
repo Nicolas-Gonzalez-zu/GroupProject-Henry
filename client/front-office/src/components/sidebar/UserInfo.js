@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { NavLink } from 'react-router-dom';
+
 const UserInfo = () => (
   <div className="user-panel mt-3 pb-3 mb-3 d-flex">
     <div className="image">
@@ -10,9 +12,9 @@ const UserInfo = () => (
       />
     </div>
     <div className="info">
-      <a href="/" className="d-block">
+      <NavLink to="/profile" className="d-block">
         Alexander Pierce
-      </a>
+      </NavLink>
     </div>
   </div>
 );
