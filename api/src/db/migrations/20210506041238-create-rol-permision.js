@@ -14,6 +14,7 @@ module.exports = {
           model: 'Rols',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
       permission_id: {
         allowNull: false,
@@ -22,6 +23,7 @@ module.exports = {
           model: 'Permissions',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
     });
   },

@@ -6,6 +6,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
       },
       payment_method: {
         type: Sequelize.STRING,
@@ -22,6 +23,7 @@ module.exports = {
           model: 'Customers',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       createdAt: {
         allowNull: false,

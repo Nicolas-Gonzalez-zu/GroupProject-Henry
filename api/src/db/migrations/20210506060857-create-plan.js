@@ -6,6 +6,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        onDelete: 'cascade',
       },
       name: {
         type: Sequelize.STRING,

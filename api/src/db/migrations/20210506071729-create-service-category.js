@@ -14,6 +14,7 @@ module.exports = {
           model: 'Services',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       category_id: {
         allowNull: false,
@@ -22,6 +23,7 @@ module.exports = {
           model: 'Categories',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
     });
   },

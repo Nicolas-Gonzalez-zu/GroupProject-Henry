@@ -13,6 +13,8 @@ module.exports = {
           model: 'Users',
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        unique: true,
       },
       plan_id: {
         type: Sequelize.INTEGER,
@@ -20,6 +22,7 @@ module.exports = {
           model: 'Plans',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
@@ -32,6 +35,6 @@ module.exports = {
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('Customers');
+    await queryInterface.dropTable('Customers', { cascade: true });
   },
 };

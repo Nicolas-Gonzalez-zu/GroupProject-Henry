@@ -11,8 +11,6 @@ const { MONGO_URI } = process.env;
 
 const app = express();
 
-//
-
 // logging middleware
 app.use(logger('dev'));
 
@@ -32,7 +30,7 @@ app.use(
   }),
 );
 
-// Passport middleware
+// Passport middlewares
 app.use(passport.initialize({}));
 app.use(passport.session({}));
 

@@ -1,5 +1,8 @@
 const express = require('express');
 const passport = require('passport');
+const bcryptUtils = require('../utils/bcryptUtils');
+
+const db = require('../../db/models');
 
 const router = express.Router();
 
@@ -10,7 +13,7 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local', {}, (err, user, info) => {
     if (err) {
       return res.status(401).json({ errors: err });
     }
@@ -26,8 +29,31 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-router.get('/test-auth', checkIfLoggedIn, (req, res, next) => {
+router.post('/register', (req, res) => {
+  const data = req.body;
+  data.password = bcryptUtils.encrypt(data.password);
+  db.User.create(data)
+    .then((user) => {
+      console.log(typeof user.id);
+      db.Customer.create({ user_id: user.id, plan_id: 1 })
+        .then(() => {
+          res.status(201).json({ message: 'Registration Successfully' });
+        })
+        .catch((e) => {
+          res.status(500).json({ error: e.message });
+        });
+    })
+    .catch((e) => {
+      res.status(500).json({ error: e.message });
+    });
+});
+
+router.get('/test-auth', checkIfLoggedIn, (req, res) => {
   res.send('Logged');
+});
+
+router.get('/me', checkIfLoggedIn, (req, res) => {
+  res.json(req.user);
 });
 
 module.exports = router;
