@@ -29,6 +29,6 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('PlanBenefit');
+    await queryInterface.dropTable('PlanBenefits');
   },
 };
