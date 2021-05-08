@@ -9,14 +9,19 @@ const multipartMiddleware = multipart();
 
 
 const walletController = require('../../controllers/walletController');
+const budgetController = require('../../controllers/budgetController');
 
 router.use('/wallet', walletController);
+
 
 const customerController = require('../../controllers/customerController');
 const walletControlelr = require('../../controllers/walletController');
 
 router.use('/customer', customerController);
 router.use('/wallet', walletControlelr);
+
+router.use('/budget', budgetController);
+
 
 router.get('/', (req, res) => {
   res.json({ message: 'FO response' });
