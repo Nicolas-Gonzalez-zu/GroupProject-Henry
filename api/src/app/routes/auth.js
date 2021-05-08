@@ -59,9 +59,13 @@ router.get('/me', checkIfLoggedIn, (req, res) => {
       { model: db.User, as: 'user' },
       { model: db.Plan, as: 'plan' },
     ],
-  }).then((user) => {
-    res.status(200).json(user);
-  });
+  })
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((e) => {
+      res.status(500).json({ error: e.message });
+    });
 
   // db.Customer.findByPk(req.user.id).then((user) => {
   //   res.status(200).json(user);
