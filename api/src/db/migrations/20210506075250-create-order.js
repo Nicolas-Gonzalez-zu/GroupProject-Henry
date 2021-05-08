@@ -6,6 +6,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        onDelete: 'cascade',
       },
       invoice_id: {
         type: Sequelize.INTEGER,
@@ -13,6 +14,7 @@ module.exports = {
           model: 'Invoices',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       assigned_user_id: {
         type: Sequelize.INTEGER,
@@ -20,6 +22,7 @@ module.exports = {
           model: 'Users',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       customer_id: {
         type: Sequelize.INTEGER,
@@ -27,6 +30,7 @@ module.exports = {
           model: 'Customers',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       status: {
         type: Sequelize.STRING,
@@ -51,6 +55,6 @@ module.exports = {
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('Orders');
+    await queryInterface.dropTable('Orders', { cascade: true });
   },
 };

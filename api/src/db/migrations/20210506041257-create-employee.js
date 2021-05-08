@@ -12,7 +12,9 @@ module.exports = {
         references: {
           model: 'Users',
           key: 'id',
+          cascade: true,
         },
+        onDelete: 'CASCADE',
       },
       rol_id: {
         type: Sequelize.INTEGER,
@@ -20,6 +22,7 @@ module.exports = {
           model: 'Rols',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,

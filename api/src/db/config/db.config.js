@@ -21,5 +21,6 @@ module.exports = {
     database: process.env.database_production,
     host: process.env.HOST_NAME,
     dialect: 'postgres',
+    logging: false,
   },
 };

@@ -6,15 +6,20 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        onDelete: 'cascade',
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       id_code: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       status: {
+        allowNull: false,
         type: Sequelize.BOOLEAN,
+        default: true,
       },
       createdAt: {
         allowNull: false,

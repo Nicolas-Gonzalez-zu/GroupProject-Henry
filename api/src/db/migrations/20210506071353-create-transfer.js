@@ -6,6 +6,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
       },
       amount: {
         type: Sequelize.INTEGER,
@@ -19,6 +20,7 @@ module.exports = {
           model: 'Customers',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       origin_wallet_id: {
         type: Sequelize.INTEGER,
@@ -26,6 +28,7 @@ module.exports = {
           model: 'Wallets',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       destination_wallet_id: {
         type: Sequelize.INTEGER,
@@ -33,6 +36,7 @@ module.exports = {
           model: 'Wallets',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       createdAt: {
         allowNull: false,
@@ -45,6 +49,6 @@ module.exports = {
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('Transfers');
+    await queryInterface.dropTable('Transfers', { cascade: true });
   },
 };
