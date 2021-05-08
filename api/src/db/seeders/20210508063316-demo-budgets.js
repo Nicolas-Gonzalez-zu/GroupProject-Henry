@@ -1,14 +1,14 @@
 const faker = require('faker');
 const { Customer } = require('../models');
 
-const demoWallets = [];
+const demoBudgets = [];
 
 const generateDemoWallets = async () => {
   const Customers = await Customer.findAll({ attributes: ['id'] });
   Customers.forEach((c) => {
-    demoWallets.push({
-      name: faker.finance.accountName(),
-      balance: faker.datatype.number(),
+    demoBudgets.push({
+      name: faker.finance.transactionType(),
+      amount: faker.datatype.number(),
       customer_id: c.id,
       status: true,
       createdAt: faker.date.past(),
@@ -16,9 +16,9 @@ const generateDemoWallets = async () => {
     });
   });
   Customers.forEach((c) => {
-    demoWallets.push({
-      name: faker.finance.accountName(),
-      balance: faker.datatype.number(),
+    demoBudgets.push({
+      name: faker.finance.transactionType(),
+      amount: faker.datatype.number(),
       customer_id: c.id,
       status: true,
       createdAt: faker.date.past(),
@@ -26,9 +26,9 @@ const generateDemoWallets = async () => {
     });
   });
   Customers.forEach((c) => {
-    demoWallets.push({
-      name: faker.finance.accountName(),
-      balance: faker.datatype.number(),
+    demoBudgets.push({
+      name: faker.finance.transactionType(),
+      amount: faker.datatype.number(),
       customer_id: c.id,
       status: true,
       createdAt: faker.date.past(),
@@ -39,10 +39,10 @@ const generateDemoWallets = async () => {
 module.exports = {
   up: async (queryInterface) => {
     await generateDemoWallets();
-    await queryInterface.bulkInsert('Wallets', demoWallets, {});
+    await queryInterface.bulkInsert('Budgets', demoBudgets, {});
   },
 
   down: async (queryInterface) => {
-    await queryInterface.bulkDelete('Wallets', null, {});
+    await queryInterface.bulkDelete('Budgets', null, {});
   },
 };
