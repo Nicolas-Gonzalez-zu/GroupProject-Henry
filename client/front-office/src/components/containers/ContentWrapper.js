@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 import ContentHeader from './ContentHeader';
 
 import Profile from '../profile/Profile';
-import Account from '../account/Account';
+import Budget from '../budget/Budget';
 import Wallet from '../wallet/Wallet';
 
 const ContentWrapper = () => (
@@ -26,8 +26,8 @@ const ContentWrapper = () => (
           <Wallet />
         </Route>
 
-        <Route exact path="/account">
-          <Account />
+        <Route exact path="/budget">
+          <Budget />
         </Route>
 
         <Route exact path="/movements">
