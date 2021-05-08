@@ -2,9 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 
-const customerController = require('../../controllers/customerController');
+// const customerController = require('../../controllers/customerController');
+const walletController = require('../../controllers/walletController');
 
-router.use('/customer', customerController);
+router.use('/wallet', walletController);
 
 router.get('/', (req, res) => {
   res.json({ message: 'FO response' });
