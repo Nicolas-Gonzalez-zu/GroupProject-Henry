@@ -53,7 +53,6 @@ router.get('/test-auth', checkIfLoggedIn, (req, res) => {
 });
 
 router.get('/me', checkIfLoggedIn, (req, res) => {
-  console.log(req.user);
   db.Customer.findOne({
     where: { user_id: req.user.id },
     include: [
