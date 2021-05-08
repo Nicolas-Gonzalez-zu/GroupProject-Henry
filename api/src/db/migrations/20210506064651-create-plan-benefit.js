@@ -14,6 +14,7 @@ module.exports = {
           model: 'Plans',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       benefit_id: {
         allowNull: false,
@@ -22,11 +23,12 @@ module.exports = {
           model: 'Benefits',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
     });
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('PlanBenefit');
+    await queryInterface.dropTable('PlanBenefits');
   },
 };
