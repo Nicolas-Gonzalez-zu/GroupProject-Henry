@@ -25,6 +25,7 @@ module.exports = {
           model: 'Customers',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       wallet_id: {
         type: Sequelize.INTEGER,
@@ -32,6 +33,7 @@ module.exports = {
           model: 'Wallets',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       budget_id: {
         type: Sequelize.INTEGER,
@@ -39,6 +41,7 @@ module.exports = {
           model: 'Budgets',
           key: 'id',
         },
+        onDelete: 'cascade',
       },
       createdAt: {
         allowNull: false,
