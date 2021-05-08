@@ -103,3 +103,5 @@ typings/
 .tern-port
 
 .idea/
+client/front-office/package-lock.json
+client/front-office/package-lock.json
