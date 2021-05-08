@@ -15,6 +15,7 @@ module.exports = {
           cascade: true,
         },
         onDelete: 'CASCADE',
+        unique: true,
       },
       rol_id: {
         type: Sequelize.INTEGER,
