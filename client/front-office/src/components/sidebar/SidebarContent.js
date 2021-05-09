@@ -1,7 +1,6 @@
 import React from 'react';
 
 import UserInfo from './UserInfo';
-import SearchBar from './SearchBar';
 import SideBarMenu from './SideBarMenu';
 
 const SideBarContent = () => (
