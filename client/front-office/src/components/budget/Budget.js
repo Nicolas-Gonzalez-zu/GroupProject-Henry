@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import { Modal, Button } from 'react-bootstrap';
 
 function Budget() {
   const [loading, setLoading] = useState(true);
   const [budgetData, setBudgetData] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+
   const [newBudgets, setNewBudgets] = useState({
     id: '',
     name: '',
@@ -74,16 +73,29 @@ function Budget() {
     setLoading(false);
     setTimeout(() => setLoading(true), 1000);
   };
-
+  const total = budgetData.reduce((acc, value) => acc + parseInt(value.value, 10), 0);
   // const setModalHandler = (e) => {
   //   e.preventDefault();
   //   setShowModal(!showModal);
   // };
   return (
     <div>
+      <div className="d-flex justify-content-center">
+        <div className="col-lg-3 col-6 ">
+          <div className="small-box bg-info">
+            <div className="inner">
+              <h3 className="text-center"> Total ${total}</h3>
+            </div>
+            <div className="icon">
+              <i className="ion ion-bag" />
+            </div>
+          </div>
+        </div>
+      </div>
       <div>
         <Doughnut width={200} height={200} data={data} options={{ maintainAspectRatio: false }} />
       </div>
+
       <br />
 
       <div className="row">
@@ -110,9 +122,13 @@ function Budget() {
                       <td>${x.value}</td>
                       <td>${x.limit}</td>
                       <td>
-                        <Button className="btn btn-primary" onClick={() => modificateBud(x.id)}>
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={() => modificateBud(x.id)}
+                        >
                           <i className="fas fa-edit" />
-                        </Button>
+                        </button>
                             
                         <button
                           type="button"
