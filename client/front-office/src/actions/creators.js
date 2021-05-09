@@ -44,6 +44,37 @@ export const getMe = (dispatch) => {
   });
 };
 
+export const getWallet = (dispatch) => {
+  serverPetition.get('fo/wallet').then(({ data }) => {
+    dispatch({
+      type: actionType.GET_WALLETS,
+      payload: data,
+    });
+  });
+};
+export const addWallet = (newWallet, dispatch) => {
+  serverPetition.post('fo/wallet/add', newWallet).then(({ data }) => {
+    if (!data.error) {
+      getWallet(dispatch);
+    }
+  });
+};
+export const changeWalletStatus = (dataChange, dispatch) => {
+  serverPetition.put('fo/wallet/change-status', dataChange).then(({ data }) => {
+    console.log(data, 'soy la data del action');
+    if (!data.error) {
+      getWallet(dispatch);
+    }
+  });
+};
+export const editWallet = (walletEdited, dispatch) => {
+  serverPetition.put('fo/wallet/edit', walletEdited).then(({ data }) => {
+    if (!data.error) {
+      getWallet(dispatch);
+    }
+  });
+};
+
 // alimentacion = 7000  500
 //
 // todos los mov que correspondan a ese budget = suma de mov > 7000 genera alerta

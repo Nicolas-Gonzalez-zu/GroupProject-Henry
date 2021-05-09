@@ -32,6 +32,7 @@ router.post('/add', (req, res) => {
 
 router.put('/edit', (req, res) => {
   const { id } = req.body;
+  console.log(req.body, 'estoy en el back');
   if (id) {
     const update = {};
     if (req.body.name) update.name = req.body.name;
