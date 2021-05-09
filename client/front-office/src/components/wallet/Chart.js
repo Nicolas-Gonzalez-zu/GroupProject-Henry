@@ -3,8 +3,9 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 const Chart = ({ array }) => {
+  const filterLabels = array.filter((x) => x.status === true);
   const data = {
-    labels: array.map((el) => (el.status ? el.name : '')),
+    labels: filterLabels.map((x) => x.name),
     datasets: [
       {
         label: '# of votes',
