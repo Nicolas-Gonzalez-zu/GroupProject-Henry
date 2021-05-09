@@ -1,31 +1,36 @@
-import React from 'react';
+import { React, useEffect } from 'react';
 
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+
+import { useSelector, useDispatch } from 'react-redux';
 
 import NavBar from '../navbar';
 import SideBar from '../sidebar';
 import ContentWrapper from './ContentWrapper';
 import Footer from './Footer';
+import AlternativeLogin from '../alternativeLogin';
+
+import * as action from '../../actions/creators';
 
 function App() {
-  return (
+  const sessionData = useSelector((store) => store.loginReducer.sessionData);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!sessionData.loggedIn) {
+      action.getMe(dispatch);
+    }
+  }, []);
+
+  return sessionData.loggedIn ? (
     <>
-      <BrowserRouter>
-        <Route path="/">
-          <NavBar />
-        </Route>
-
-        <Route path="/">
-          <SideBar />
-        </Route>
-
-        <ContentWrapper />
-
-        <Route exact path="/">
-          <Footer />
-        </Route>
-      </BrowserRouter>
+      <NavBar />
+      <SideBar />
+      <ContentWrapper />
+      <Footer />
     </>
+  ) : (
+    <AlternativeLogin />
   );
 }
 

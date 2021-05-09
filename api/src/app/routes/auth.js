@@ -34,7 +34,6 @@ router.post('/register', (req, res) => {
   data.password = bcryptUtils.encrypt(data.password);
   db.User.create(data)
     .then((user) => {
-      console.log(typeof user.id);
       db.Customer.create({ user_id: user.id, plan_id: 1 })
         .then(() => {
           res.status(201).json({ message: 'Registration Successfully' });
@@ -66,11 +65,10 @@ router.get('/me', checkIfLoggedIn, (req, res) => {
     .catch((e) => {
       res.status(500).json({ error: e.message });
     });
-
-  // db.Customer.findByPk(req.user.id).then((user) => {
-  //   res.status(200).json(user);
-  // });
-  // res.json(req.user);
 });
 
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.status(200).json({ loggedOut: true });
+});
 module.exports = router;

@@ -6,6 +6,7 @@ const router = express.Router();
 router.use(checkIfLoggedIn);
 
 router.get('/', (req, res) => {
+  console.log(req.user);
   db.Wallet.findAll({
     where: { customer_id: req.user.id },
   }).then((wallets) => {
