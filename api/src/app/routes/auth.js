@@ -36,7 +36,7 @@ router.post('/register', (req, res) => {
     .then((user) => {
       db.Customer.create({ user_id: user.id, plan_id: 1 })
         .then(() => {
-          res.status(201).json({ message: 'Registration Successfully' });
+          res.status(201).json({ success: true });
         })
         .catch((e) => {
           res.status(500).json({ error: e.message });

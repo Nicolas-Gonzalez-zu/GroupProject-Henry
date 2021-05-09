@@ -7,7 +7,7 @@ import * as action from '../../actions/creators';
 const AlternativeLogin = () => {
   const [fields, setFields] = useState({ email: '', password: '' });
   const dispatch = useDispatch();
-  const sessionData = useSelector((store) => store.loginReducer.sessionData);
+  const sessionData = useSelector((store) => store.authReducers.sessionData);
 
   const handleChange = (e) => {
     const newFields = { ...fields, [e.target.name]: e.target.value };
@@ -26,7 +26,12 @@ const AlternativeLogin = () => {
   };
 
   useEffect(() => {
-    console.log(sessionData);
+    if (sessionData.loggedIn) {
+      action.redirect(dispatch, '/');
+    }
+    return () => {
+      action.redirect(dispatch, false);
+    };
   }, [sessionData]);
 
   const clickhandler = (e) => {
