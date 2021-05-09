@@ -1,13 +1,21 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import * as action from '../../actions/creators';
+import WalletModalEdit from './WalletModalEdit';
 
-const WalletTable = ({ wallets, setWallets }) => {
-  const walletsFilter = (name) => {
-    setWallets(wallets.filter((w) => w.name !== name));
+const WalletTable = ({ wallets }) => {
+  const dispatch = useDispatch();
+  const setHandler = (id, status) => {
+    const newData = { id, status: !status };
+    console.log(newData);
+    console.log(wallets);
+    action.changeWalletStatus(newData, dispatch);
   };
   return (
     <table className="table">
       <thead>
         <tr>
+          <th>id</th>
           <th>Name</th>
           <th>Amount</th>
         </tr>
@@ -16,20 +24,40 @@ const WalletTable = ({ wallets, setWallets }) => {
         {wallets &&
           wallets.map((w, i) => (
             <tr>
+              <td>{w.id}</td>
               <td>{w.name}</td>
-              <td>${w.amount}</td>
-              <td className="text-right py-0 align-middle">
+              <td>${w.balance}</td>
+              <td>
+                {w.status ? (
+                  <p className="text-success">available</p>
+                ) : (
+                  <p className="text-danger">disable</p>
+                )}
+              </td>
+              <td className="text-right py-0 align-middle justify-content-between">
                 <div className="btn-group btn-group-sm">
-                  {/* <a href="#" className="btn btn-info">
-                  <i className="fas fa-eye" />
-                </a> */}
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => walletsFilter(w.name)}
-                  >
-                    <i className="fas fa-trash" />
-                  </button>
+                  <WalletModalEdit id={w.id} />
+                  {w.status ? (
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => {
+                        setHandler(w.id, w.status);
+                      }}
+                    >
+                      <i className="fas fa-trash" />
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-success"
+                      onClick={() => {
+                        setHandler(w.id, w.status);
+                      }}
+                    >
+                      <i className="fas fa-check" />
+                    </button>
+                  )}
                 </div>
               </td>
             </tr>

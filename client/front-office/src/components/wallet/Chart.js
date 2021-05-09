@@ -4,11 +4,11 @@ import { Doughnut } from 'react-chartjs-2';
 
 const Chart = ({ array }) => {
   const data = {
-    labels: array.map((el) => el.name),
+    labels: array.map((el) => (el.status ? el.name : '')),
     datasets: [
       {
         label: '# of votes',
-        data: array.map((el) => el.amount),
+        data: array.map((el) => (el.status ? el.balance : '')),
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',

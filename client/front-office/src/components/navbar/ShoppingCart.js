@@ -15,7 +15,10 @@ const ShoppingCart = () => (
     <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
       <span className="dropdown-item dropdown-header">Cart ({fakeServices.length})</span>
       <div className="dropdown-divider" />
-      {fakeServices && fakeServices.map((s, i) => <ServiceCard name={s.name} price={s.price} />)}
+      {fakeServices &&
+        fakeServices.map((s, i) => (
+          <ServiceCard key={`sv-${s.name}`} name={s.name} price={s.price} />
+        ))}
       <div className="dropdown-divider" />
       <span className="dropdown-item font-weight-bold">
         Total <span className="float-right">$3200</span>

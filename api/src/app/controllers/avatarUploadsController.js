@@ -1,7 +1,6 @@
 /* eslint-disable no-shadow */
 const AWS = require('aws-sdk');
 const async = require('async');
-
 const bucketName = process.env.BUCKET;
 const fs = require('fs');
 

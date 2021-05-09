@@ -25,11 +25,11 @@ const WalletModal = ({ wallet, setWalletHandler, setWalletsHandler, showModal, s
               value={wallet.name}
             />
             <input
-              type="number"
-              placeholder="amount..."
-              name="amount"
+              type="text"
+              placeholder="balance..."
+              name="balance"
               onChange={setWalletHandler}
-              value={wallet.amount}
+              value={wallet.balance}
             />
           </div>
         </Modal.Body>

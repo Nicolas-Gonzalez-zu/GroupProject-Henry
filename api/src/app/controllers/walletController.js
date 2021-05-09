@@ -6,7 +6,6 @@ const router = express.Router();
 router.use(checkIfLoggedIn);
 
 router.get('/', (req, res) => {
-  console.log(req.user);
   db.Wallet.findAll({
     where: { customer_id: req.user.id },
   }).then((wallets) => {
@@ -32,6 +31,7 @@ router.post('/add', (req, res) => {
 
 router.put('/edit', (req, res) => {
   const { id } = req.body;
+  console.log(req.body, 'estoy en el back');
   if (id) {
     const update = {};
     if (req.body.name) update.name = req.body.name;
