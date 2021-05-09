@@ -1,25 +1,29 @@
+/* eslint-disable no-shadow */
 const AWS = require('aws-sdk');
 const async = require('async');
-const Mime = require('mime/Mime');
+
 const bucketName = process.env.BUCKET;
-const path = require('path');
 const fs = require('fs');
-let pathParams, image, imageName, contentType;
+
+let image;
+let imageName;
+let contentType;
 
 const s3 = new AWS.S3({
   region: process.env.REGION,
   accessKeyId: process.env.ACCESS_KEY_ID,
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
 });
+
 const createMainBucket = (callback) => {
   // Create the parameters for calling createBucket
   const bucketParams = {
     Bucket: bucketName,
   };
-  s3.headBucket(bucketParams, function (err, data) {
+  s3.headBucket(bucketParams, (err, data) => {
     if (err) {
       console.log('ErrorHeadBucket', err);
-      s3.createBucket(bucketParams, function (err, data) {
+      s3.createBucket(bucketParams, (err, data) => {
         if (err) {
           console.log('Error', err);
           callback(err, null);
@@ -37,11 +41,10 @@ const createItemObject = (callback) => {
   const params = {
     Bucket: bucketName,
     Key: `${imageName}`,
-    ACL: 'public-read',
     Body: image,
     ContentType: contentType,
   };
-  s3.putObject(params, function (err, data) {
+  s3.putObject(params, (err, data) => {
     if (err) {
       console.log('Error uploading image: ', err);
       callback(err, null);
@@ -51,25 +54,38 @@ const createItemObject = (callback) => {
     }
   });
 };
-exports.upload = (req, res, next) => {
+exports.upload = (req, res) => {
   const allowedExtension = ['png', 'jpeg', 'jpg'];
-  const extension = req.files.file.name.split('.')[0];
+  const extension = req.files.file.type.slice(6);
 
-  if (allowedExtension.includes(extension)) {
-    var tmp_path = req.files.file.path;
-    console.log('item', req.files.file);
-    var tmp_path = req.files.file.path;
-    image = fs.createReadStream(tmp_path);
-    imageName = req.files.file.name;
-    contentType = req.files.file.type;
-    async.series([createMainBucket, createItemObject], (err, result) => {
-      if (err) return res.send(err);
-      else return res.json({ message: 'Successfully uploaded' });
-    });
-    console.log('hola');
-  } else {
-    return res.status(400).json({ message: 'Bad request' });
+  // eslint-disable-next-line consistent-return
+  function uploadAvatar() {
+    if (allowedExtension.includes(extension)) {
+      const tmpPath = req.files.file.path;
+      // console.log('item', req.files.file);
+      image = fs.createReadStream(tmpPath);
+      imageName = req.files.file.name;
+      contentType = req.files.file.type;
+      async.series([createMainBucket, createItemObject], (err) => {
+        if (err) return res.send(err);
+        return res.json({ message: 'Successfully uploaded' });
+      });
+    } else {
+      return res.status(400).json({ message: 'Bad request' });
+    }
   }
+  s3.getObject({ key: req.files.file.name, bucket: bucketName }, (err) => {
+    if (err) {
+      uploadAvatar();
+    } else {
+      s3.deleteObject({ key: req.files.file.name, bucket: bucketName }, (error) => {
+        if (error) {
+          console.log(error);
+        }
+        uploadAvatar();
+      });
+    }
+  });
 };
 exports.displayForm = (req, res) => {
   res.writeHead(200, {

@@ -1,7 +1,5 @@
 import { React, useEffect } from 'react';
 
-import { Route, Switch } from 'react-router-dom';
-
 import { useSelector, useDispatch } from 'react-redux';
 
 import NavBar from '../navbar';
@@ -20,7 +18,7 @@ function App() {
     if (!sessionData.loggedIn) {
       action.getMe(dispatch);
     }
-  }, []);
+  }, [dispatch, sessionData.loggedIn]);
 
   return sessionData.loggedIn ? (
     <>
