@@ -88,6 +88,7 @@ const EditForm = () => {
                   type="file"
                   className="custom-file-input"
                   id="exampleInputFile"
+                  required
                 />
                 <label className="custom-file-label" htmlFor="exampleInputFile">
                   Choose file

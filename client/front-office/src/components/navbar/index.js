@@ -7,7 +7,8 @@ import ShoppingCart from './ShoppingCart';
 import SupportItem from './SupportItem';
 import * as action from '../../actions/creators';
 
-const NavBar = () => {
+const NavBar = (props) => {
+  console.log(props);
   const dispatch = useDispatch();
   const logout = (e) => {
     e.preventDefault();
