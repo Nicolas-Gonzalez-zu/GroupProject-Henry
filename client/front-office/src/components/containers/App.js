@@ -1,7 +1,7 @@
 import { React, useEffect } from 'react';
 
 import { Route, Redirect, Switch } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import NavBar from '../navbar';
 import SideBar from '../sidebar';
@@ -10,14 +10,23 @@ import Footer from './Footer';
 import AlternativeLogin from '../alternativeLogin';
 import Register from '../register';
 
-import * as action from '../../actions/creators';
+// import * as action from '../../actions/creators';
 
 function App() {
-  const dispatch = useDispatch();
+  // const location = useLocation();
+  // const dispatch = useDispatch();
   const redirect = useSelector((store) => store.authReducers.redirect);
-  useEffect(() => {
-    action.redirect(dispatch, false);
-  });
+  // const loggedIn = useSelector((store) => store.authReducers.sessionData.loggedIn);
+  // useEffect(() => {
+  //   if (!loggedIn) {
+  //     if (location.pathname !== '/login' && location.pathname !== '/register') {
+  //       action.redirect(dispatch, '/login');
+  //     }
+  //   } else {
+  //     action.redirect(dispatch, false);
+  //   }
+  // }, [location, loggedIn, dispatch]);
+
   return redirect ? (
     <Redirect to={redirect} />
   ) : (
