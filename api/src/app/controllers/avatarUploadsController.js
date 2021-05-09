@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const async = require('async');
-const Mime = require('mime/Mime');
+// const Mime = require('mime/Mime');
 const bucketName = process.env.BUCKET;
 const path = require('path');
 const fs = require('fs');
