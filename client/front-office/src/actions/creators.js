@@ -52,7 +52,6 @@ export const getMe = (dispatch) => {
     .catch((err) => console.log(err.message));
 };
 
-
 export const getWallet = (dispatch) => {
   serverPetition.get('fo/wallet').then(({ data }) => {
     dispatch({
@@ -111,4 +110,3 @@ export const redirect = (dispatch, route = false) => {
     payload: route,
   });
 };
-

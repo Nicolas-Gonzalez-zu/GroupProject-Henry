@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 const Profile = () => {
-  const userData = useSelector((store) => store.loginReducer.sessionData.loggedUser);
+  const userData = useSelector((store) => store.authReducers.sessionData.loggedUser);
   const fileExtension = useSelector((store) => store.editFormReducer.fileExtension);
   console.log(userData);
   return (

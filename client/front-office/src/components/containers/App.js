@@ -16,12 +16,10 @@ function App() {
   const dispatch = useDispatch();
   const redirect = useSelector((store) => store.authReducers.redirect);
   useEffect(() => {
-
     action.redirect(dispatch, false);
   });
   return redirect ? (
     <Redirect to={redirect} />
-
   ) : (
     <Switch>
       <Route exact path="/login" component={AlternativeLogin} />

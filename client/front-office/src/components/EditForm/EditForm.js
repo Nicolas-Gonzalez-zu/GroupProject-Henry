@@ -7,7 +7,7 @@ import * as action from '../../actions/editForm';
 const EditForm = () => {
   const dispatch = useDispatch();
 
-  const userData = useSelector((store) => store.loginReducer.sessionData.loggedUser);
+  const userData = useSelector((store) => store.authReducers.sessionData.loggedUser);
   const [editProfile, setEditProfile] = useState({
     file: null,
     email: '',
@@ -35,6 +35,7 @@ const EditForm = () => {
         setEditProfile({ ...editProfile, [e.target.name]: e.target.value });
     }
   };
+
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(action.fileExtension(editProfile.file.type));
