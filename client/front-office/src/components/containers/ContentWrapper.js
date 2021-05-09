@@ -7,6 +7,8 @@ import ContentHeader from './ContentHeader';
 import Profile from '../profile/Profile';
 import Account from '../account/Account';
 import Wallet from '../wallet/Wallet';
+import EditForm from '../EditForm/EditForm';
+import ChangePassword from '../ChangePassword/ChangePassword';
 
 const ContentWrapper = () => (
   <div className="content-wrapper">
@@ -20,6 +22,14 @@ const ContentWrapper = () => (
 
         <Route exact path="/profile">
           <Profile />
+        </Route>
+
+        <Route exact path="/edit">
+          <EditForm />
+        </Route>
+
+        <Route exact path="/changePassword">
+          <ChangePassword />
         </Route>
 
         <Route exact path="/wallet">
