@@ -1,0 +1,5 @@
+const DO_LOGIN = 'DO_LOGIN';
+const LOGOUT = 'LOGOUT';
+const GET_WALLETS = 'GET_WALLETS';
+
+export { DO_LOGIN, GET_WALLETS, LOGOUT };

@@ -16,9 +16,9 @@ const SideBarMenu = () => (
         </NavLink>
       </li>
       <li className="nav-item">
-        <NavLink to="/account" className="nav-link">
+        <NavLink to="/budget" className="nav-link">
            <i className="nav-icon fas fa-file-powerpoint" />
-          <p> Account</p>
+          <p> Budget</p>
         </NavLink>
       </li>
       <li className="nav-item">
@@ -46,10 +46,10 @@ const SideBarMenu = () => (
         </NavLink>
       </li>
       <li className="nav-item">
-        <a href="../widgets.html" className="nav-link">
+        <NavLink exact to="/" className="nav-link">
            <i className="nav-icon fas fa-chess-knight" />
           <p> Account PRO</p>
-        </a>
+        </NavLink>
       </li>
     </ul>
   </nav>

@@ -3,7 +3,14 @@ const logger = require('morgan');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const passport = require('./auth/setup');
+
+const corsOptions = {
+  credentials: true,
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
 
 const router = require('./routes');
 
@@ -27,6 +34,7 @@ app.use(
     saveUninitialized: true,
     httpOnly: true,
     store: MongoStore.create({ mongoUrl: MONGO_URI }),
+    sameSite: false,
   }),
 );
 
@@ -34,6 +42,7 @@ app.use(
 app.use(passport.initialize({}));
 app.use(passport.session({}));
 
+app.use(cors(corsOptions));
 app.use('/api', router);
 
 module.exports = app;

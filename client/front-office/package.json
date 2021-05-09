@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.21.1",
     "bootstrap": "^5.0.0",
     "chart.js": "^3.2.1",
     "react": "^17.0.2",
@@ -55,5 +56,6 @@
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.2.1"
-  }
+  },
+  "proxi": "http://localhost:3001/api"
 }
