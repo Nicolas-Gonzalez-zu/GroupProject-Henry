@@ -51,7 +51,7 @@ export const getMe = (dispatch) => {
     })
     .catch((err) => console.log(err.message));
 };
-//                Wallet
+
 export const getWallet = (dispatch) => {
   serverPetition.get('fo/wallet').then(({ data }) => {
     dispatch({
