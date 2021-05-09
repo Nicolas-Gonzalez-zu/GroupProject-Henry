@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import * as actionType from '../../actions/types';
 import * as action from '../../actions/creators';
 
 const Register = () => {
@@ -27,7 +25,6 @@ const Register = () => {
     },
   });
   const [formReady, setformReady] = useState(false);
-  const redirect = useSelector((state) => state.authReducers.redirect);
   const loggedIn = useSelector((state) => state.authReducers.loggedIn);
 
   const dispatch = useDispatch();

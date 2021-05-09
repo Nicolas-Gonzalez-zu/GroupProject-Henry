@@ -17,12 +17,6 @@ const AlternativeLogin = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     action.doLogin(fields, dispatch);
-    // axios
-    //   .post('http://localhost:3001/api/auth/login', fields, { withCredentials: true })
-    //   .then(({ data }) => {
-    //     console.log(data);
-    //   })
-    //   .catch((err) => console.log(err.message));
   };
 
   useEffect(() => {
@@ -32,7 +26,7 @@ const AlternativeLogin = () => {
     return () => {
       action.redirect(dispatch, false);
     };
-  }, [sessionData]);
+  }, [sessionData, dispatch]);
 
   const clickhandler = (e) => {
     axios
