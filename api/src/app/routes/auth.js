@@ -53,7 +53,24 @@ router.get('/test-auth', checkIfLoggedIn, (req, res) => {
 });
 
 router.get('/me', checkIfLoggedIn, (req, res) => {
-  res.json(req.user);
+  db.Customer.findOne({
+    where: { user_id: req.user.id },
+    include: [
+      { model: db.User, as: 'user' },
+      { model: db.Plan, as: 'plan' },
+    ],
+  })
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((e) => {
+      res.status(500).json({ error: e.message });
+    });
+
+  // db.Customer.findByPk(req.user.id).then((user) => {
+  //   res.status(200).json(user);
+  // });
+  // res.json(req.user);
 });
 
 module.exports = router;
