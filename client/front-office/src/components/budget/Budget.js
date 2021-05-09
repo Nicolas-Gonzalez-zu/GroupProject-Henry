@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
+import { useSelector, useDispatch } from 'react-redux';
+import * as action from '../../actions/creators';
+import BudgetsEdit from './budgetEdit';
 
 function Budget() {
   const [loading, setLoading] = useState(true);
-  const [budgetData, setBudgetData] = useState([]);
   const [newBudgets, setNewBudgets] = useState({
-    id: '',
     name: '',
-    value: '',
-    limit: '',
+    amount: '',
   });
 
+  const budgets = useSelector((state) => state.budgetReducer.budgets);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    action.getBudget(dispatch);
+  }, [dispatch]);
+
+  const filterLabels = budgets.filter((x) => x.status === true);
   const data = {
-    labels: budgetData.map((x) => x.name),
+    labels: filterLabels.map((x) => x.name),
     datasets: [
       {
         label: '# of Votes',
-        data: budgetData.map((x) => x.value),
+        data: budgets.map((x) => (x.status ? x.amount : '')),
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -41,42 +48,85 @@ function Budget() {
   const handleChange = (e) => {
     setNewBudgets({
       ...newBudgets,
-      id: Math.floor(Math.random() * (100 - 0 + 1) + 0),
       [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setBudgetData([...budgetData, newBudgets]);
+    if (!newBudgets.name || !newBudgets.amount) {
+      return alert('You need to fill both inputs');
+    }
+    if (typeof newBudgets.name === 'number' || /[a-zA-Z]+/g.test(newBudgets.amount)) {
+      console.log(typeof newBudgets.name, typeof newBudgets.amount);
+      return alert("Please set the values corretly, f.e: name:'cash', balance: 1300");
+    }
+    action.addBudget(newBudgets, dispatch);
+
+    return alert('Budget Created');
   };
 
-  const deleteBud = (id) => {
-    console.log('entraendelete');
-    setBudgetData(budgetData.filter((x) => x.id !== id));
+  const changeStatus = (id, status) => {
+    const newData = { id, status: !status };
+    action.changeBudgetStatus(newData, dispatch);
   };
 
-  const modificateBud = (id) => {
-    const modibud = budgetData.find((x) => x.id === id);
-    console.log(id, 'idd');
-    console.log(modibud, 'modicar');
-    modibud.name = 'Modifica';
-    modibud.limit = 1000;
-    modibud.value = 223;
-    reset();
-    // setShowModal(!showModal);
-    console.log(modibud, 'modicadooooo////');
-  };
+  const balances = budgets.filter((w) => w.status === true);
+  const total = balances.reduce((acc, b) => acc + parseInt(b.amount, 10), 0);
 
   const reset = () => {
     setLoading(false);
-    setTimeout(() => setLoading(true), 1000);
+    setTimeout(() => {
+      setLoading(true);
+    }, 1000);
   };
-  const total = budgetData.reduce((acc, value) => acc + parseInt(value.value, 10), 0);
-  // const setModalHandler = (e) => {
-  //   e.preventDefault();
-  //   setShowModal(!showModal);
-  // };
+
+  const orderId = () => {
+    budgets.sort((a, b) => {
+      const aa = a.id;
+      const bb = b.id;
+
+      if (aa < bb) {
+        return -1;
+      }
+      if (aa > bb) {
+        return 1;
+      }
+      return 0;
+    });
+    reset();
+  };
+  const orderName = () => {
+    budgets.sort((a, b) => {
+      const aa = a.name.toLowerCase();
+      const bb = b.name.toLowerCase();
+
+      if (aa < bb) {
+        return -1;
+      }
+      if (aa > bb) {
+        return 1;
+      }
+      return 0;
+    });
+    reset();
+  };
+  const orderAmount = () => {
+    budgets.sort((a, b) => {
+      const aa = a.amount;
+      const bb = b.amount;
+
+      if (aa < bb) {
+        return -1;
+      }
+      if (aa > bb) {
+        return 1;
+      }
+      return 0;
+    });
+    reset();
+  };
+
   return (
     <div>
       <div className="d-flex justify-content-center">
@@ -102,42 +152,70 @@ function Budget() {
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Budget Name</th>
+                <th scope="col">
+                  <button type="button" className="btn btn-light" onClick={() => orderId()}>
+                    <b>ID</b>
+                  </button>
+                </th>
+                <th scope="col">
+                  <button type="button" className="btn btn-light" onClick={() => orderName()}>
+                    <b>Budget Name</b>
+                  </button>
+                </th>
 
-                <th scope="col">Amount</th>
-                <th scope="col">Limit</th>
+                <th scope="col">
+                  <button type="button" className="btn btn-light" onClick={() => orderAmount()}>
+                    <b>Ammount</b>
+                  </button>
+                </th>
+                <th scope="col">Status</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             {loading &&
-              budgetData &&
-              budgetData.map((x) => (
+              budgets &&
+              budgets.map((x) => (
                 <>
                   <tbody>
                     <tr>
                       <th scope="row">{x.id}</th>
                       <td>{x.name}</td>
-                      <td>${x.value}</td>
-                      <td>${x.limit}</td>
+                      <td>${x.amount}</td>
                       <td>
-                        <button
-                          type="button"
-                          className="btn btn-primary"
-                          onClick={() => modificateBud(x.id)}
-                        >
-                          <i className="fas fa-edit" />
-                        </button>
-                            
-                        <button
-                          type="button"
-                          className="btn btn-danger"
-                          onClick={() => deleteBud(x.id)}
-                        >
-                          <i className="far fa-trash-alt" />
-                        </button>
+                        {x.status ? (
+                          <p className="text-success">
+                            <b>Available</b>
+                          </p>
+                        ) : (
+                          <p className="text-danger">
+                            <b>Disable</b>
+                          </p>
+                        )}
                       </td>
-                    </tr>{' '}
+                      <td>
+                        <div className="d-flex justify-content-center">
+                          <BudgetsEdit id={x.id} />
+                              
+                          {x.status ? (
+                            <button
+                              type="button"
+                              className="btn btn-danger"
+                              onClick={() => changeStatus(x.id, x.status)}
+                            >
+                              <i className="far fa-trash-alt" />
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className="btn btn-success"
+                              onClick={() => changeStatus(x.id, x.status)}
+                            >
+                              <i className="fas fa-check" />
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </>
               ))}
@@ -158,14 +236,12 @@ function Budget() {
             <div className="card card-body ">
               <form>
                 <div className="d-flex justify-content-center">
-                  {' '}
-                  <b> Budget Name </b>                              
-                  <b> Budget Value </b>                              
-                  <b> Budget Limit </b>
+                  <b>                            Budget Name </b>                              
+                  <b> Budget Ammount </b>                              
                 </div>
                 <div className="d-flex justify-content-center">
                   <input
-                    placeholder="Title..."
+                    placeholder="Budget name..."
                     type="text"
                     name="name"
                     onChange={(e) => handleChange(e)}
@@ -173,21 +249,13 @@ function Budget() {
                   />
                     
                   <input
-                    placeholder="Title..."
+                    placeholder="Budget amont..."
                     type="text"
-                    name="value"
+                    name="amount"
                     onChange={(e) => handleChange(e)}
-                    value={newBudgets.value}
+                    value={newBudgets.amount}
                   />
-                    
-                  <input
-                    placeholder="Title..."
-                    type="text"
-                    name="limit"
-                    onChange={(e) => handleChange(e)}
-                    value={newBudgets.limit}
-                  />
-                     {' '}
+                       
                 </div>
                 <br />
                 <div className="d-flex justify-content-center">
