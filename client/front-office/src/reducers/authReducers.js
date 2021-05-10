@@ -6,6 +6,7 @@ const initialState = {
     loggedUser: {},
   },
   redirect: false,
+  initialized: false,
 };
 
 const authReducers = (state = initialState, action) => {
@@ -16,6 +17,8 @@ const authReducers = (state = initialState, action) => {
       return { ...state, sessionData: initialState.sessionData };
     case actionType.REDIRECT:
       return { ...state, redirect: action.payload };
+    case actionType.INITIALIZE:
+      return { ...state, initialized: action.payload };
     default:
       return { ...state };
   }

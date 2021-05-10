@@ -10,9 +10,7 @@ const UserInfo = () => {
     <div className="user-panel mt-3 pb-3 mb-3 d-flex">
       <div className="image">
         <img
-          src={
-            userData.user ? `https://d14sc2fsougwhp.cloudfront.net/${userData.user.id}` : imgDefault
-          }
+          src={userData.user ? userData.profile : imgDefault}
           className="img-circle elevation-2"
           alt="User profile"
         />

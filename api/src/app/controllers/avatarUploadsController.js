@@ -67,13 +67,14 @@ exports.upload = (req, res) => {
       imageName = req.files.file.name;
       contentType = req.files.file.type;
       async.series([createMainBucket, createItemObject], (err) => {
-        if (err) return res.send(err);
-        return res.json({ message: 'Successfully uploaded' });
+        if (err) return res.status(500).json({ error: err, success: false });
+        return res.status(200).json({ message: 'Successfully uploaded', success: true });
       });
     } else {
-      return res.status(400).json({ message: 'Bad request' });
+      return res.status(400).json({ message: 'Bad request', success: false });
     }
   }
+
   s3.getObject({ key: req.files.file.name, bucket: bucketName }, (err) => {
     if (err) {
       uploadAvatar();
@@ -87,6 +88,7 @@ exports.upload = (req, res) => {
     }
   });
 };
+
 exports.displayForm = (req, res) => {
   res.writeHead(200, {
     'Content-Type': 'text/html',

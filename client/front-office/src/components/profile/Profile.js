@@ -1,32 +1,17 @@
-// import React, { useEffect } from 'react';
-import React from 'react';
+import React, { useEffect } from 'react';
 
-// import { useSelector } from 'react-redux';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-// import { Link, useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import imgDefault from '../../assets/img/profile-default.png';
-// import * as action from '../../actions/creators';
 
 const Profile = () => {
-  // const dispatch = useDispatch();
   const userData = useSelector((store) => store.authReducers.sessionData.loggedUser);
-  // const loggedIn = useSelector((store) => store.authReducers.sessionData.loggedIn);
-  // const redirect = useSelector((store) => store.authReducers.redirect);
-  const img = userData.user
-    ? `https://d14sc2fsougwhp.cloudfront.net/${userData.user.id}`
-    : imgDefault;
-  //
-  // useEffect(() => {
-  //   if (!loggedIn) {
-  //     action.redirect(dispatch, '/login');
-  //   }
-  //   return () => {
-  //     action.redirect(dispatch, false);
-  //   };
-  // });
-
+  const sessionData = useSelector((store) => store.authReducers.sessionData);
+  const img = userData.user ? userData.profile : imgDefault;
+  useEffect(() => {
+    console.log(sessionData.timestamp);
+  }, [sessionData]);
   return (
     <div className="card-body box-profile">
       <div className="text-center">

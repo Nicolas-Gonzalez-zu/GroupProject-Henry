@@ -34,7 +34,7 @@ app.use(
     saveUninitialized: true,
     httpOnly: true,
     store: MongoStore.create({ mongoUrl: MONGO_URI }),
-    sameSite: false,
+    sameSite: true,
   }),
 );
 
