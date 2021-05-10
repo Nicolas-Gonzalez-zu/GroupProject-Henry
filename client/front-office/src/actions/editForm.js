@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as actionType from './types';
+import { getMe, redirect } from './creators';
 
 const BASE_URL = 'http://localhost:3001/api/';
 
@@ -27,8 +28,11 @@ export function editUser(fileType, userInfo) {
             'Content-Type': 'application/json',
           },
         })
-        .then((response) => {
-          console.log(response);
+        .then(({ data }) => {
+          if (data.success) {
+            getMe(dispatch);
+            redirect(dispatch, '/profile');
+          }
         })
         .catch((err) => console.log(err.message));
     }
@@ -40,8 +44,11 @@ export function editUser(fileType, userInfo) {
             'Content-Type': 'multipart/form-data',
           },
         })
-        .then((response) => {
-          console.log(response);
+        .then(({ data }) => {
+          if (data.success) {
+            getMe(dispatch);
+            redirect(dispatch, '/profile');
+          }
         })
         .catch((err) => console.log(err.message));
     }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import * as action from '../../actions/creators';
 
@@ -64,7 +65,7 @@ const Register = () => {
   };
 
   return (
-    <div className="card card-outline card-primary">
+    <div className="card card-outline card-primary mt-4">
       <div className="card-header text-center">
         <h1 className="h1">
           <b>Finance</b>APP
@@ -201,19 +202,19 @@ const Register = () => {
         </form>
         <hr />
         <div className="d-flex flex-row justify-content-around align-items-center mb-3">
-          <a href="/" className="btn btn-primary">
+          <Link to="/login" className="btn btn-primary">
             <i className="fab fa-facebook mr-2" />
             Sign up using Facebook
-          </a>
-          <a href="/" className="btn btn-danger">
+          </Link>
+          <Link to="/login" className="btn btn-danger">
             <i className="fab fa-google-plus mr-2" />
             Sign up using Google+
-          </a>
+          </Link>
         </div>
         <div className="d-flex flex-row justify-content-around align-items-center mb-3">
-          <a href="/" className="text-center">
+          <Link to="/login" className="text-center">
             I already have a membership
-          </a>
+          </Link>
         </div>
       </div>
     </div>

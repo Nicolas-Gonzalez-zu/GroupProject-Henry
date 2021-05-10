@@ -17,6 +17,7 @@ export const doLogin = (fields, dispatch) => {
     .then(({ data: response }) => {
       if (response.success) {
         getMe(dispatch);
+        redirect(dispatch, '/');
       }
     })
     .catch((err) => console.log(err.message));
@@ -43,10 +44,14 @@ export const getMe = (dispatch) => {
           type: actionType.DO_LOGIN,
           payload: {
             loggedIn: true,
-            loggedUser: data,
+            loggedUser: {
+              ...data,
+              profile: `https://d14sc2fsougwhp.cloudfront.net/${
+                data.user.id
+              }?ts=${Date.now().toLocaleString()}`,
+            },
           },
         });
-        redirect(dispatch, '/');
       }
     })
     .catch((err) => console.log(err.message));
@@ -115,12 +120,6 @@ export const editBudget = (budgetEdited, dispatch) => {
   });
 };
 
-// alimentacion = 7000  500
-//
-// todos los mov que correspondan a ese budget = suma de mov > 7000 genera alerta
-//
-// mov por 500
-
 export const doRegister = (fields, dispatch) => {
   serverPetition
     .post('auth/register', fields)
@@ -141,4 +140,36 @@ export const redirect = (dispatch, route = false) => {
     type: actionType.REDIRECT,
     payload: route,
   });
+};
+
+export const initialize = (dispatch) => {
+  serverPetition
+    .get('auth/me')
+    .then(({ data }) => {
+      if (!data.error) {
+        dispatch({
+          type: actionType.DO_LOGIN,
+          payload: {
+            loggedIn: true,
+            loggedUser: {
+              ...data,
+              profile: `https://d14sc2fsougwhp.cloudfront.net/${
+                data.user.id
+              }?ts=${Date.now().toLocaleString()}`,
+            },
+          },
+        });
+      }
+      dispatch({
+        type: actionType.INITIALIZE,
+        payload: true,
+      });
+    })
+    .catch((e) => {
+      console.log(e.message);
+      dispatch({
+        type: actionType.INITIALIZE,
+        payload: true,
+      });
+    });
 };

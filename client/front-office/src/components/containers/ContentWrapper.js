@@ -15,6 +15,7 @@ import * as action from '../../actions/creators';
 
 const ContentWrapper = () => {
   const loggedIn = useSelector((store) => store.authReducers.sessionData.loggedIn);
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (!loggedIn) {
@@ -23,7 +24,8 @@ const ContentWrapper = () => {
     return () => {
       action.redirect(dispatch, false);
     };
-  });
+  }, [loggedIn, dispatch]);
+
   return (
     <div className="content-wrapper">
       <ContentHeader />
