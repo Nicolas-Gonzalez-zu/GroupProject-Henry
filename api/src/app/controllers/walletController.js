@@ -25,13 +25,13 @@ router.post('/add', (req, res) => {
       res.status(201).json(w);
     })
     .catch((e) => {
+      console.log(e);
       res.status(500).json({ message: e.message });
     });
 });
 
 router.put('/edit', (req, res) => {
   const { id } = req.body;
-  console.log(req.body, 'estoy en el back');
   if (id) {
     const update = {};
     if (req.body.name) update.name = req.body.name;
