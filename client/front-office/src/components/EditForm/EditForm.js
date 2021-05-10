@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import * as action from '../../actions/editForm';
 
@@ -78,9 +79,9 @@ const EditForm = () => {
               placeholder="Enter phone"
             />
           </div>
-          <a href="/changePassword" className="btn btn-primary">
+          <Link to="/changePassword" className="btn btn-primary">
             <b>Change Password</b>
-          </a>
+          </Link>
           <div className="form-group">
             <label htmlFor="exampleInputFile">Avatar photo</label>
             <div className="input-group">

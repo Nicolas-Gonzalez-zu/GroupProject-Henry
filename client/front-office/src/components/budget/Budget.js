@@ -232,7 +232,7 @@ function Budget() {
               Open to Create a New Budget
             </button>
           </div>
-          <div clasNames="#collapse " id="collapseExample">
+          <div className="collapse" id="collapseExample">
             <div className="card card-body ">
               <form>
                 <div className="d-flex justify-content-center">
