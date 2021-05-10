@@ -9,6 +9,16 @@ const SideBarMenu = () => (
       role="menu"
       data-accordion="false"
     >
+      {' '}
+      <li className="nav-item">
+        <NavLink exact to="/" className="nav-link">
+           <i className="nav-icon fas fa-chess-knight text-warning" />
+          <p>
+             Account PRO
+            <span className="right badge badge-warning">New</span>
+          </p>
+        </NavLink>
+      </li>
       <li className="nav-item">
         <NavLink to="/wallet" className="nav-link">
           <i className="nav-icon fas fa-wallet" />
@@ -43,12 +53,6 @@ const SideBarMenu = () => (
         <NavLink to="/services" className="nav-link">
            <i className="nav-icon fas fa-file-invoice-dollar" />
           <p> Services</p>
-        </NavLink>
-      </li>
-      <li className="nav-item">
-        <NavLink exact to="/" className="nav-link">
-           <i className="nav-icon fas fa-chess-knight" />
-          <p> Account PRO</p>
         </NavLink>
       </li>
     </ul>
