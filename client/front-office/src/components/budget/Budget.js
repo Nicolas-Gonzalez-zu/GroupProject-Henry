@@ -5,6 +5,7 @@ import * as action from '../../actions/creators';
 import BudgetsEdit from './budgetEdit';
 
 function Budget() {
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const [newBudgets, setNewBudgets] = useState({
     name: '',
@@ -50,6 +51,12 @@ function Budget() {
       ...newBudgets,
       [e.target.name]: e.target.value,
     });
+    setErrors(
+      validate({
+        ...newBudgets,
+        [e.target.name]: e.target.value,
+      }),
+    );
   };
 
   const handleSubmit = (e) => {
@@ -127,8 +134,21 @@ function Budget() {
     reset();
   };
 
+  const validate = (budget) => {
+    const error = {};
+
+    if (!newBudgets.name) {
+      error.name = ' • Budget name is required';
+    }
+
+    if (isNaN(newBudgets.amount) || !newBudgets.amount) {
+      error.amount = ' • Amount must be a Number!';
+    }
+
+    return error;
+  };
   return (
-    <div>
+    <div className="mx-3 mt-3">
       <div className="d-flex justify-content-center">
         <div className="col-lg-3 col-6 ">
           <div className="small-box bg-info">
@@ -148,8 +168,8 @@ function Budget() {
       <br />
 
       <div className="row">
-        <div className="col-12">
-          <table className="table table-bordered">
+        <div className="col-12 ">
+          <table className="table table-bordered ">
             <thead>
               <tr>
                 <th scope="col">
@@ -180,7 +200,7 @@ function Budget() {
                     <tr>
                       <th scope="row">{x.id}</th>
                       <td>{x.name}</td>
-                      <td>${x.amount}</td>
+                      <td>${x.amount}.00</td>
                       <td>
                         {x.status ? (
                           <p className="text-success">
@@ -194,7 +214,7 @@ function Budget() {
                       </td>
                       <td>
                         <div className="d-flex justify-content-center">
-                          <BudgetsEdit id={x.id} />
+                          <BudgetsEdit id={x.id} name={x.name} />
                               
                           {x.status ? (
                             <button
@@ -243,6 +263,7 @@ function Budget() {
                   <input
                     placeholder="Budget name..."
                     type="text"
+                    className={`${errors.name && 'border border-danger'}`}
                     name="name"
                     onChange={(e) => handleChange(e)}
                     value={newBudgets.name}
@@ -251,12 +272,17 @@ function Budget() {
                   <input
                     placeholder="Budget amont..."
                     type="text"
+                    className={`${errors.amount && 'border border-danger'}`}
                     name="amount"
                     onChange={(e) => handleChange(e)}
                     value={newBudgets.amount}
                   />
                        
                 </div>
+                <p className="d-flex justify-content-center  ">
+                  {errors.name && <p className="text-danger">{errors.name}!</p>}    
+                  {errors.amount && <p className="text-danger">{errors.amount}!</p>}
+                </p>
                 <br />
                 <div className="d-flex justify-content-center">
                   <button
