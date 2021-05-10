@@ -16,20 +16,36 @@ export function fileExtension(fileType) {
   };
 }
 
-export function editUser(fileType) {
+export function editUser(fileType, userInfo) {
   // eslint-disable-next-line func-names
   return function (dispatch) {
-    console.log(fileType);
-    serverPetition
-      .post('/fo/upload', fileType, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => console.log(err.message));
+    console.log(userInfo, 'userinfo');
+    if (userInfo) {
+      serverPetition
+        .put('/fo/editUserInfo', userInfo, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => console.log(err.message));
+    }
+
+    if (fileType) {
+      serverPetition
+        .post('/fo/upload', fileType, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => console.log(err.message));
+    }
+
     dispatch({ type: actionType.EDIT_USER_INFO, payload: fileType });
   };
 }

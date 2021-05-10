@@ -10,10 +10,9 @@ const EditForm = () => {
   const userData = useSelector((store) => store.authReducers.sessionData.loggedUser);
   const [editProfile, setEditProfile] = useState({
     file: null,
-    email: '',
-    telephone: '',
+    userInfo: { id: userData.user.id },
   });
-
+  console.log(userData);
   useEffect(() => {
     console.log(editProfile);
   }, [editProfile]);
@@ -32,19 +31,23 @@ const EditForm = () => {
         }
         break;
       default:
-        setEditProfile({ ...editProfile, [e.target.name]: e.target.value });
+        setEditProfile({
+          ...editProfile,
+          userInfo: { ...editProfile.userInfo, [e.target.name]: e.target.value },
+        });
     }
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(action.fileExtension(editProfile.file.type));
-    const fd = new FormData();
-    fd.append('file', editProfile.file, userData.user.id);
-    fd.append('email', editProfile.email);
-    fd.append('telephone', editProfile.telephone);
+    if (editProfile.file) {
+      dispatch(action.fileExtension(editProfile.file.type));
+      const fd = new FormData();
+      fd.append('file', editProfile.file, userData.user.id);
 
-    dispatch(action.editUser(fd));
+      dispatch(action.editUser(fd, editProfile.userInfo));
+    }
+    dispatch(action.editUser(null, editProfile.userInfo));
   };
   return (
     <div>
@@ -65,14 +68,14 @@ const EditForm = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="exampleInputTel">Telephone</label>
+            <label htmlFor="exampleInputTel">Phone</label>
             <input
               onChange={(e) => onChange(e)}
-              name="telephone"
+              name="phone"
               type="number"
               className="form-control"
               id="exampleInputTel"
-              placeholder="Enter telephone"
+              placeholder="Enter phone"
             />
           </div>
           <a href="/changePassword" className="btn btn-primary">
@@ -88,7 +91,6 @@ const EditForm = () => {
                   type="file"
                   className="custom-file-input"
                   id="exampleInputFile"
-                  required
                 />
                 <label className="custom-file-label" htmlFor="exampleInputFile">
                   Choose file
