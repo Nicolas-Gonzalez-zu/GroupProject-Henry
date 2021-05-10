@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import * as action from '../../actions/creators';
@@ -28,54 +29,89 @@ const AlternativeLogin = () => {
     };
   }, [sessionData, dispatch]);
 
-  const clickhandler = (e) => {
-    axios
-      .get('http://localhost:3001/api/fo/wallet/', { withCredentials: true })
-      .then(({ data }) => {
-        console.log(data);
-      })
-      .catch((err) => console.log(err.message));
-  };
-
-  const logout = () => {
-    action.logout(dispatch);
-  };
-
   return (
     <>
-      <form action="" onSubmit={submitHandler} style={{ margin: '6rem' }}>
-        <div>
-          <label htmlFor="email">Name</label>
-          <input
-            onChange={handleChange}
-            id="email"
-            type="text"
-            name="email"
-            required
-            value={fields.email}
-          />
+      <div className="login-page" style={{ minHeight: 466 }}>
+        <div className="login-box">
+          <div className="card card-outline card-primary">
+            <div className="card-header text-center">
+              <div className="h1">
+                <b>Finance</b>App
+              </div>
+            </div>
+            <div className="card-body">
+              <p className="login-box-msg">Sign in to start your session</p>
+
+              <form onSubmit={submitHandler}>
+                <div className="input-group mb-3">
+                  <input
+                    type="email"
+                    name="email"
+                    className="form-control"
+                    onChange={handleChange}
+                    placeholder="Email"
+                    value={fields.email}
+                    required
+                  />
+                  <div className="input-group-append">
+                    <div className="input-group-text">
+                      <span className="fas fa-envelope" />
+                    </div>
+                  </div>
+                </div>
+                <div className="input-group mb-3">
+                  <input
+                    type="password"
+                    name="password"
+                    className="form-control"
+                    onChange={handleChange}
+                    placeholder="Password"
+                    value={fields.password}
+                  />
+                  <div className="input-group-append">
+                    <div className="input-group-text">
+                      <span className="fas fa-lock" />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-8">
+                    <div className="icheck-primary">
+                      <label htmlFor="remember">
+                        <input type="checkbox" id="remember" />
+                        Remember Me
+                      </label>
+                    </div>
+                  </div>
+                  <div className="col-4">
+                    <button type="submit" className="btn btn-primary btn-block">
+                      Sign In
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              <div className="social-auth-links text-center mt-2 mb-3">
+                <Link to="/login" className="btn btn-block btn-primary">
+                  <i className="fab fa-facebook mr-2" /> Sign in using Facebook
+                </Link>
+                <Link to="/login" className="btn btn-block btn-danger">
+                  <i className="fab fa-google-plus mr-2" /> Sign in using Google+
+                </Link>
+              </div>
+
+              <p className="mb-1">
+                <Link to="/login">I forgot my password</Link>
+              </p>
+              <p className="mb-0">
+                <Link to="/register" className="text-center">
+                  Register a new membership
+                </Link>
+              </p>
+            </div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="password">Pass</label>
-          <input
-            onChange={handleChange}
-            id="password"
-            type="text"
-            name="password"
-            required
-            value={fields.password}
-          />
-        </div>
-        <input type="submit" value="submit" />
-      </form>
-      <label htmlFor="getWllets">wallets</label>
-      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-      <button id="getWllets" type="button" onClick={clickhandler}>
-        get wallets
-      </button>
-      <button id="logout" type="button" onClick={logout}>
-        logout
-      </button>
+      </div>
     </>
   );
 };
