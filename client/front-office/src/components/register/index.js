@@ -341,6 +341,8 @@ export default Register;
 
 const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword) => {
   let valid;
+  const regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
   switch (name) {
     case 'first_name':
       valid = value !== '' && value.length > 3 ? 'is-valid' : 'is-invalid';
