@@ -9,6 +9,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.0.0",
     "chart.js": "^3.2.1",
+    "formik": "^2.2.6",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-chartjs-2": "^3.0.3",
@@ -19,7 +20,9 @@
     "react-scripts": "4.0.3",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
-    "web-vitals": "^1.1.1"
+    "sweetalert2": "^10.16.7",
+    "web-vitals": "^1.1.1",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",

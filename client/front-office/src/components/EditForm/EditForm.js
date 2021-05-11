@@ -11,23 +11,20 @@ const EditForm = () => {
   const userData = useSelector((store) => store.authReducers.sessionData.loggedUser);
   const [editProfile, setEditProfile] = useState({
     file: null,
-    userInfo: { id: userData.user.id },
+    userInfo: null,
   });
-  console.log(userData);
-  useEffect(() => {
-    console.log(editProfile);
-  }, [editProfile]);
+  // console.log(userData);
+  // useEffect(() => {
+  //   console.log(editProfile);
+  // }, [editProfile]);
 
   const onChange = (e) => {
     switch (e.target.name) {
       case 'selectedFile':
         if (e.target.files.length > 0) {
-          console.log(e.target.files[0]);
-          console.log(userData);
           const file = e.target.files[0];
           const blob = file.slice(0, file.size, file.type);
           const newFile = new File([blob], userData.user.id, { type: file.type });
-
           setEditProfile({ ...editProfile, file: newFile });
         }
         break;

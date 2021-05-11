@@ -2,7 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
+import axios from 'axios';
+import Swal from 'sweetalert2';
+
 import * as action from '../../actions/creators';
+
+const BASE_URL = 'http://localhost:3001/api/';
+const serverPetition = axios.create({
+  withCredentials: true,
+  baseURL: BASE_URL,
+  headers: {
+    'Access-Control-Allow-Origin': 'localhost:3001',
+  },
+});
 
 const Register = () => {
   const history = useHistory();
@@ -28,6 +40,10 @@ const Register = () => {
   });
   const [formReady, setformReady] = useState(false);
   const sessionData = useSelector((store) => store.authReducers.sessionData);
+  const redirect = useSelector((store) => store.authReducers.redirect);
+  const authAlert = useSelector((store) => store.authReducers.authAlert);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [alert, setAlert] = useState({ ...authAlert });
 
   const dispatch = useDispatch();
 
@@ -43,22 +59,71 @@ const Register = () => {
   };
 
   useEffect(() => {
+    if (sessionData.loggedIn) {
+      setIsSubmitting(true);
+      Swal.fire({
+        title: 'You are logged in, redirecting...',
+        icon: 'success',
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        action.setAlert(dispatch);
+        history.push('/');
+      });
+    }
+
     setformReady(enableRegister(formValid));
     const body = document.getElementsByTagName('body');
     body[0].classList.remove('sidebar-mini');
     body[0].classList.add('register-page');
-    if (sessionData.loggedIn) {
-      history.push('/');
+
+    if (authAlert.fire) {
+      const position = authAlert.type === 'success' ? 'center' : 'top-end';
+      if (authAlert.type === 'error') {
+        setIsSubmitting(false);
+      }
+      Swal.fire({
+        title: authAlert.message,
+        icon: authAlert.type,
+        toast: true,
+        position,
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        if (authAlert.type === 'success') {
+          action.setAlert(dispatch);
+          history.push('/login');
+        } else {
+          action.setAlert(dispatch);
+        }
+      });
     }
-    return () => {
-      body[0].classList.remove('register-page');
-      body[0].classList.add('sidebar-mini');
-    };
-  }, [dispatch, formValid, history, sessionData.loggedIn]);
+  }, [
+    authAlert.fire,
+    authAlert.message,
+    authAlert.type,
+    dispatch,
+    formValid,
+    history,
+    redirect,
+    sessionData.loggedIn,
+  ]);
 
   const submitHandler = (e) => {
+    setIsSubmitting(true);
     e.preventDefault();
-    action.doRegister(fields, dispatch);
+    serverPetition
+      .post('auth/register', fields)
+      .then(({ data: response }) => {
+        if (response.success) {
+          action.setAlert(dispatch, 'Registration successful, redirecting...', true, 'success');
+        }
+      })
+      .catch((err) => {
+        action.setError(err, dispatch);
+      });
   };
 
   return (
@@ -213,6 +278,9 @@ const Register = () => {
             I already have a membership
           </Link>
         </div>
+      </div>
+      <div className={`overlay dark ${!isSubmitting ? 'd-none' : ''}`}>
+        <i className={`fas fa-3x fa-sync-alt fa-spin ${authAlert.fire ? 'd-none' : ''}`} />
       </div>
     </div>
   );

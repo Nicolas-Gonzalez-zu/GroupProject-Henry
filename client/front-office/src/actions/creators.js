@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import * as actionType from './types';
 
 const BASE_URL = 'http://localhost:3001/api/';
@@ -17,10 +18,11 @@ export const doLogin = (fields, dispatch) => {
     .then(({ data: response }) => {
       if (response.success) {
         getMe(dispatch);
-        redirect(dispatch, '/');
       }
     })
-    .catch((err) => console.log(err.message));
+    .catch((e) => {
+      setError(e, dispatch);
+    });
 };
 
 export const logout = (dispatch) => {
@@ -165,14 +167,13 @@ export const doRegister = (fields, dispatch) => {
     .post('auth/register', fields)
     .then(({ data: response }) => {
       if (response.success) {
-        dispatch({
-          type: actionType.REDIRECT,
-          payload: '/login',
-        });
+        setAlert(dispatch, 'Registration successful', true, 'success');
         redirect(dispatch, '/login');
       }
     })
-    .catch((err) => console.log(err.message));
+    .catch((e) => {
+      setError(e, dispatch);
+    });
 };
 
 export const redirect = (dispatch, route = false) => {
@@ -212,4 +213,23 @@ export const initialize = (dispatch) => {
         payload: true,
       });
     });
+};
+
+export const setAlert = (dispatch, message = null, fire = false, type = null) => {
+  dispatch({
+    type: actionType.AUTH_ERROR,
+    payload: {
+      message,
+      fire,
+      type,
+    },
+  });
+};
+
+export const setError = (e, dispatch) => {
+  if (e.response.data.error) {
+    setAlert(dispatch, e.response.data.error, true, 'error');
+  } else {
+    setAlert(dispatch, e.message, true);
+  }
 };
