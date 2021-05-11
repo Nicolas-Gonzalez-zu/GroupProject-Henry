@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import * as action from '../../actions/creators';
 
 const Register = () => {
+  const history = useHistory();
   const fieldsDef = {
     first_name: '',
     last_name: '',
@@ -26,7 +27,7 @@ const Register = () => {
     },
   });
   const [formReady, setformReady] = useState(false);
-  const loggedIn = useSelector((state) => state.authReducers.loggedIn);
+  const sessionData = useSelector((store) => store.authReducers.sessionData);
 
   const dispatch = useDispatch();
 
@@ -42,22 +43,18 @@ const Register = () => {
   };
 
   useEffect(() => {
+    setformReady(enableRegister(formValid));
     const body = document.getElementsByTagName('body');
     body[0].classList.remove('sidebar-mini');
     body[0].classList.add('register-page');
-    if (loggedIn) {
-      action.redirect(dispatch, '/');
+    if (sessionData.loggedIn) {
+      history.push('/');
     }
     return () => {
-      action.redirect(dispatch, false);
       body[0].classList.remove('register-page');
       body[0].classList.add('sidebar-mini');
     };
-  });
-
-  useEffect(() => {
-    setformReady(enableRegister(formValid));
-  }, [formValid]);
+  }, [dispatch, formValid, history, sessionData.loggedIn]);
 
   const submitHandler = (e) => {
     e.preventDefault();

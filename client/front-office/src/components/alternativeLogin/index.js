@@ -1,10 +1,11 @@
 import { React, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import * as action from '../../actions/creators';
 
 const AlternativeLogin = () => {
+  const history = useHistory();
   const [fields, setFields] = useState({ email: '', password: '' });
   const dispatch = useDispatch();
   const sessionData = useSelector((store) => store.authReducers.sessionData);
@@ -21,12 +22,9 @@ const AlternativeLogin = () => {
 
   useEffect(() => {
     if (sessionData.loggedIn) {
-      action.redirect(dispatch, '/');
+      history.push('/');
     }
-    return () => {
-      action.redirect(dispatch, false);
-    };
-  }, [sessionData, dispatch]);
+  }, [sessionData, dispatch, history]);
 
   return (
     <>
