@@ -39,7 +39,11 @@ const BudgetsEdit = ({ id, name }) => {
     if (!newBudget.name || !newBudget.amount) {
       return showModal();
     }
-    if (typeof newBudget.name === 'number' || /[a-zA-Z]+/g.test(newBudget.amount)) {
+    if (
+      typeof newBudget.name === 'number' ||
+      /[a-zA-Z]+/g.test(newBudget.amount) ||
+      newBudget.amount.length < 2
+    ) {
       console.log(typeof newBudget.name, typeof newBudget.amount);
       return showModal();
     }
@@ -127,10 +131,10 @@ const BudgetsEdit = ({ id, name }) => {
             Cancel
           </Button>
         </Modal.Footer>
-        <Alert show={stateError} variant="danger">
+        <Alert show={stateError} variant="danger" className="text-center m-2">
           Please complete the both values corretly
         </Alert>
-        <Alert show={stateok} variant="success">
+        <Alert show={stateok} variant="success" className="text-center m-2">
           Budget Change success
         </Alert>
       </Modal>

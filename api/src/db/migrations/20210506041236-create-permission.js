@@ -14,7 +14,7 @@ module.exports = {
       },
       id_code: {
         allowNull: false,
-        type: Sequelize.INTEGER(100),
+        type: Sequelize.INTEGER,
         unique: true,
       },
       status: {

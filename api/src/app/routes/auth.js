@@ -71,4 +71,29 @@ router.get('/logout', (req, res) => {
   req.logout();
   res.status(200).json({ loggedOut: true });
 });
+
+router.post('/mail-exists', (req, res) => {
+  const { email, type } = req.body;
+  const regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+  const validEmail = regex.test(email);
+  console.log(email, type, validEmail);
+  if (type && validEmail) {
+    if (type === 'customer') {
+      return db.User.findOne({ where: { email } }).then((user) => {
+        if (user) {
+          db.Customer.findByPk(user.id).then((c) => {
+            if (!c) {
+              res.status(200).json({ exists: false });
+            }
+            res.status(200).json({ exists: true });
+          });
+        } else {
+          res.status(200).json({ exists: false });
+        }
+      });
+    }
+    return res.status(400).json({ error: 'Invalid user type' });
+  }
+  return res.status(400).json({ error: 'Invalid data' });
+});
 module.exports = router;
