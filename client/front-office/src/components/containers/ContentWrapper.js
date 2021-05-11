@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Route } from 'react-router-dom';
+import { Route, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ContentHeader from './ContentHeader';
@@ -11,20 +11,18 @@ import Wallet from '../wallet/Wallet';
 import EditForm from '../EditForm/EditForm';
 import ChangePassword from '../ChangePassword/ChangePassword';
 
-import * as action from '../../actions/creators';
+// import * as action from '../../actions/creators';
 
 const ContentWrapper = () => {
+  const history = useHistory();
   const loggedIn = useSelector((store) => store.authReducers.sessionData.loggedIn);
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (!loggedIn) {
-      action.redirect(dispatch, '/login');
+      history.push('/login');
     }
-    return () => {
-      action.redirect(dispatch, false);
-    };
-  }, [loggedIn, dispatch]);
+  }, [loggedIn, dispatch, history]);
 
   return (
     <div className="content-wrapper">

@@ -16,7 +16,6 @@ import { initialize } from '../../actions/creators';
 
 function App() {
   const dispatch = useDispatch();
-  const redirect = useSelector((state) => state.authReducers.redirect);
   const initialized = useSelector((state) => state.authReducers.initialized);
 
   useEffect(() => {
@@ -26,9 +25,7 @@ function App() {
   }, [initialized, dispatch]);
 
   if (initialized) {
-    return redirect ? (
-      <Redirect to={redirect} />
-    ) : (
+    return (
       <Switch>
         <Route exact path="/login" component={AlternativeLogin} />
         <Route exact path="/register">
