@@ -6,13 +6,13 @@ module.exports = new LocalStrategy({ usernameField: 'email' }, (email, password,
   User.findOne({ where: { email } })
     .then((user) => {
       if (!user) {
-        return done(null, false, { message: 'email/password incorrect' });
+        return done(null, false, { error: 'email/password incorrect' });
       }
       const isPasswordValid = bcryptUtils.validatePassword(password, user.password);
       if (isPasswordValid) {
         return done(null, user);
       }
-      return done(null, false, { message: 'email/password incorrect' });
+      return done(null, false, { error: 'email/password incorrect' });
     })
-    .catch((err) => done(null, false, { message: err.message }));
+    .catch((err) => done(null, false, { error: err.message }));
 });

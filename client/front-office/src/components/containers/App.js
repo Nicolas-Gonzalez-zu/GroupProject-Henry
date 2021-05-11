@@ -13,6 +13,7 @@ import Register from '../register';
 import FullLoading from '../loaders/FullLoading';
 
 import { initialize } from '../../actions/creators';
+import Login from '../login';
 
 function App() {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ function App() {
   if (initialized) {
     return (
       <Switch>
-        <Route exact path="/login" component={AlternativeLogin} />
+        <Route exact path="/login" component={Login} />
         <Route exact path="/register">
           <div className="register-box">
             <Register />

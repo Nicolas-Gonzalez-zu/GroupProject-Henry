@@ -7,6 +7,11 @@ const initialState = {
   },
   redirect: false,
   initialized: false,
+  authAlert: {
+    fire: false,
+    message: null,
+    type: null,
+  },
 };
 
 const authReducers = (state = initialState, action) => {
@@ -19,6 +24,8 @@ const authReducers = (state = initialState, action) => {
       return { ...state, redirect: action.payload };
     case actionType.INITIALIZE:
       return { ...state, initialized: action.payload };
+    case actionType.AUTH_ERROR:
+      return { ...state, authAlert: action.payload };
     default:
       return { ...state };
   }
