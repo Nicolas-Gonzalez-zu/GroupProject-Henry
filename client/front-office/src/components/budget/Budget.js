@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { useSelector, useDispatch } from 'react-redux';
+import { Alert } from 'react-bootstrap';
 import * as action from '../../actions/creators';
 import BudgetsEdit from './budgetEdit';
 
 function Budget() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
+  const [stateError, setstateError] = useState(false);
+  const [stateok, setstateok] = useState(false);
   const [newBudgets, setNewBudgets] = useState({
     name: '',
     amount: '',
@@ -62,15 +65,15 @@ function Budget() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!newBudgets.name || !newBudgets.amount) {
-      return alert('You need to fill both inputs');
+      return showModal();
     }
     if (typeof newBudgets.name === 'number' || /[a-zA-Z]+/g.test(newBudgets.amount)) {
       console.log(typeof newBudgets.name, typeof newBudgets.amount);
-      return alert("Please set the values corretly, f.e: name:'cash', balance: 1300");
+      return showModal();
     }
     action.addBudget(newBudgets, dispatch);
 
-    return alert('Budget Created');
+    return showModalok();
   };
 
   const changeStatus = (id, status) => {
@@ -134,10 +137,19 @@ function Budget() {
     reset();
   };
 
-  const validate = (budget) => {
+  const orderStatus = () => {
+    budgets.sort((a, b) => {
+      if (a.status && !b.status) return -1;
+      if (b.status && !a.status) return 1;
+      return 0;
+    });
+    reset();
+  };
+
+  const validate = () => {
     const error = {};
 
-    if (!newBudgets.name) {
+    if (!newBudgets.name || newBudgets.name.length < 2) {
       error.name = ' • Budget name is required';
     }
 
@@ -146,6 +158,15 @@ function Budget() {
     }
 
     return error;
+  };
+
+  const showModal = () => {
+    setstateError(!stateError);
+    setTimeout(() => setstateError(false), 2000);
+  };
+  const showModalok = () => {
+    setstateok(!stateok);
+    setTimeout(() => setstateok(false), 1000);
   };
   return (
     <div className="mx-3 mt-3">
@@ -188,7 +209,11 @@ function Budget() {
                     <b>Ammount</b>
                   </button>
                 </th>
-                <th scope="col">Status</th>
+                <th scope="col">
+                  <button type="button" className="btn btn-light" onClick={() => orderStatus()}>
+                    <b>Status</b>
+                  </button>
+                </th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -214,16 +239,19 @@ function Budget() {
                       </td>
                       <td>
                         <div className="d-flex justify-content-center">
-                          <BudgetsEdit id={x.id} name={x.name} />
                               
                           {x.status ? (
-                            <button
-                              type="button"
-                              className="btn btn-danger"
-                              onClick={() => changeStatus(x.id, x.status)}
-                            >
-                              <i className="far fa-trash-alt" />
-                            </button>
+                            <>
+                              <BudgetsEdit id={x.id} name={x.name} />
+                                  
+                              <button
+                                type="button"
+                                className="btn btn-danger"
+                                onClick={() => changeStatus(x.id, x.status)}
+                              >
+                                <i className="far fa-trash-alt" />
+                              </button>
+                            </>
                           ) : (
                             <button
                               type="button"
@@ -257,32 +285,55 @@ function Budget() {
               <form>
                 <div className="d-flex justify-content-center">
                   <b>                            Budget Name </b>                              
-                  <b> Budget Ammount </b>                              
+                  <b>   Budget Ammount </b>                              
                 </div>
-                <div className="d-flex justify-content-center">
-                  <input
-                    placeholder="Budget name..."
-                    type="text"
-                    className={`${errors.name && 'border border-danger'}`}
-                    name="name"
-                    onChange={(e) => handleChange(e)}
-                    value={newBudgets.name}
-                  />
-                    
-                  <input
-                    placeholder="Budget amont..."
-                    type="text"
-                    className={`${errors.amount && 'border border-danger'}`}
-                    name="amount"
-                    onChange={(e) => handleChange(e)}
-                    value={newBudgets.amount}
-                  />
-                       
+                <div className="d-flex justify-content-center ">
+                  <div className="d-flex justify-content-center col-4">
+                    <div className="input-group-prepend">
+                      <span className="input-group-text">
+                        <i className="fas fa-file-contract" />
+                      </span>
+                    </div>
+                    <input
+                      placeholder="Budget name..."
+                      type="text"
+                      className={`${errors.name ? 'form-control is-invalid' : 'form-control'}`}
+                      name="name"
+                      autoComplete="off"
+                      onChange={(e) => handleChange(e)}
+                      value={newBudgets.name}
+                    />
+                      
+                    <div className="input-group-prepend">
+                      <span className="input-group-text">
+                        <i className="fas fa-dollar-sign" />
+                      </span>
+                    </div>
+                    <input
+                      placeholder="Budget amount..."
+                      type="text"
+                      className={`${errors.amount ? 'form-control is-invalid' : 'form-control'}`}
+                      name="amount"
+                      autoComplete="off"
+                      onChange={(e) => handleChange(e)}
+                      value={newBudgets.amount}
+                    />
+                     
+                  </div>
+                      
                 </div>
                 <p className="d-flex justify-content-center  ">
                   {errors.name && <p className="text-danger">{errors.name}!</p>}    
                   {errors.amount && <p className="text-danger">{errors.amount}!</p>}
-                </p>
+                </p>{' '}
+                <div className="d-flex justify-content-center">
+                  <Alert show={stateError} variant="danger">
+                    Please complete the both values corretly
+                  </Alert>
+                  <Alert show={stateok} variant="success">
+                    Budget Change success
+                  </Alert>
+                </div>
                 <br />
                 <div className="d-flex justify-content-center">
                   <button

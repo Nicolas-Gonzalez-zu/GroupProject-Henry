@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Alert } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
 
 const BudgetsEdit = ({ id, name }) => {
   const [errors, setErrors] = useState({});
   const [showModalEdit, setShowModalEdit] = useState(false);
+  const [stateError, setstateError] = useState(false);
+  const [stateok, setstateok] = useState(false);
   const [newBudget, setnewBudget] = useState({
     name: '',
     amount: null,
@@ -13,8 +15,17 @@ const BudgetsEdit = ({ id, name }) => {
   const dispatch = useDispatch();
   const showModalHandler = () => {
     setShowModalEdit(!showModalEdit);
-    console.log(id);
   };
+
+  const showModal = () => {
+    setstateError(!stateError);
+    setTimeout(() => setstateError(false), 2000);
+  };
+  const showModalok = () => {
+    setstateok(!stateok);
+    setTimeout(() => setstateok(false), 1000);
+  };
+
   const setnewBudgetHandler = (e) => {
     setnewBudget({ ...newBudget, [e.target.name]: e.target.value });
     setErrors(
@@ -26,23 +37,23 @@ const BudgetsEdit = ({ id, name }) => {
   };
   const submitEditBudget = () => {
     if (!newBudget.name || !newBudget.amount) {
-      return alert('You need to fill both budgets');
+      return showModal();
     }
     if (typeof newBudget.name === 'number' || /[a-zA-Z]+/g.test(newBudget.amount)) {
       console.log(typeof newBudget.name, typeof newBudget.amount);
-      return alert("Please set the values corretly, f.e: name:'cash', balance: 1300");
+      return showModal();
     }
     const budgetEdits = { ...newBudget, id };
     action.editBudget(budgetEdits, dispatch);
-    setShowModalEdit(!showModalEdit);
+    setTimeout(() => setShowModalEdit(!showModalEdit), 1000);
     setnewBudget({
       name: '',
       amount: null,
     });
-    return alert('Budget changed!');
+    return showModalok();
   };
 
-  const validate = (budget) => {
+  const validate = () => {
     const error = {};
     console.log(newBudget.amount, 'asa');
 
@@ -72,25 +83,31 @@ const BudgetsEdit = ({ id, name }) => {
           <div className="d-flex center">
             <div className="input-group mb-3">
               <div className="input-group-prepend">
-                <span className="input-group-text">Bn</span>
+                <span className="input-group-text">
+                  <i className="fas fa-file-contract" />
+                </span>
               </div>
               <input
                 type="text"
                 placeholder="Budget Name..."
-                className={`${errors.name && 'border border-danger'}`}
+                className={`${errors.name ? 'form-control is-invalid' : 'form-control'}`}
                 name="name"
+                autoComplete="off"
                 onChange={setnewBudgetHandler}
                 value={newBudget.name}
               />
             </div>
             <div className="input-group mb-3">
               <div className="input-group-prepend">
-                <span className="input-group-text">$</span>
+                <span className="input-group-text">
+                  <i className="fas fa-dollar-sign" />
+                </span>
               </div>
               <input
                 type="text"
-                className={`${errors.amount && 'border border-danger'}`}
+                className={`${errors.amount ? 'form-control is-invalid' : 'form-control '}`}
                 placeholder="Amount..."
+                autoComplete="off"
                 name="amount"
                 onChange={setnewBudgetHandler}
                 value={newBudget.amount}
@@ -110,6 +127,12 @@ const BudgetsEdit = ({ id, name }) => {
             Cancel
           </Button>
         </Modal.Footer>
+        <Alert show={stateError} variant="danger">
+          Please complete the both values corretly
+        </Alert>
+        <Alert show={stateok} variant="success">
+          Budget Change success
+        </Alert>
       </Modal>
     </div>
   );
