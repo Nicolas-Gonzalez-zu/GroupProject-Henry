@@ -16,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Benefit.init(
     {
-      name: DataTypes.STRING,
-      id_code: DataTypes.STRING,
+      name: DataTypes.STRING(100),
+      id_code: DataTypes.STRING(100),
     },
     {
       sequelize,

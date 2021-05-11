@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       invoice_id: DataTypes.INTEGER,
       assigned_user_id: DataTypes.INTEGER,
       customer_id: DataTypes.INTEGER,
-      status: DataTypes.STRING,
+      status: DataTypes.STRING(100),
       start_date: DataTypes.DATE,
       end_date: DataTypes.DATE,
       priority: DataTypes.BOOLEAN,

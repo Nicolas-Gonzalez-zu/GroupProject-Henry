@@ -9,19 +9,25 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       payment_method: {
-        type: Sequelize.STRING,
+        allowNull: true,
+        type: Sequelize.STRING(100),
+        defaultValue: null,
       },
       amount: {
-        type: Sequelize.INTEGER,
+        allowNull: false,
+        type: Sequelize.DECIMAL(10, 2),
       },
       status: {
-        type: Sequelize.STRING,
+        allowNull: false,
+        type: Sequelize.STRING(100),
+        defaultValue: 'Payment pending',
       },
       customer_id: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Customers',
-          key: 'id',
+          key: 'user_id',
         },
         onDelete: 'cascade',
       },

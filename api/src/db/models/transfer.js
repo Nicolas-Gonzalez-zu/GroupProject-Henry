@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Transfer.init(
     {
-      amount: DataTypes.INTEGER,
+      amount: DataTypes.DECIMAL(10, 2),
       generation_date: DataTypes.DATE,
       customer_id: DataTypes.INTEGER,
       origin_wallet_id: DataTypes.INTEGER,

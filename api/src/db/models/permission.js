@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Permission.init(
     {
-      name: DataTypes.STRING,
+      name: DataTypes.STRING(100),
       id_code: DataTypes.INTEGER,
       status: DataTypes.BOOLEAN,
     },

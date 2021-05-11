@@ -8,10 +8,13 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
-        type: Sequelize.STRING,
+        allowNull: false,
+        type: Sequelize.STRING(100),
       },
       id_code: {
-        type: Sequelize.STRING,
+        allowNull: false,
+        type: Sequelize.STRING(100),
+        unique: true,
       },
       createdAt: {
         allowNull: false,

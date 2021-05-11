@@ -7,19 +7,16 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    // static associate(models) {
-    //   // define association here
-    // }
   }
   Configuration.init(
     {
-      app_name: DataTypes.STRING,
-      addres: DataTypes.STRING,
-      fiscal_id: DataTypes.STRING,
-      payment_gw_api_key: DataTypes.STRING,
-      transactional_gw_api_key: DataTypes.STRING,
-      secret_key: DataTypes.STRING,
-      logo_url: DataTypes.STRING,
+      app_name: DataTypes.STRING(100),
+      addres: DataTypes.STRING(100),
+      fiscal_id: DataTypes.STRING(100),
+      payment_gw_api_key: DataTypes.STRING(100),
+      transactional_gw_api_key: DataTypes.STRING(100),
+      secret_key: DataTypes.STRING(100),
+      logo_url: DataTypes.STRING(100),
     },
     {
       sequelize,

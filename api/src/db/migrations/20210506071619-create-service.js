@@ -9,16 +9,20 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       name: {
-        type: Sequelize.STRING,
+        allowNull: false,
+        type: Sequelize.STRING(100),
       },
       price: {
-        type: Sequelize.INTEGER,
+        allowNull: false,
+        type: Sequelize.DECIMAL(10, 2),
       },
       description: {
-        type: Sequelize.STRING,
+        allowNull: false,
+        type: Sequelize.STRING(100),
       },
       img_url: {
-        type: Sequelize.STRING,
+        allowNull: true,
+        type: Sequelize.STRING(100),
       },
       createdAt: {
         allowNull: false,

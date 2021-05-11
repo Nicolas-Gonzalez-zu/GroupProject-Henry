@@ -1,3 +1,4 @@
+// const {DataTypes} = require("sequelize");
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -40,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Customer.init(
     {
-      user_id: DataTypes.INTEGER,
+      user_id: { type: DataTypes.INTEGER, primaryKey: true, allowNull: false },
       plan_id: DataTypes.INTEGER,
     },
     {

@@ -9,10 +9,13 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       name: {
-        type: Sequelize.STRING,
+        allowNull: false,
+        type: Sequelize.STRING(100),
       },
       status: {
+        allowNull: false,
         type: Sequelize.BOOLEAN,
+        defaultValue: true,
       },
       createdAt: {
         allowNull: false,

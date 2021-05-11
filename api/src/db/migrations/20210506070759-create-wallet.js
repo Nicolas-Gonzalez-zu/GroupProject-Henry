@@ -8,16 +8,19 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
-        type: Sequelize.STRING,
+        allowNull: false,
+        type: Sequelize.STRING(100),
       },
       balance: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       customer_id: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Customers',
-          key: 'id',
+          key: 'user_id',
         },
         onDelete: 'cascade',
       },

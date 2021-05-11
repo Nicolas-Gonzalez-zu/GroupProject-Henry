@@ -28,8 +28,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Wallet.init(
     {
-      name: DataTypes.STRING,
-      balance: DataTypes.INTEGER,
+      name: DataTypes.STRING(100),
+      balance: DataTypes.DECIMAL(10, 2),
       customer_id: DataTypes.INTEGER,
       status: DataTypes.BOOLEAN,
     },

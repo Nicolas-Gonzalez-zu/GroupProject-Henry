@@ -10,16 +10,17 @@ module.exports = {
       },
       name: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
       },
       id_code: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER(100),
+        unique: true,
       },
       status: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
-        default: true,
+        defaultValue: true,
       },
       createdAt: {
         allowNull: false,
