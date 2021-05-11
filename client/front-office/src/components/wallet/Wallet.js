@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-// import { Doughnut } from 'react-chartjs-2';
 import { useSelector, useDispatch } from 'react-redux';
 import WalletModal from './WalletModal';
 import WalletsTable from './WalletsTable';
+import WalletModalMsj from './WalletModalMsj';
 import Chart from './Chart';
 import * as action from '../../actions/creators';
 
@@ -13,34 +13,55 @@ const Wallet = () => {
     name: '',
     balance: null,
   });
+  const [error, setError] = useState({});
+  const [errors, setErrors] = useState(false);
+  const [showModalMsj, setShowModalMsj] = useState(false);
 
   const wallets = useSelector((state) => state.walletReducer.wallets);
   const dispatch = useDispatch();
   useEffect(() => {
     action.getWallet(dispatch);
   }, [dispatch]);
+  useEffect(() => {
+    if (!wallet.name) {
+      setError({ ...error, name: 'the name is required!' });
+    } else if (!/^[a-z][a-z\s]*$/g.test(wallet.name)) {
+      setError({ ...error, name: 'this field only accepts letters!' });
+    } else if (!wallet.balance) {
+      setError({ ...error, balance: 'the balance is required!' });
+    } else if (!/^[0-9]*$/gm.test(wallet.balance)) {
+      setError({ ...error, balance: 'this field only accepts numbers!' });
+    }
+  }, [wallet]);
 
   const balances = wallets.filter((w) => w.status === true);
   const total = balances.reduce((acc, b) => acc + parseInt(b.balance, 10), 0);
 
   const setWalletsHandler = (e) => {
-    if (!wallet.name || !wallet.balance) {
-      return alert('You need to fill both inputs');
+    if (error.name.length > 0 || error.balance.length > 0) {
+      setErrors(true);
+      return SetModalMsjHandler();
     }
-    if (typeof wallet.name === 'number' || /[a-zA-Z]+/g.test(wallet.balance)) {
-      console.log(typeof wallet.name, typeof wallet.balance);
-      return alert("Please set the values corretly, f.e: name:'cash', balance: 1300");
-    }
-    // setWallets([...wallets, wallet]);
+    setErrors(false);
     setWallet({ name: '', balance: null });
     action.addWallet(wallet, dispatch);
-    setShowModal(!showModal);
-    return alert('wallet added!');
+    return SetModalMsjHandler();
+  };
+
+  const SetModalMsjHandler = () => {
+    if (error.name.length > 0 || error.balance.length > 0) {
+      setShowModalMsj(!showModalMsj);
+    } else {
+      setShowModalMsj(!showModalMsj);
+      setShowModal(!showModal);
+    }
   };
 
   const setWalletHandler = (e) => {
     setWallet({ ...wallet, [e.target.name]: e.target.value });
+    setError({ ...error, [e.target.name]: '' });
   };
+
   return (
     <div className="d-flex p-3 flex-column">
       <div className="d-flex justify-content-center">
@@ -60,13 +81,23 @@ const Wallet = () => {
             <div className="card-header d-flex justify-content-between">
               <h3 className="card-title align-self-center mr-auto">Wallets</h3>
               <div className="card-tools d-flex ">
-                <WalletModal
-                  showModal={showModal}
-                  setShowModal={setShowModal}
-                  wallet={wallet}
-                  setWalletHandler={setWalletHandler}
-                  setWalletsHandler={setWalletsHandler}
-                />
+                {showModalMsj ? (
+                  <WalletModalMsj
+                    showModalMsj={showModalMsj}
+                    setModalMsjHandler={SetModalMsjHandler}
+                    errors={errors}
+                  />
+                ) : (
+                  <WalletModal
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                    wallet={wallet}
+                    setWalletHandler={setWalletHandler}
+                    setWalletsHandler={setWalletsHandler}
+                    error={error}
+                  />
+                )}
+
                 <button
                   type="button"
                   className="btn btn-tool"
@@ -78,7 +109,7 @@ const Wallet = () => {
               </div>
             </div>
             <div className="card-body p-0">
-              <WalletsTable wallets={wallets} />
+              <WalletsTable wallets={wallets} errors={errors} />
             </div>
           </div>
         </div>
