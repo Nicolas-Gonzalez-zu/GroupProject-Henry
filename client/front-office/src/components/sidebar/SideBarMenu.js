@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { NavDropdown, DropdownButton } from 'react-bootstrap';
 
 const SideBarMenu = () => (
   <nav className="mt-2">
@@ -27,7 +28,7 @@ const SideBarMenu = () => (
       </li>
       <li className="nav-item">
         <NavLink to="/budget" className="nav-link">
-           <i className="nav-icon fas fa-file-powerpoint" />
+          <i className="nav-icon fas fa-file-contract" />
           <p> Budget</p>
         </NavLink>
       </li>
@@ -44,15 +45,42 @@ const SideBarMenu = () => (
         </NavLink>
       </li>
       <li className="nav-item">
-        <NavLink to="/shop" className="nav-link">
+        <NavLink
+          to="/shop"
+          className="nav-link"
+          data-toggle="collapse"
+          data-target="#collapseExample"
+          aria-expanded="false"
+          aria-controls="collapseExample"
+        >
           <i className="nav-icon fas fa-shopping-cart" />
           <p> Shop</p>
         </NavLink>
+        <ul data-widget="treeview" role="menu" data-accordion="false" id="collapseExample">
+          <li>
+            <NavLink to="/">
+              <i className="nav-icon fas fa-file-invoice" />
+              Invoices
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/">
+              <i className="nav-icon fas fa-file-alt" />
+              Purchase history
+            </NavLink>
+          </li>
+        </ul>
       </li>
       <li className="nav-item">
         <NavLink to="/services" className="nav-link">
            <i className="nav-icon fas fa-file-invoice-dollar" />
-          <p> Services</p>
+          <p>Orders</p>
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/profile" className="nav-link">
+           <i className="nav-icon fas fa-user-tie" />
+          <p>Profile</p>
         </NavLink>
       </li>
     </ul>

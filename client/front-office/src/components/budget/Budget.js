@@ -225,7 +225,7 @@ function Budget() {
                     <tr>
                       <th scope="row">{x.id}</th>
                       <td>{x.name}</td>
-                      <td>${x.amount}.00</td>
+                      <td>${x.amount}</td>
                       <td>
                         {x.status ? (
                           <p className="text-success">
