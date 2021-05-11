@@ -9,6 +9,7 @@ module.exports = {
         onDelete: 'cascade',
       },
       invoice_id: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Invoices',
@@ -17,6 +18,7 @@ module.exports = {
         onDelete: 'cascade',
       },
       assigned_user_id: {
+        allowNull: true,
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
@@ -25,24 +27,30 @@ module.exports = {
         onDelete: 'cascade',
       },
       customer_id: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Customers',
-          key: 'id',
+          key: 'user_id',
         },
         onDelete: 'cascade',
       },
       status: {
-        type: Sequelize.STRING,
+        allowNull: false,
+        type: Sequelize.STRING(100),
       },
       start_date: {
+        allowNull: true,
         type: Sequelize.DATE,
       },
       end_date: {
+        allowNull: true,
         type: Sequelize.DATE,
       },
       priority: {
+        allowNull: false,
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,

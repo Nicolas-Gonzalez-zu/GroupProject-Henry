@@ -20,10 +20,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Service.init(
     {
-      name: DataTypes.STRING,
-      price: DataTypes.INTEGER,
-      description: DataTypes.STRING,
-      img_url: DataTypes.STRING,
+      name: DataTypes.STRING(100),
+      price: DataTypes.DECIMAL(10, 2),
+      description: DataTypes.STRING(100),
+      img_url: DataTypes.STRING(100),
     },
     {
       sequelize,

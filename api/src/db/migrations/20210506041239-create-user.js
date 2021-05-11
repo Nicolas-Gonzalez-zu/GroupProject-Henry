@@ -11,20 +11,24 @@ module.exports = {
           onDelete: 'CASCADE',
         },
         first_name: {
-          type: Sequelize.STRING,
+          allowNull: false,
+          type: Sequelize.STRING(50),
         },
         last_name: {
-          type: Sequelize.STRING,
+          allowNull: false,
+          type: Sequelize.STRING(50),
         },
         phone: {
-          type: Sequelize.STRING,
+          allowNull: false,
+          type: Sequelize.STRING(100),
         },
         email: {
-          type: Sequelize.STRING,
+          type: Sequelize.STRING(100),
           unique: true,
         },
         password: {
-          type: Sequelize.STRING,
+          allowNull: false,
+          type: Sequelize.STRING(64),
         },
         createdAt: {
           allowNull: false,

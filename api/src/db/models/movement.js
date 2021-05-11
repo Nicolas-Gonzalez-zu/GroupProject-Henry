@@ -24,10 +24,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Movement.init(
     {
-      amount: DataTypes.INTEGER,
-      type: DataTypes.STRING,
+      amount: DataTypes.DECIMAL(10, 2),
+      type: DataTypes.ENUM('INCOME', 'OUTGO'),
       generation_date: DataTypes.DATE,
-      description: DataTypes.STRING,
+      description: DataTypes.STRING(100),
       customer_id: DataTypes.INTEGER,
       wallet_id: DataTypes.INTEGER,
       budget_id: DataTypes.INTEGER,

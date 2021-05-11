@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Employee.init(
     {
-      user_id: DataTypes.INTEGER,
+      user_id: { type: DataTypes.INTEGER, primaryKey: true, allowNull: false },
       rol_id: DataTypes.INTEGER,
     },
     {

@@ -20,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Invoice.init(
     {
-      payment_method: DataTypes.STRING,
-      amount: DataTypes.INTEGER,
-      status: DataTypes.STRING,
+      payment_method: DataTypes.STRING(100),
+      amount: DataTypes.DECIMAL(10, 2),
+      status: DataTypes.STRING(100),
     },
     {
       sequelize,

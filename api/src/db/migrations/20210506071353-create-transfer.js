@@ -9,20 +9,25 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       amount: {
-        type: Sequelize.INTEGER,
+        allowNull: false,
+        type: Sequelize.DECIMAL(10, 2),
       },
       generation_date: {
+        allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
       },
       customer_id: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Customers',
-          key: 'id',
+          key: 'user_id',
         },
         onDelete: 'cascade',
       },
       origin_wallet_id: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Wallets',
@@ -31,6 +36,7 @@ module.exports = {
         onDelete: 'cascade',
       },
       destination_wallet_id: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Wallets',

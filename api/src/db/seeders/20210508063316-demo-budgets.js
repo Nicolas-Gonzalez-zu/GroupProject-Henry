@@ -4,12 +4,12 @@ const { Customer } = require('../models');
 const demoBudgets = [];
 
 const generateDemoWallets = async () => {
-  const Customers = await Customer.findAll({ attributes: ['id'] });
+  const Customers = await Customer.findAll({ attributes: ['user_id'] });
   Customers.forEach((c) => {
     demoBudgets.push({
       name: faker.finance.transactionType(),
       amount: faker.datatype.number(),
-      customer_id: c.id,
+      customer_id: c.user_id,
       status: true,
       createdAt: faker.date.past(),
       updatedAt: faker.date.future(),
@@ -19,7 +19,7 @@ const generateDemoWallets = async () => {
     demoBudgets.push({
       name: faker.finance.transactionType(),
       amount: faker.datatype.number(),
-      customer_id: c.id,
+      customer_id: c.user_id,
       status: true,
       createdAt: faker.date.past(),
       updatedAt: faker.date.future(),
@@ -29,7 +29,7 @@ const generateDemoWallets = async () => {
     demoBudgets.push({
       name: faker.finance.transactionType(),
       amount: faker.datatype.number(),
-      customer_id: c.id,
+      customer_id: c.user_id,
       status: true,
       createdAt: faker.date.past(),
       updatedAt: faker.date.future(),

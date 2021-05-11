@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Plan.init(
     {
-      name: DataTypes.STRING,
-      price: DataTypes.INTEGER,
+      name: DataTypes.STRING(100),
+      price: DataTypes.DECIMAL(10, 2),
       status: DataTypes.BOOLEAN,
     },
     {

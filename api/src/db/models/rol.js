@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Rol.init(
     {
-      name: DataTypes.STRING,
+      name: DataTypes.STRING(100),
       status: DataTypes.BOOLEAN,
     },
     {
