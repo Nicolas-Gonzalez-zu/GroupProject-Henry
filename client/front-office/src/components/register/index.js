@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import * as action from '../../actions/creators';
+
+const regex =
+  /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
 const BASE_URL = 'http://localhost:3001/api/';
 const serverPetition = axios.create({
@@ -31,7 +34,10 @@ const Register = () => {
     first_name: '',
     last_name: '',
     phone: '',
-    email: '',
+    email: {
+      value: '',
+      message: 'none',
+    },
     password: {
       password: '',
       confirm_password: '',
@@ -43,13 +49,47 @@ const Register = () => {
   const redirect = useSelector((store) => store.authReducers.redirect);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // const [alert, setAlert] = useState({ ...authAlert });
+  const [validatingMail, setvalidatingMail] = useState(false);
 
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
     if (e.target.name === 'email') {
       e.target.value = e.target.value.toLowerCase();
+      if (regex.test(e.target.value)) {
+        setTimeout(() => {
+          setvalidatingMail(true);
+          serverPetition
+            .post('auth/mail-exists', { email: e.target.value, type: 'customer' })
+            .then(({ data }) => {
+              const { exists } = data;
+              if (exists) {
+                const email = {
+                  value: 'is-invalid',
+                  message: 'inline',
+                };
+                setValidation({ ...formValid, email });
+                setvalidatingMail(false);
+              } else {
+                const email = {
+                  value: 'is-valid',
+                  message: 'none',
+                };
+                setValidation({ ...formValid, email });
+                setvalidatingMail(false);
+              }
+            })
+            .catch(() => {
+              const email = {
+                value: 'is-valid',
+                message: 'none',
+              };
+              setValidation({ ...formValid, email });
+              setvalidatingMail(false);
+            });
+          console.log('validating...');
+        }, 500);
+      }
     }
     const newFields = { ...fields, [e.target.name]: e.target.value };
     setFields(newFields);
@@ -184,7 +224,7 @@ const Register = () => {
               />
               <div className="input-group-append">
                 <div className="input-group-text">
-                  <span className="fas fa-phone" />
+                  <span className="fas fa-phone " />
                 </div>
               </div>
             </div>
@@ -193,17 +233,28 @@ const Register = () => {
                 required
                 onChange={handleChange}
                 type="email"
-                className={`form-control ${formValid.email}`}
+                className={`form-control ${formValid.email.value}`}
                 placeholder="Email"
                 name="email"
-                value={fields.email}
+                value={fields.email.value}
+                autoComplete="off"
+                disabled={validatingMail}
               />
               <div className="input-group-append">
                 <div className="input-group-text">
-                  <span className="fas fa-envelope" />
+                  <span className={`fas fa-envelope ${validatingMail ? 'fa-spin' : ''}`} />
                 </div>
               </div>
             </div>
+            <span
+              id="exampleInputEmail1-error"
+              className="error invalid-feedback col-12"
+              style={{
+                display: formValid.email.message,
+              }}
+            >
+              Email already taken
+            </span>
           </div>
           <div className="row row-cols-2 mb-3">
             <div className="input-group mb-3 col">
@@ -290,8 +341,6 @@ export default Register;
 
 const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword) => {
   let valid;
-  const regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-
   switch (name) {
     case 'first_name':
       valid = value !== '' && value.length > 3 ? 'is-valid' : 'is-invalid';
