@@ -28,9 +28,13 @@ const WalletTable = ({ wallets }) => {
               <td>${w.balance}</td>
               <td>
                 {w.status ? (
-                  <p className="text-success">available</p>
+                  <p className="text-success">
+                    <b>available</b>
+                  </p>
                 ) : (
-                  <p className="text-danger">disable</p>
+                  <p className="text-danger">
+                    <b>disable</b>
+                  </p>
                 )}
               </td>
               <td className="text-right py-0 align-middle justify-content-between">
