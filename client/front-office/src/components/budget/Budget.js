@@ -67,7 +67,11 @@ function Budget() {
     if (!newBudgets.name || !newBudgets.amount) {
       return showModal();
     }
-    if (typeof newBudgets.name === 'number' || /[a-zA-Z]+/g.test(newBudgets.amount)) {
+    if (
+      typeof newBudgets.name === 'number' ||
+      /[a-zA-Z]+/g.test(newBudgets.amount) ||
+      newBudgets.amount.length < 2
+    ) {
       console.log(typeof newBudgets.name, typeof newBudgets.amount);
       return showModal();
     }
@@ -91,21 +95,6 @@ function Budget() {
     }, 1000);
   };
 
-  const orderId = () => {
-    budgets.sort((a, b) => {
-      const aa = a.id;
-      const bb = b.id;
-
-      if (aa < bb) {
-        return -1;
-      }
-      if (aa > bb) {
-        return 1;
-      }
-      return 0;
-    });
-    reset();
-  };
   const orderName = () => {
     budgets.sort((a, b) => {
       const aa = a.name.toLowerCase();
@@ -152,7 +141,7 @@ function Budget() {
     if (!newBudgets.name || newBudgets.name.length < 2) {
       error.name = ' • Budget name is required';
     }
-
+    console.log(newBudgets.amount.length, 'ss');
     if (isNaN(newBudgets.amount) || !newBudgets.amount) {
       error.amount = ' • Amount must be a Number!';
     }
@@ -174,7 +163,7 @@ function Budget() {
         <div className="col-lg-3 col-6 ">
           <div className="small-box bg-info">
             <div className="inner">
-              <h3 className="text-center"> Total ${total}</h3>
+              <h3 className="text-center"> Total $ {total}.00</h3>
             </div>
             <div className="icon">
               <i className="ion ion-bag" />
@@ -182,92 +171,96 @@ function Budget() {
           </div>
         </div>
       </div>
-      <div>
+      <div className="mt-3 mb-3">
         <Doughnut width={200} height={200} data={data} options={{ maintainAspectRatio: false }} />
       </div>
 
       <br />
 
-      <div className="row">
-        <div className="col-12 ">
-          <table className="table table-bordered ">
-            <thead>
-              <tr>
-                <th scope="col">
-                  <button type="button" className="btn btn-light" onClick={() => orderId()}>
-                    <b>ID</b>
-                  </button>
-                </th>
-                <th scope="col">
-                  <button type="button" className="btn btn-light" onClick={() => orderName()}>
-                    <b>Budget Name</b>
-                  </button>
-                </th>
+      <div className="d-flex flex-column justify-content-around">
+        <div className="align-self-center" style={{ width: '70%' }}>
+          <div className="card card-info">
+            <div className="card-header d-flex justify-content-between">
+              <h2 className="card-title align-self-center mr-auto ">Budgets</h2>
+            </div>
+            <table className="table table-bordered ">
+              <thead>
+                <tr>
+                  <th scope="col">
+                    <button type="button" className="btn btn-light" onClick={() => orderName()}>
+                      <b>Budget Name</b>
+                    </button>
+                  </th>
 
-                <th scope="col">
-                  <button type="button" className="btn btn-light" onClick={() => orderAmount()}>
-                    <b>Ammount</b>
-                  </button>
-                </th>
-                <th scope="col">
-                  <button type="button" className="btn btn-light" onClick={() => orderStatus()}>
-                    <b>Status</b>
-                  </button>
-                </th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            {loading &&
-              budgets &&
-              budgets.map((x) => (
-                <>
-                  <tbody>
-                    <tr>
-                      <th scope="row">{x.id}</th>
-                      <td>{x.name}</td>
-                      <td>${x.amount}</td>
-                      <td>
-                        {x.status ? (
-                          <p className="text-success">
-                            <b>Available</b>
-                          </p>
-                        ) : (
-                          <p className="text-danger">
-                            <b>Disable</b>
-                          </p>
-                        )}
-                      </td>
-                      <td>
-                        <div className="d-flex justify-content-center">
-                              
+                  <th scope="col">
+                    <button type="button" className="btn btn-light" onClick={() => orderAmount()}>
+                      <b>Ammount</b>
+                    </button>
+                  </th>
+                  <th scope="col">
+                    <button type="button" className="btn btn-light" onClick={() => orderStatus()}>
+                      <b>Status</b>
+                    </button>
+                  </th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              {loading &&
+                budgets &&
+                budgets.map((x) => (
+                  <>
+                    <tbody>
+                      <tr>
+                        <th scope="row">{x.name}</th>
+
+                        <td>${x.amount}</td>
+                        <td>
                           {x.status ? (
-                            <>
-                              <BudgetsEdit id={x.id} name={x.name} />
-                                  
+                            <p className="text-success">
+                              <b>Available</b>
+                            </p>
+                          ) : (
+                            <p className="text-danger">
+                              <b>Disable</b>
+                            </p>
+                          )}
+                        </td>
+                        <td>
+                          <div className="d-flex justify-content-center">
+                                
+                            {x.status ? (
+                              <>
+                                <BudgetsEdit id={x.id} name={x.name} />
+                                    
+                                <button
+                                  type="button"
+                                  className="btn btn-danger"
+                                  onClick={() => changeStatus(x.id, x.status)}
+                                >
+                                  <i className="far fa-trash-alt" />
+                                </button>
+                              </>
+                            ) : (
                               <button
                                 type="button"
-                                className="btn btn-danger"
+                                className="btn btn-success"
                                 onClick={() => changeStatus(x.id, x.status)}
                               >
-                                <i className="far fa-trash-alt" />
+                                <i className="fas fa-check" />
                               </button>
-                            </>
-                          ) : (
-                            <button
-                              type="button"
-                              className="btn btn-success"
-                              onClick={() => changeStatus(x.id, x.status)}
-                            >
-                              <i className="fas fa-check" />
-                            </button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </>
-              ))}
-          </table>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </>
+                ))}
+            </table>
+          </div>
+        </div>
+      </div>
+      {budgets.length < 15 ? (
+        <>
           <div>
             <button
               className="btn btn-success btn-lg btn-block"
@@ -284,7 +277,8 @@ function Budget() {
             <div className="card card-body ">
               <form>
                 <div className="d-flex justify-content-center">
-                  <b>                            Budget Name </b>                              
+                  <b>                            Budget Name </b>
+                                                
                   <b>   Budget Ammount </b>                              
                 </div>
                 <div className="d-flex justify-content-center ">
@@ -347,9 +341,12 @@ function Budget() {
               </form>
             </div>
           </div>
-          <br />
-        </div>
-      </div>
+        </>
+      ) : (
+        <> </>
+      )}
+
+      <br />
     </div>
   );
 }
