@@ -2,7 +2,7 @@ import React from 'react';
 
 const SideBarLogo = () => (
   <a href="/index3.html" className="brand-link">
-    <i className="fas fa-cat brand-image img-circle elevation-3 fa-2x" style={{ opacity: '.8' }} />
+    <i className="fas fa-cat brand-image img-circle fa-2x" style={{ opacity: '.8' }} />
     <span className="brand-text font-weight-light">Miau!</span>
   </a>
 );

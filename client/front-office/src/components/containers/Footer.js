@@ -6,7 +6,11 @@ const Footer = () => (
       <b>Version</b> 3.1.0
     </div>
     <strong>
-      Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.
+      Copyright &copy; 2021{' '}
+      <a href="https://images.unsplash.com/photo-1469598614039-ccfeb0a21111?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80">
+        Finace APP
+      </a>
+      .
     </strong>{' '}
     All rights reserved.
   </footer>

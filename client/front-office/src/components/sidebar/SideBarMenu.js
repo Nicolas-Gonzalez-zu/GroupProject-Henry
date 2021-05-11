@@ -33,10 +33,31 @@ const SideBarMenu = () => (
         </NavLink>
       </li>
       <li className="nav-item">
-        <NavLink to="/movements" className="nav-link">
+        <NavLink
+          to="/movements"
+          className="nav-link"
+          data-toggle="collapse"
+          data-target="#collapseExample2"
+          aria-expanded="false"
+          aria-controls="collapseExample"
+        >
           <i className="nav-icon fas fa-hand-holding-usd" />
           <p> Movements</p>
         </NavLink>
+        <ul data-widget="treeview" role="menu" data-accordion="false" id="collapseExample2">
+          <li>
+            <NavLink to="/">
+              <i className="nav-icon fas fa-file-invoice" />
+              Income and expenses
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/">
+              <i className="nav-icon fas fa-file-alt" />
+              Transfers
+            </NavLink>
+          </li>
+        </ul>
       </li>
       <li className="nav-item">
         <NavLink to="/reports" className="nav-link">
@@ -49,14 +70,14 @@ const SideBarMenu = () => (
           to="/shop"
           className="nav-link"
           data-toggle="collapse"
-          data-target="#collapseExample"
+          data-target="#collapseExample1"
           aria-expanded="false"
           aria-controls="collapseExample"
         >
           <i className="nav-icon fas fa-shopping-cart" />
           <p> Shop</p>
         </NavLink>
-        <ul data-widget="treeview" role="menu" data-accordion="false" id="collapseExample">
+        <ul data-widget="treeview" role="menu" data-accordion="false" id="collapseExample1">
           <li>
             <NavLink to="/">
               <i className="nav-icon fas fa-file-invoice" />
@@ -66,7 +87,7 @@ const SideBarMenu = () => (
           <li>
             <NavLink to="/">
               <i className="nav-icon fas fa-file-alt" />
-              Purchase history
+              Services
             </NavLink>
           </li>
         </ul>
