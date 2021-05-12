@@ -20,6 +20,7 @@ function Budget() {
   const dispatch = useDispatch();
   useEffect(() => {
     action.getBudget(dispatch);
+    reset();
   }, [dispatch]);
 
   const filterLabels = budgets.filter((x) => x.status === true);
@@ -160,6 +161,7 @@ function Budget() {
   };
   return (
     <div className="mx-3 mt-3">
+      {!loading && <InternalLoader />}
       <div className="d-flex justify-content-center">
         <div className="col-lg-3 col-6 ">
           <div className="small-box bg-info">
@@ -173,7 +175,6 @@ function Budget() {
         </div>
       </div>
       <div className="mt-3 mb-3">
-        {(!loading || budgets.length === 0) && <InternalLoader />}
         <Doughnut width={200} height={200} data={data} options={{ maintainAspectRatio: false }} />
       </div>
 

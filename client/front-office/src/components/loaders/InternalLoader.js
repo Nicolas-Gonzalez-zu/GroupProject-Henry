@@ -12,7 +12,7 @@ const InternalLoader = () => (
       zIndex: '100',
       width: '40%',
       right: '30%',
-      top: '30%',
+      top: '9em',
     }}
   >
     <img src={Loader2} alt="Loader" style={{ width: '80%', padding: '20px' }} />
