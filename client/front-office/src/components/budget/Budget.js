@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 import * as action from '../../actions/creators';
 import BudgetsEdit from './budgetEdit';
+import InternalLoader from '../loaders/InternalLoader';
 
 function Budget() {
   const [errors, setErrors] = useState({});
@@ -172,11 +173,11 @@ function Budget() {
         </div>
       </div>
       <div className="mt-3 mb-3">
+        {(!loading || budgets.length === 0) && <InternalLoader />}
         <Doughnut width={200} height={200} data={data} options={{ maintainAspectRatio: false }} />
       </div>
 
       <br />
-
       <div className="d-flex flex-column justify-content-around">
         <div className="align-self-center" style={{ width: '70%' }}>
           <div className="card card-info">
