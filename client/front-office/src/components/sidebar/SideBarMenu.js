@@ -35,7 +35,7 @@ const SideBarMenu = () => (
       <li className="nav-item">
         <NavLink
           to="/movements"
-          className="nav-link"
+          className="nav-link collapsed"
           data-toggle="collapse"
           data-target="#collapseExample2"
           aria-expanded="false"
@@ -44,15 +44,21 @@ const SideBarMenu = () => (
           <i className="nav-icon fas fa-hand-holding-usd" />
           <p> Movements</p>
         </NavLink>
-        <ul data-widget="treeview" role="menu" data-accordion="false" id="collapseExample2">
+        <ul
+          data-widget="treeview "
+          role="menu"
+          data-accordion="false"
+          id="collapseExample2"
+          className="collapse"
+        >
           <li>
-            <NavLink to="/">
+            <NavLink to="/income">
               <i className="nav-icon fas fa-file-invoice" />
               Income and expenses
             </NavLink>
           </li>
           <li>
-            <NavLink to="/">
+            <NavLink to="/transfer">
               <i className="nav-icon fas fa-file-alt" />
               Transfers
             </NavLink>
@@ -77,15 +83,21 @@ const SideBarMenu = () => (
           <i className="nav-icon fas fa-shopping-cart" />
           <p> Shop</p>
         </NavLink>
-        <ul data-widget="treeview" role="menu" data-accordion="false" id="collapseExample1">
+        <ul
+          data-widget="treeview"
+          role="menu"
+          data-accordion="false"
+          id="collapseExample1"
+          className="collapse"
+        >
           <li>
-            <NavLink to="/">
+            <NavLink to="/invoices">
               <i className="nav-icon fas fa-file-invoice" />
               Invoices
             </NavLink>
           </li>
           <li>
-            <NavLink to="/">
+            <NavLink to="/services">
               <i className="nav-icon fas fa-file-alt" />
               Services
             </NavLink>
@@ -93,7 +105,7 @@ const SideBarMenu = () => (
         </ul>
       </li>
       <li className="nav-item">
-        <NavLink to="/services" className="nav-link">
+        <NavLink to="/orders" className="nav-link">
            <i className="nav-icon fas fa-file-invoice-dollar" />
           <p>Orders</p>
         </NavLink>
