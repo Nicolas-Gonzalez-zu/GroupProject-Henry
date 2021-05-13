@@ -230,7 +230,7 @@ export const setError = (e, dispatch) => {
   if (e.response.data.error) {
     setAlert(dispatch, e.response.data.error, true, 'error');
   } else {
-    setAlert(dispatch, e.message, true);
+    setAlert(dispatch, e.message, true, 'error');
   }
 };
 
@@ -253,9 +253,10 @@ export const addMovement = (newMovement, dispatch) => {
     .then(({ data }) => {
       if (!data.error) {
         getMovements(dispatch);
+        setAlert(dispatch, 'Created Movement Success', true, 'success');
       }
     })
-    .catch((e) => console.log(e, 'error en front'));
+    .catch((e) => setError(e, dispatch));
 };
 
 export const editMovement = (movementEdited, dispatch) => {
@@ -264,9 +265,8 @@ export const editMovement = (movementEdited, dispatch) => {
     .then(({ data }) => {
       if (!data.error) {
         getMovements(dispatch);
+        setAlert(dispatch, 'Edited Movement Success', true, 'success');
       }
     })
-    .catch((e) => {
-      console.log(e);
-    });
+    .catch((e) => setError(e, dispatch));
 };
