@@ -38,6 +38,7 @@ export default function MovementModalEdit({ id, description, date }) {
       setTimeout(() => setEdit(false), 1500);
 
       action.editMovement(values, dispatch);
+
       // alert(JSON.stringify(values, null, 2));
     },
   });
@@ -53,54 +54,58 @@ export default function MovementModalEdit({ id, description, date }) {
       </Button>
       <Modal show={edit}>
         <Modal.Header>
-          <p>
+          <h3>
             Movement to Edit ~ ID: <b className="text-info">{id}</b>
-          </p>
+          </h3>{' '}
+          <Button onClick={setEditOn} className="btn btn-danger">
+            X
+          </Button>
         </Modal.Header>
         <Modal.Body>
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={formik.handleSubmit} className="text-center">
             <label>Description</label>
             <p>
               Description before: <span className="text-danger">{description}</span>
             </p>
-            <input
-              autoComplete="off"
-              className={
-                formik.errors.description ? 'form-control is-invalid col-7' : 'form-control col-7'
-              }
-              name="description"
-              id="description"
-              onChange={formik.handleChange}
-              value={formik.values.description}
-            />
-            {formik.errors.description ? (
-              <b className="text-danger">{formik.errors.description}</b>
-            ) : null}
-            <label>Date</label>
+            <div className="d-flex justify-content-md-center">
+              <input
+                autoComplete="off"
+                className={
+                  formik.errors.description
+                    ? 'form-control is-invalid col-7 '
+                    : 'form-control col-7'
+                }
+                name="description"
+                id="description"
+                onChange={formik.handleChange}
+                value={formik.values.description}
+              />
+              {formik.errors.description ? (
+                <b className="text-danger">{formik.errors.description}</b>
+              ) : null}
+            </div>
+            <br /> <label>Date</label>
             <p>
               Date before:{' '}
               <span className="text-danger">{date.replace('T', ' ~ ').replace('.000Z', ' ')}</span>
             </p>
-            <input
-              className="form-control col-7"
-              type="datetime-local"
-              name="date"
-              id="date"
-              onChange={formik.handleChange}
-              value={formik.values.date}
-            />
-            {formik.errors.date ? <b className="text-danger">{formik.errors.date}</b> : null}
-
-            <Button type="submit" className="btn btn-success">
-              Edit
+            <div className="d-flex justify-content-md-center">
+              <input
+                className="form-control col-7"
+                type="datetime-local"
+                name="date"
+                id="date"
+                onChange={formik.handleChange}
+                value={formik.values.date}
+              />
+              {formik.errors.date ? <b className="text-danger">{formik.errors.date}</b> : null}
+            </div>
+            <Button type="submit" className="btn btn-success mt-4 col-6">
+              Edit Movement
             </Button>
           </form>{' '}
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={setEditOn} className="btn btn-danger">
-            Cancel
-          </Button>
-        </Modal.Footer>
+
         <Alert show={stateValidate} variant="success" className="text-center m-2">
           Movements Changed Success
         </Alert>
