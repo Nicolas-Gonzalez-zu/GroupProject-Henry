@@ -1,13 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { Modal, Button, Alert } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import * as action from '../../actions/creators';
 
 export default function MovementModalEdit({ id, description, date }) {
   const [edit, setEdit] = useState(false);
-  const [stateValidate, setStateValidate] = useState(false);
+
   const dispatch = useDispatch();
+  const authAlert = useSelector((store) => store.authReducers.authAlert);
+
+  useEffect(() => {
+    if (authAlert.fire) {
+      const position = authAlert.type === 'success' ? 'center' : 'top-end';
+
+      Swal.fire({
+        title: authAlert.message,
+        icon: authAlert.type,
+        toast: true,
+        position,
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        if (authAlert.type === 'success') {
+          action.setAlert(dispatch);
+        } else {
+          action.setAlert(dispatch);
+        }
+      });
+    }
+  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const validate = (values) => {
     const errors = {};
@@ -33,9 +56,7 @@ export default function MovementModalEdit({ id, description, date }) {
     },
     validate,
     onSubmit: (values) => {
-      setStateValidate(true);
-      setTimeout(() => setStateValidate(false), 1000);
-      setTimeout(() => setEdit(false), 1500);
+      setTimeout(() => setEdit(false), 1000);
 
       action.editMovement(values, dispatch);
 
@@ -105,10 +126,6 @@ export default function MovementModalEdit({ id, description, date }) {
             </Button>
           </form>{' '}
         </Modal.Body>
-
-        <Alert show={stateValidate} variant="success" className="text-center m-2">
-          Movements Changed Success
-        </Alert>
       </Modal>
     </>
   );

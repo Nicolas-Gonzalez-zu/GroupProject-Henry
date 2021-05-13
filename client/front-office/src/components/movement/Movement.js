@@ -27,7 +27,6 @@ export default function Movement() {
   // };
   const movements = useSelector((state) => state.movementReducer.movements);
   const dispatch = useDispatch();
-
   // console.log(movements, 'aa');
   useEffect(() => {
     action.getMovements(dispatch);
@@ -36,10 +35,11 @@ export default function Movement() {
   return (
     <>
       <div className="card">
-        <div className="card-header bg-info">
-          <h3 className="card-title">~ Register your expenses </h3>
+        <div className="bg-warning d-flex justify-content-between w-100 p-3 rounded-top">
+          <h3>~ Register your expenses </h3>
+          <MovementsModal />
         </div>
-        <MovementsModal />
+
         <div className="card-body">
           <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
             <div className="row">
@@ -124,7 +124,9 @@ export default function Movement() {
                               <div className="progress progress-xs">
                                 <div
                                   className="progress-bar bg-purple"
-                                  style={{ width: `${(20 / x.wallet.balance) * 100}%` }}
+                                  style={{
+                                    width: `${(30 / x.wallet.balance) * 100}%`,
+                                  }}
                                 />
                               </div>
                             </td>
