@@ -28,7 +28,7 @@ export default function Movement() {
   const movements = useSelector((state) => state.movementReducer.movements);
   const dispatch = useDispatch();
 
-  console.log(movements, 'aa');
+  // console.log(movements, 'aa');
   useEffect(() => {
     action.getMovements(dispatch);
   }, [dispatch]);
@@ -37,16 +37,16 @@ export default function Movement() {
     <>
       <div className="card">
         <div className="card-header bg-info">
-          <h3 className="card-title">Movements</h3>
+          <h3 className="card-title">~ Register your expenses </h3>
         </div>
-
+        <MovementsModal />
         <div className="card-body">
           <div id="example2_wrapper" className="dataTables_wrapper dt-bootstrap4">
             <div className="row">
               <div className="col-sm-12 col-md-6" />
               <div className="col-sm-12 col-md-6" />
             </div>
-            <MovementsModal />
+
             <div className="row">
               <div className="col-sm-12">
                 <table
@@ -91,7 +91,7 @@ export default function Movement() {
                         aria-controls="example2"
                         aria-label="CSS grade: activate to sort column ascending"
                       >
-                        Budget
+                        Consume in Budget
                       </th>
                       <th
                         className="sorting"
@@ -115,10 +115,19 @@ export default function Movement() {
                         <tbody>
                           <tr className="odd">
                             <td className="dtr-control">{x.id}</td>
-                            <td className="sorting_1">{x.amount}</td>
+                            <td className="sorting_1">$ {x.amount}.00</td>
                             <td>{x.description}</td>
                             <td>{x.wallet.name}</td>
-                            <td>{x.budget}</td>
+
+                            <td>
+                              <p className="text-center">{x.budget}</p>
+                              <div className="progress progress-xs">
+                                <div
+                                  className="progress-bar bg-purple"
+                                  style={{ width: `${(20 / x.wallet.balance) * 100}%` }}
+                                />
+                              </div>
+                            </td>
                             <td>{x.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
                             <td>
                               <MovementModalEdit

@@ -255,9 +255,7 @@ export const addMovement = (newMovement, dispatch) => {
         getMovements(dispatch);
       }
     })
-    .catch((e) => {
-      console.log(e);
-    });
+    .catch((e) => console.log(e, 'error en front'));
 };
 
 export const editMovement = (movementEdited, dispatch) => {
