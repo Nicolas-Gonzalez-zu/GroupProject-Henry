@@ -21,10 +21,12 @@ const Wallet = () => {
 
   const wallets = useSelector((state) => state.walletReducer.wallets);
   const dispatch = useDispatch();
+
   useEffect(() => {
     action.getWallet(dispatch);
     reset();
   }, [dispatch]);
+
   useEffect(() => {
     if (!wallet.name) {
       setError({ ...error, name: 'the name is required!' });
