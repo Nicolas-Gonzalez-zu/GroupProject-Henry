@@ -341,7 +341,9 @@ export default Register;
 
 const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword) => {
   let valid;
-  const regexs =
+
+  const regexp =
+
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
   switch (name) {
@@ -355,7 +357,7 @@ const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword
       valid = value.length > 5 ? 'is-valid' : 'is-invalid';
       break;
     case 'email':
-      valid = regexs.test(value) ? 'is-valid' : 'is-invalid';
+      valid = regexp.test(value) ? 'is-valid' : 'is-invalid';
       break;
     case 'password':
       valid = value.length > 5 ? 'is-valid' : 'is-invalid';

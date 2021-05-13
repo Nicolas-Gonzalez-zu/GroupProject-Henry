@@ -5,6 +5,7 @@ import WalletsTable from './WalletsTable';
 import WalletModalMsj from './WalletModalMsj';
 import Chart from './Chart';
 import * as action from '../../actions/creators';
+import InternalLoader from '../loaders/InternalLoader';
 
 const Wallet = () => {
   const [showModal, setShowModal] = useState(false);
@@ -16,11 +17,13 @@ const Wallet = () => {
   const [error, setError] = useState({});
   const [errors, setErrors] = useState(false);
   const [showModalMsj, setShowModalMsj] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const wallets = useSelector((state) => state.walletReducer.wallets);
   const dispatch = useDispatch();
   useEffect(() => {
     action.getWallet(dispatch);
+    reset();
   }, [dispatch]);
   useEffect(() => {
     if (!wallet.name) {
@@ -62,8 +65,16 @@ const Wallet = () => {
     setError({ ...error, [e.target.name]: '' });
   };
 
+  const reset = () => {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 1000);
+  };
+
   return (
     <div className="d-flex p-3 flex-column">
+      {!loading && <InternalLoader />}
       <div className="d-flex justify-content-center">
         <div className="small-box bg-success pb-3" style={{ width: '40%' }}>
           <div className="inner">
