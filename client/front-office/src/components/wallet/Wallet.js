@@ -75,11 +75,11 @@ const Wallet = () => {
           </div>
         </div>
       </div>
-      <div className="align-self-center mb-3" style={{ width: '15%' }}>
+      <div className="mt-3 mb-3">
         <Chart array={wallets} />
       </div>
       <div className="d-flex flex-column justify-content-around ">
-        <div className="align-self-center" style={{ width: '40rem' }}>
+        <div className="align-self-center" style={{ width: '70%' }}>
           <div className="card card-info">
             <div className="card-header d-flex justify-content-between">
               <h3 className="card-title align-self-center mr-auto">Wallets</h3>

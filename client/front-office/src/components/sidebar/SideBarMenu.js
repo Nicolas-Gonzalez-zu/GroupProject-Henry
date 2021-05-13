@@ -54,7 +54,7 @@ const SideBarMenu = () => (
           <li>
             <NavLink to="/income">
               <i className="nav-icon fas fa-file-invoice" />
-              Income and expenses
+              Income
             </NavLink>
           </li>
           <li>
@@ -83,13 +83,7 @@ const SideBarMenu = () => (
           <i className="nav-icon fas fa-shopping-cart" />
           <p> Shop</p>
         </NavLink>
-        <ul
-          data-widget="treeview"
-          role="menu"
-          data-accordion="false"
-          id="collapseExample1"
-          className="collapse"
-        >
+        <ul data-widget="treeview" role="menu" data-accordion="false" id="collapseExample1">
           <li>
             <NavLink to="/invoices">
               <i className="nav-icon fas fa-file-invoice" />

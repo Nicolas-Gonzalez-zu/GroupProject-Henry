@@ -30,7 +30,7 @@ const Chart = ({ array }) => {
       },
     ],
   };
-  return <Doughnut data={data} />;
+  return <Doughnut width={200} height={200} data={data} options={{ maintainAspectRatio: false }} />;
 };
 
 export default Chart;
