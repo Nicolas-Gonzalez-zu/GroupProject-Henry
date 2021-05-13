@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 import * as action from '../../actions/creators';
 import BudgetsEdit from './budgetEdit';
+import InternalLoader from '../loaders/InternalLoader';
 
 function Budget() {
   const [errors, setErrors] = useState({});
@@ -19,6 +20,7 @@ function Budget() {
   const dispatch = useDispatch();
   useEffect(() => {
     action.getBudget(dispatch);
+    reset();
   }, [dispatch]);
 
   const filterLabels = budgets.filter((x) => x.status === true);
@@ -159,6 +161,7 @@ function Budget() {
   };
   return (
     <div className="mx-3 mt-3">
+      {!loading && <InternalLoader />}
       <div className="d-flex justify-content-center">
         <div className="col-lg-3 col-6 ">
           <div className="small-box bg-info">
@@ -176,7 +179,6 @@ function Budget() {
       </div>
 
       <br />
-
       <div className="d-flex flex-column justify-content-around">
         <div className="align-self-center" style={{ width: '70%' }}>
           <div className="card card-info">

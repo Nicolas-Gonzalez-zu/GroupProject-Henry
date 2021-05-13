@@ -2,7 +2,8 @@ const express = require('express');
 
 const checkIfLoggedIn = require('../auth/authorizeMiddleware');
 const db = require('../../db/models');
-const { errorCode, statusCode } = require('../utils/globalCodes');
+const { errorCode, statusCode, supportCode } = require('../utils/globalCodes');
+const { sequelize } = require('../../db/models');
 
 const router = express.Router();
 router.use(checkIfLoggedIn);
@@ -11,11 +12,6 @@ router.get('/', (req, res) => {
   db.Movement.findAll({
     where: { customer_id: req.user.id },
     include: [
-      {
-        model: db.Customer,
-        as: 'customer',
-        include: [{ model: db.User, as: 'user' }],
-      },
       { model: db.Wallet, as: 'origin_wallet' },
       { model: db.Budget, as: 'budget' },
     ],
@@ -29,7 +25,6 @@ router.get('/', (req, res) => {
           type,
           generation_date, // eslint-disable-line camelcase
           description,
-          customer,
           origin_wallet, // eslint-disable-line camelcase
           budget,
         } = movement.dataValues;
@@ -40,22 +35,12 @@ router.get('/', (req, res) => {
           type,
           generation_date,
           description,
-          customer: {
-            id: customer.id,
-            first_name: customer.user.first_name,
-            last_name: customer.user.last_name,
-            full_name: `${customer.user.first_name} ${customer.user.last_name}`,
-          },
           wallet: {
             id: origin_wallet.id,
             name: origin_wallet.name,
             balance: origin_wallet.balance,
           },
-          budget: {
-            id: budget.id,
-            name: budget.name,
-            amount: budget.amount,
-          },
+          budget: budget.name,
         };
       });
       res.status(statusCode.OK).json(processedMovements);
@@ -65,7 +50,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/add', (req, res) => {
+router.post('/add', async (req, res) => {
   const newMovement = {
     amount: req.body.amount,
     type: req.body.type,
@@ -76,13 +61,34 @@ router.post('/add', (req, res) => {
     budget_id: req.body.budget_id,
   };
 
-  db.Movement.create(newMovement)
-    .then((createdMovement) => {
-      res.status(statusCode.CREATED).json(createdMovement);
-    })
-    .catch((error) => {
-      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: error.message });
-    });
+  const t = await sequelize.transaction();
+
+  try {
+    const createdMovement = await db.Movement.create(newMovement, { transaction: t });
+    const foundedWallet = await db.Wallet.findByPk(newMovement.wallet_id);
+
+    let updatedBalance = foundedWallet.dataValues.balance;
+    if (newMovement.type === supportCode.INCOME) {
+      updatedBalance += newMovement.amount;
+    } else {
+      updatedBalance -= newMovement.amount;
+      if (updatedBalance < 0) throw new Error(errorCode.UNFINISHED_OPERATION);
+    }
+
+    await db.Wallet.update(
+      { balance: updatedBalance },
+      {
+        where: { id: +newMovement.wallet_id }, // eslint-disable-line camelcase
+        returning: true,
+        plain: true,
+      },
+    );
+    await t.commit();
+    res.status(statusCode.CREATED).json(createdMovement);
+  } catch (error) {
+    await t.rollback();
+    res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: error.message });
+  }
 });
 
 router.put('/edit', (req, res) => {

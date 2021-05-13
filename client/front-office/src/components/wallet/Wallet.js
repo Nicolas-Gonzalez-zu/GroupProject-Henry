@@ -5,6 +5,7 @@ import WalletsTable from './WalletsTable';
 import WalletModalMsj from './WalletModalMsj';
 import Chart from './Chart';
 import * as action from '../../actions/creators';
+import InternalLoader from '../loaders/InternalLoader';
 
 const Wallet = () => {
   const [showModal, setShowModal] = useState(false);
@@ -16,12 +17,14 @@ const Wallet = () => {
   const [error, setError] = useState({});
   const [errors, setErrors] = useState(false);
   const [showModalMsj, setShowModalMsj] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const wallets = useSelector((state) => state.walletReducer.wallets);
   const dispatch = useDispatch();
 
   useEffect(() => {
     action.getWallet(dispatch);
+    reset();
   }, [dispatch]);
 
   useEffect(() => {
@@ -64,8 +67,16 @@ const Wallet = () => {
     setError({ ...error, [e.target.name]: '' });
   };
 
+  const reset = () => {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 1000);
+  };
+
   return (
     <div className="d-flex p-3 flex-column">
+      {!loading && <InternalLoader />}
       <div className="d-flex justify-content-center">
         <div className="small-box bg-success pb-3" style={{ width: '40%' }}>
           <div className="inner">
@@ -77,11 +88,11 @@ const Wallet = () => {
           </div>
         </div>
       </div>
-      <div className="align-self-center mb-3" style={{ width: '15%' }}>
+      <div className="mt-3 mb-3">
         <Chart array={wallets} />
       </div>
       <div className="d-flex flex-column justify-content-around ">
-        <div className="align-self-center" style={{ width: '40rem' }}>
+        <div className="align-self-center" style={{ width: '70%' }}>
           <div className="card card-info">
             <div className="card-header d-flex justify-content-between">
               <h3 className="card-title align-self-center mr-auto">Wallets</h3>

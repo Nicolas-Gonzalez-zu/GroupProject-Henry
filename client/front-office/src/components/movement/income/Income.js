@@ -4,6 +4,7 @@ import IncomeTable from './IncomeTable';
 import IncomeModalMsj from './IncomeModalMsj';
 import * as action from '../../../actions/creators';
 
+
 const Income = () => {
   const wallets = useSelector((state) => state.walletReducer.wallets);
   const dispatch = useDispatch();
@@ -146,3 +147,4 @@ const Income = () => {
   );
 };
 export default Income;
+
