@@ -233,3 +233,42 @@ export const setError = (e, dispatch) => {
     setAlert(dispatch, e.message, true);
   }
 };
+
+export const getMovements = (dispatch) => {
+  serverPetition
+    .get('fo/movement')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_MOVEMENTS,
+        payload: data,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+export const addMovement = (newMovement, dispatch) => {
+  serverPetition
+    .post('fo/movement/add', newMovement)
+    .then(({ data }) => {
+      if (!data.error) {
+        getMovements(dispatch);
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+export const editMovement = (movementEdited, dispatch) => {
+  serverPetition
+    .put('fo/movement/edit', movementEdited)
+    .then(({ data }) => {
+      if (!data.error) {
+        getMovements(dispatch);
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};

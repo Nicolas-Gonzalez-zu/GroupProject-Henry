@@ -341,7 +341,9 @@ export default Register;
 
 const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword) => {
   let valid;
+
   const regexp =
+
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
   switch (name) {
