@@ -32,12 +32,13 @@ export default function MovementsModal() {
       });
     }
     action.getBudget(dispatch);
+    action.getWallet(dispatch);
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const wallets = useSelector((state) => state.walletReducer.wallets);
-  useEffect(() => {
-    action.getWallet(dispatch);
-  }, [dispatch]);
+  // useEffect(() => {
+
+  // }, [dispatch]);
 
   const validate = (values) => {
     const errors = {};
@@ -102,9 +103,6 @@ export default function MovementsModal() {
       <Modal show={modal} dialogClassName="modal-90w">
         <Modal.Header>
           <h3>Create a New Movement</h3>
-          <Button onClick={showModal} className="btn btn-danger">
-            X
-          </Button>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={formik.handleSubmit}>
@@ -205,8 +203,11 @@ export default function MovementsModal() {
                   <b className="text-danger">{formik.errors.budget_id}</b>
                 ) : null}
 
-                <Button type="submit" className="btn btn-success mt-5 ml-5 col-9">
+                <Button type="submit" className="btn btn-success mt-5 ml-5 col-5">
                   Create
+                </Button>
+                <Button onClick={showModal} className="btn btn-danger mt-5 ml-4">
+                  Cancel
                 </Button>
               </div>
             </div>
