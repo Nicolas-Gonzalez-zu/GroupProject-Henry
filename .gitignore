@@ -106,4 +106,3 @@ typings/
 .idea/
 package-lock.json
 build/
-financeapp.config.js
