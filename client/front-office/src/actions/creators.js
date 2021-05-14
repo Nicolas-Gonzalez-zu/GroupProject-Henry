@@ -307,3 +307,28 @@ export const editIncome = (incomeEdited, dispatch) => {
     })
     .catch((err) => setError(dispatch, err));
 };
+
+export const getTransfer = (dispatch) => {
+  serverPetition
+    .get('fo/transfer')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_TRANSFERS,
+        payload: data,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+export const addTransfer = (newTransfer, dispatch) => {
+  serverPetition
+    .post('fo/transfer/add', newTransfer)
+    .then(({ data }) => {
+      if (!data.error) {
+        getTransfer(dispatch);
+        setAlert(dispatch, 'Created Transfer Success', true, 'success');
+      }
+    })
+    .catch((e) => setError(e, dispatch));
+};

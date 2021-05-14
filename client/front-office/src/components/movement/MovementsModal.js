@@ -9,8 +9,9 @@ import * as action from '../../actions/creators';
 export default function MovementsModal() {
   const [modal, setModal] = useState(false);
   const budgets = useSelector((state) => state.budgetReducer.budgets);
-  const dispatch = useDispatch();
+  const wallets = useSelector((state) => state.walletReducer.wallets);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (authAlert.fire) {
@@ -34,11 +35,6 @@ export default function MovementsModal() {
     action.getBudget(dispatch);
     action.getWallet(dispatch);
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
-
-  const wallets = useSelector((state) => state.walletReducer.wallets);
-  // useEffect(() => {
-
-  // }, [dispatch]);
 
   const validate = (values) => {
     const errors = {};
@@ -80,11 +76,21 @@ export default function MovementsModal() {
     },
     validate,
     onSubmit: (values) => {
-      setTimeout(() => setModal(false), 1500);
+      setTimeout(() => setModal(false), 1400);
 
       action.addMovement(values, dispatch);
-
-      // alert(JSON.stringify(values, null, 2));
+      setTimeout(
+        () =>
+          formik.resetForm({
+            amount: null,
+            type: 'OUTGO',
+            generation_date: '',
+            description: '',
+            wallet_id: '',
+            budget_id: '',
+          }),
+        1500,
+      );
     },
   });
 
