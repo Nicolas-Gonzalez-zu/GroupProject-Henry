@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getIn } from 'formik';
 
 import * as actionType from './types';
 
@@ -269,4 +270,37 @@ export const editMovement = (movementEdited, dispatch) => {
       }
     })
     .catch((e) => setError(e, dispatch));
+};
+export const getIncomes = (dispatch) => {
+  serverPetition
+    .get('fo/movement')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_INCOMES,
+        payload: data,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+export const addIncome = (income, dispatch) => {
+  serverPetition
+    .post('fo/movement/add', income)
+    .then(({ data }) => {
+      if (!data.error) {
+        getIncomes(dispatch);
+        setAlert(dispatch, 'Income added', true, 'success');
+      }
+    })
+    .catch((err) => setError(err, dispatch));
+};
+export const editIncome = (incomeEdited, dispatch) => {
+  serverPetition
+    .put('fo/movement/edit', incomeEdited)
+    .then(({ data }) => {
+      if (!data.error) {
+        getIncomes(dispatch);
+        setAlert(dispatch, 'Income edited', true, 'success');
+      }
+    })
+    .catch((err) => setError(dispatch, err));
 };
