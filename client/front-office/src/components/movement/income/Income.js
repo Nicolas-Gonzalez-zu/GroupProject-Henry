@@ -1,72 +1,75 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
 import IncomeTable from './IncomeTable';
 import IncomeModalMsj from './IncomeModalMsj';
 import * as action from '../../../actions/creators';
 
-
 const Income = () => {
   const wallets = useSelector((state) => state.walletReducer.wallets);
+  // aca van a estar todos los incomes, de acá va a tener q mapear luego const incomes = useSelector((state) => state.incomeReducer.incomes);
   const dispatch = useDispatch();
 
   useEffect(() => {
     action.getWallet(dispatch);
+    // action.getIncomes(dispatch);
   }, [dispatch]);
-  const [income, SetIncome] = useState({
-    amount: '',
-    generation_date: '',
-    description: '',
-    type: 'INCOME',
-    wallet_id: '',
-  });
+  // const [income, SetIncome] = useState({
+  //   amount: '',
+  //   generation_date: '',
+  //   description: '',
+  //   type: 'INCOME',
+  //   wallet_id: '',
+  // });
   const [incomes, setIncomes] = useState([]);
-  const [error, setError] = useState({});
-  const [errors, setErros] = useState(false);
+  // const [error, setError] = useState({});
+  // const [errors, setErros] = useState(false);
   const [showIncomeMsj, setShowIncomeMsj] = useState(false);
 
-  useEffect(() => {
-    if (!/^[0-9]*$/gm.test(income.amount)) {
-      setError({ ...error, amount: 'The amount must be a number' });
-    } else if (!income.amount) {
-      setError({ ...error, amount: 'The amount is required' });
-    } else if (income.wallet_id === '-') {
-      setError({ ...error, wallet_id: 'the income destination is required' });
-    } else if (!income.generation_date) {
-      setError({ ...error, generation_date: 'The generation date is required!' });
-    } else if (!income.description) {
-      setError({ ...error, description: 'the description is required' });
+  const validate = (values) => {
+    const errors = {};
+    if (!/^[0-9]*$/gm.test(values.amount)) {
+      errors.amount = 'The amount must be a number';
+    } else if (!values.amount) {
+      errors.amount = 'the amount is required';
     }
-  }, [income]);
-
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    if (
-      error.amount.length > 0 ||
-      error.generation_date.length > 0 ||
-      error.description.length > 0 ||
-      error.wallet_id.length > 0
-    ) {
-      setErros(true);
-      return setShowIncomeMsj(!showIncomeMsj);
+    if (values.wallet_id === '-') {
+      errors.wallet_id = 'the wallet is required';
     }
-    setErros(false);
-    setShowIncomeMsj(!showIncomeMsj);
-    setIncomes([...incomes, income]);
-    return SetIncome({ amount: '', generation_date: '', description: '', wallet_id: '' });
+    if (!values.generation_date) {
+      errors.generation_date = 'the generation date is required';
+    }
+    if (!values.description) {
+      errors.description = 'the description is required';
+    } else if (values.description.length < 5) {
+      errors.description = 'the description must contain at least 5 letters';
+    }
+    return errors;
   };
-  const setIncomeHandler = (e) => {
-    SetIncome({ ...income, [e.target.name]: e.target.value });
-    setError({ ...error, [e.target.name]: '' });
-  };
+  const formik = useFormik({
+    initialValues: {
+      amount: null,
+      type: 'INCOME',
+      generation_date: '',
+      description: '',
+      wallet_id: '',
+    },
+    validate,
+    onSubmit: (values) => {
+      setShowIncomeMsj(!showIncomeMsj);
+      setIncomes([...incomes, values]);
+      // action.addIncome(values, dispatch);
+    },
+  });
 
   return (
-    <div className="d-flex flex-column">
+    <div className="d-flex flex-column m-3">
       <div className="card card-success align-self-center" style={{ width: '40%' }}>
         <div className="card-header">
           <h3 className="card-title">Add your income</h3>
         </div>
 
-        <form className="form-horizontal" onSubmit={onSubmitHandler}>
+        <form className="form-horizontal" onSubmit={formik.handleSubmit}>
           <div className="card-body">
             <div className="form-group row">
               <label htmlFor="inputEmail3" className="col-3 col-form-label">
@@ -75,12 +78,21 @@ const Income = () => {
               <div className="col-5">
                 <input
                   type="text"
-                  className={error.amount ? 'form-control is-invalid' : 'form-control'}
+                  // className={error.amount ? 'form-control is-invalid' : 'form-control'}
                   name="amount"
-                  value={income.amount}
-                  onChange={setIncomeHandler}
+                  value={formik.values.amount}
+                  autoComplete="off"
+                  onChange={formik.handleChange}
                   placeholder="Amount..."
+                  className={formik.errors.amount ? 'form-control is-invalid' : 'form-control'}
                 />
+                {formik.errors.amount ? (
+                  <p className="text-danger">
+                    <b>{formik.errors.amount}</b>
+                  </p>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
             <div className="form-group row">
@@ -90,12 +102,21 @@ const Income = () => {
               <div className="col-5">
                 <input
                   type="datetime-local"
-                  className={error.generation_date ? 'form-control is-invalid' : 'form-control'}
+                  className={
+                    formik.errors.generation_date ? 'form-control is-invalid' : 'form-control'
+                  }
                   placeholder=".col-3"
                   name="generation_date"
-                  value={income.generation_date}
-                  onChange={setIncomeHandler}
+                  value={formik.values.generation_date}
+                  onChange={formik.handleChange}
                 />
+                {formik.errors.generation_date ? (
+                  <p className="text-danger">
+                    <b>{formik.errors.generation_date}</b>
+                  </p>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
             <div className="form-group row">
@@ -106,12 +127,20 @@ const Income = () => {
                 <select
                   className="custom-select"
                   name="wallet_id"
-                  onChange={setIncomeHandler}
-                  className={error.wallet_id ? 'form-control is-invalid' : 'form-control'}
+                  onChange={formik.handleChange}
+                  value={formik.values.wallet_id}
+                  className={formik.errors.wallet_id ? 'form-control is-invalid' : 'form-control'}
                 >
                   <option selected>-</option>
                   {wallets && wallets.map((w) => <option value={w.id}>{w.name}</option>)}
                 </select>
+                {formik.errors.wallet_id ? (
+                  <p className="text-danger">
+                    <b>{formik.errors.wallet_id}</b>
+                  </p>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
             <div className="form-group row">
@@ -121,22 +150,27 @@ const Income = () => {
               <div className="col-5">
                 <input
                   type="text"
-                  className={error.description ? 'form-control is-invalid' : 'form-control'}
+                  className={formik.errors.description ? 'form-control is-invalid' : 'form-control'}
                   placeholder="description..."
                   name="description"
-                  value={income.description}
-                  onChange={setIncomeHandler}
+                  value={formik.values.description}
+                  autoComplete="off"
+                  onChange={formik.handleChange}
                 />
+                {formik.errors.description ? (
+                  <p className="text-danger">
+                    <b>{formik.errors.description}</b>
+                  </p>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
           </div>
           <div className="card-footer">
-            <IncomeModalMsj
-              errors={errors}
-              setShowIncomeMsj={setShowIncomeMsj}
-              onSubmitHandler={onSubmitHandler}
-              showIncomeMsj={showIncomeMsj}
-            />
+            <button type="submit" className="btn btn-success">
+              Add income
+            </button>
           </div>
         </form>
       </div>
@@ -147,4 +181,3 @@ const Income = () => {
   );
 };
 export default Income;
-

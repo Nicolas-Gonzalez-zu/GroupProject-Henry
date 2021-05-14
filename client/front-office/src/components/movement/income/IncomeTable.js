@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import IncomeModalEdit from './IncomeModalEdit';
 
 const IncomeTable = ({ movements }) => (
   <div className="row">
@@ -23,7 +24,10 @@ const IncomeTable = ({ movements }) => (
                   <tr>
                     <td>{m.description}</td>
                     <td>$ {m.amount}</td>
-                    <td>{m.generation_date}</td>
+                    <td>{m.generation_date.replace('T', ' ')}</td>
+                    <td>
+                      <IncomeModalEdit />
+                    </td>
                   </tr>
                 ))}
             </tbody>
