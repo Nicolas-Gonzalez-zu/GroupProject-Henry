@@ -1,16 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import * as action from '../../../actions/creators';
 
 const IncomeModalEdit = ({ id, description, date }) => {
   const [showModal, setShowModal] = useState(false);
+  const authAlert = useSelector((state) => state.authReducers.authAlert);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (authAlert.fire) {
+      const position = authAlert.type === 'success' ? 'center' : 'top-end';
+
+      Swal.fire({
+        title: authAlert.title,
+        icon: authAlert.type,
+        toast: true,
+        position,
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        if (authAlert.type === 'success') {
+          action.setAlert(dispatch);
+        } else {
+          action.setAlert(dispatch);
+        }
+      });
+    }
+  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
+
   const validate = (values) => {
     const errors = {};
-    if (!values.generation_date) {
-      errors.generation_date = 'the generation date is required';
+    if (!values.date) {
+      errors.date = 'the generation date is required';
     }
     if (!values.description) {
       errors.description = 'the description is required';
@@ -23,12 +47,12 @@ const IncomeModalEdit = ({ id, description, date }) => {
   const formik = useFormik({
     initialValues: {
       movement_id: id,
-      description,
-      date,
+      description: '',
+      date: '',
     },
     validate,
     onSubmit: (values) => {
-      setShowModal(!showModal);
+      console.log(values);
       action.editIncome(values, dispatch);
     },
   });
@@ -53,17 +77,16 @@ const IncomeModalEdit = ({ id, description, date }) => {
                 <div className="col-5">
                   <input
                     type="datetime-local"
-                    className={
-                      formik.errors.generation_date ? 'form-control is-invalid' : 'form-control'
-                    }
+                    className={formik.errors.date ? 'form-control is-invalid' : 'form-control'}
                     placeholder=".col-3"
-                    name="generation_date"
-                    value={formik.values.generation_date}
+                    name="date"
+                    id="date"
+                    value={formik.values.date}
                     onChange={formik.handleChange}
                   />
-                  {formik.errors.generation_date ? (
+                  {formik.errors.date ? (
                     <p className="text-danger">
-                      <b>{formik.errors.generation_date}</b>
+                      <b>{formik.errors.date}</b>
                     </p>
                   ) : (
                     ''
@@ -98,7 +121,7 @@ const IncomeModalEdit = ({ id, description, date }) => {
               </div>
             </div>
             <div className="card-footer d-flex justify-content-between w-100">
-              <Button type="submit" className="btn btn-success">
+              <Button type="submit" onClick={showModalHandler} className="btn btn-success">
                 Edit income
               </Button>
               <Button className="btn btn-info " onClick={showModalHandler}>

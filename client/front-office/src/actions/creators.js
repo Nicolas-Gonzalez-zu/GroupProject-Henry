@@ -229,6 +229,7 @@ export const setAlert = (dispatch, message = null, fire = false, type = null) =>
 
 export const setError = (e, dispatch) => {
   if (e.response.data.error) {
+    console.log(e.response);
     setAlert(dispatch, e.response.data.error, true, 'error');
   } else {
     setAlert(dispatch, e.message, true, 'error');

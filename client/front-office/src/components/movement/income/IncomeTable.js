@@ -28,7 +28,11 @@ const IncomeTable = ({ movements }) => (
                     <td>{m.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
                     <td>{m.wallet.name}</td>
                     <td>
-                      <IncomeModalEdit />
+                      <IncomeModalEdit
+                        description={m.description}
+                        id={m.id}
+                        date={m.generation_date}
+                      />
                     </td>
                   </tr>
                 ))}

@@ -13,11 +13,6 @@ const Income = () => {
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   action.getWallet(dispatch);
-  //   action.getMovements(dispatch);
-  // }, [dispatch]);
-
   useEffect(() => {
     if (authAlert.fire) {
       const position = authAlert.type === 'success' ? 'center' : 'top-end';
