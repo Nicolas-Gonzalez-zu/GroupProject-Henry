@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
-dotenv.config()
 import axios from 'axios';
 import * as actionType from './types';
 import { getMe, redirect } from './creators';
 
+dotenv.config();
 const BASE_URL = 'http://localhost:3001/api/';
 
 const serverPetition = axios.create({
