@@ -98,17 +98,20 @@ export default function Movement() {
                         <tbody>
                           <tr className="odd">
                             <td className="dtr-control">{x.id}</td>
-                            <td className="sorting_1">$ {x.amount}.00</td>
+                            <td className="sorting_1 text-danger">$ -{x.amount}.00</td>
                             <td>{x.description}</td>
-                            <td>{x.wallet.name}</td>
+                            <td>
+                              {x.wallet.name}
+                              <br /> <span className="text-info">$ {x.wallet.balance}.00</span>
+                            </td>
 
                             <td>
-                              <p className="text-center">{x.budget}</p>
+                              <p className="text-center">{x.budget.name}</p>
                               <div className="progress progress-xs">
                                 <div
                                   className="progress-bar bg-purple"
                                   style={{
-                                    width: `${(30 / x.wallet.balance) * 100}%`,
+                                    width: `${(x.budget.amount / x.wallet.balance) * 100}%`,
                                   }}
                                 />
                               </div>
