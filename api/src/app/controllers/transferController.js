@@ -44,8 +44,8 @@ router.get('/', (req, res) => {
       });
       res.status(statusCode.OK).json(processedTransfers);
     })
-    .catch((error) => {
-      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    .catch(() => {
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: errorCode.REJECTED_OPERATION });
     });
 });
 
@@ -93,7 +93,7 @@ router.post('/add', async (req, res) => {
     res.status(statusCode.CREATED).json(createdTransfer);
   } catch (error) {
     await transac.rollback();
-    res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 });
 
