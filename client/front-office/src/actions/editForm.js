@@ -47,6 +47,7 @@ export function editUser(fileType, userInfo) {
           if (data.success) {
             getMe(dispatch);
             redirect(dispatch, '/profile');
+            console.log('hola');
           }
         })
         .catch((err) => console.log(err.message));
