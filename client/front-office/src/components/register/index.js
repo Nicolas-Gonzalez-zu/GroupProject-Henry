@@ -13,7 +13,7 @@ const regex =
 const BASE_URL = 'http://localhost:3001/api/';
 const serverPetition = axios.create({
   withCredentials: true,
-  baseURL: BASE_URL,
+  baseURL: process.env.REACT_APP_BACKEND_URL || BASE_URL,
   headers: {
     'Access-Control-Allow-Origin': 'localhost:3001',
   },
