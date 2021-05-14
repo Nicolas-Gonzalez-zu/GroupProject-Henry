@@ -20,7 +20,6 @@ export function fileExtension(fileType) {
 export function editUser(fileType, userInfo) {
   // eslint-disable-next-line func-names
   return function (dispatch) {
-    console.log(userInfo, 'userinfo');
     if (userInfo) {
       serverPetition
         .put('/fo/editUserInfo', userInfo, {

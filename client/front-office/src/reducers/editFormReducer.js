@@ -11,6 +11,9 @@ const editFormReducer = (state = initialState, action) => {
 
     case actionType.EDIT_USER_INFO:
       return { ...state };
+
+    case actionType.EDIT_USER_PASSWORD:
+      return { ...state };
     default:
       return { ...state };
   }
