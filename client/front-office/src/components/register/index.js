@@ -7,9 +7,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import * as action from '../../actions/creators';
-
 dotenv.config();
-
 const regex =
   /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
@@ -157,16 +155,14 @@ const Register = () => {
   const submitHandler = (e) => {
     setIsSubmitting(true);
     e.preventDefault();
-    serverPetition
-      .post('auth/register', fields)
-      .then(({ data: response }) => {
-        if (response.success) {
-          action.setAlert(dispatch, 'Registration successful, redirecting...', true, 'success');
-        }
-      })
-      .catch((err) => {
-        action.setError(err, dispatch);
-      });
+    serverPetition.post('auth/register', fields).then(({ data: response }) => {
+      if (response.success) {
+        action.setAlert(dispatch, 'Registration successful, redirecting...', true, 'success');
+      }
+    });
+    // .catch((err) => {
+    //   action.setError(err, dispatch);
+    // });
   };
 
   return (

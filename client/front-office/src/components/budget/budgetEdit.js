@@ -79,11 +79,16 @@ const BudgetsEdit = ({ id, name }) => {
       </Button>
       <Modal show={showModalEdit}>
         <Modal.Header>
-          <p>
+          <h3>
             Edit your Budget <span className="text-info">{name}</span>
-          </p>
+          </h3>
         </Modal.Header>
         <Modal.Body>
+          <div className="d-flex justify-content-around mb-2">
+            <b>Budget Name</b>
+            <b>Amount</b>
+          </div>
+
           <div className="d-flex center">
             <div className="input-group mb-3">
               <div className="input-group-prepend">
@@ -101,7 +106,9 @@ const BudgetsEdit = ({ id, name }) => {
                 value={newBudget.name}
               />
             </div>
-            <div className="input-group mb-3">
+
+            <div className="input-group mb-3 ml-2">
+              {' '}
               <div className="input-group-prepend">
                 <span className="input-group-text">
                   <i className="fas fa-dollar-sign" />
