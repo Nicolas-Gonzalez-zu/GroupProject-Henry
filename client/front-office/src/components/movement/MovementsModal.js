@@ -93,7 +93,7 @@ export default function MovementsModal() {
 
   const filterbudgets = budgets.filter((x) => x.status === true);
   const filterwallets = wallets.filter((x) => x.status === true);
-  console.log(filterbudgets, 'bud');
+
   return (
     <>
       <Button onClick={showModal} className="btn btn-success col-2 mr-2 ">

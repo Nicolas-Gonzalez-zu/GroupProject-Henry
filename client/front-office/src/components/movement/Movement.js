@@ -6,28 +6,11 @@ import MovementsModal from './MovementsModal';
 import MovementModalEdit from './MovementModalEdit';
 
 export default function Movement() {
-  // const getMov = {
-  //   id: 1,
-  //   amount: 85652,
-  //   type: 'INCOME',
-  //   generation_date: '2020-09-18T03:12:44.762Z',
-  //   description: 'Home Loan Account',
-  //   wallet: {
-  //     id: 1,
-  //     name: 'Savings Account',
-  //     balance: 1205,
-  //   },
-  //   budget: 'withdrawal',
-  // };
-
-  // const putMov = {
-  //   movement_id: 3,
-  //   description: 'Fui updated 2', // opcional
-  //   date: '20-12-2012 08:00:30', // opcional
-  // };
   const movements = useSelector((state) => state.movementReducer.movements);
+  const filterMovement = movements.filter((x) => x.type === 'OUTGO');
+
   const dispatch = useDispatch();
-  // console.log(movements, 'aa');
+
   useEffect(() => {
     action.getMovements(dispatch);
   }, [dispatch]);
@@ -62,7 +45,7 @@ export default function Movement() {
                         aria-controls="example2"
                         aria-label="Rendering engine: activate to sort column ascending"
                       >
-                        ID
+                        <b>ID</b>
                       </th>
                       <th
                         className="sorting sorting_desc"
@@ -109,8 +92,8 @@ export default function Movement() {
                       </th>
                     </tr>
                   </thead>
-                  {movements &&
-                    movements.map((x) => (
+                  {filterMovement &&
+                    filterMovement.slice(0, 7).map((x) => (
                       <>
                         <tbody>
                           <tr className="odd">
@@ -131,7 +114,7 @@ export default function Movement() {
                               </div>
                             </td>
                             <td>{x.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
-                            <td>
+                            <td className="text-center">
                               <MovementModalEdit
                                 id={x.id}
                                 description={x.description}
