@@ -4,6 +4,7 @@ import authReducers from './authReducers';
 import budgetReducer from './budgetReducer';
 import editFormReducer from './editFormReducer';
 import movementReducer from './movementReducer';
+import transferReducer from './transferReducer';
 
 const rootReducer = combineReducers({
   authReducers,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   budgetReducer,
   editFormReducer,
   movementReducer,
+  transferReducer,
 });
 
 export default rootReducer;
