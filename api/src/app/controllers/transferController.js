@@ -65,9 +65,10 @@ router.post('/add', async (req, res) => {
     const foundOriginWallet = await db.Wallet.findByPk(newTransfer.origin_wallet_id);
     const foundDestinationWallet = await db.Wallet.findByPk(newTransfer.destination_wallet_id);
 
-    const updatedOriginBalance = foundOriginWallet.dataValues.balance - newTransfer.amount;
+    const updatedOriginBalance =
+      Number(foundOriginWallet.dataValues.balance) - Number(newTransfer.amount);
     const updatedDestinationBalance =
-      foundDestinationWallet.dataValues.balance - newTransfer.amount;
+      Number(foundDestinationWallet.dataValues.balance) + Number(newTransfer.amount);
 
     if (updatedOriginBalance < 0) throw new Error(errorCode.UNFINISHED_OPERATION);
 
