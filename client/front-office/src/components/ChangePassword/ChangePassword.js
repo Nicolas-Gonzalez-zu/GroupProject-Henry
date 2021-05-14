@@ -61,7 +61,7 @@ const ChangePassword = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(action.changePassword(editPassword));
+    dispatch(action(editPassword));
   };
 
   return (
