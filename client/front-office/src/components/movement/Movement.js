@@ -103,7 +103,7 @@ export default function Movement() {
                             <td>{x.wallet.name}</td>
 
                             <td>
-                              <p className="text-center">{x.budget}</p>
+                              <p className="text-center">{x.budget.name}</p>
                               <div className="progress progress-xs">
                                 <div
                                   className="progress-bar bg-purple"

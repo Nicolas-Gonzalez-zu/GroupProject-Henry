@@ -1,31 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import Swal from 'sweetalert2';
 import IncomeTable from './IncomeTable';
 import IncomeModalMsj from './IncomeModalMsj';
 import * as action from '../../../actions/creators';
 
 const Income = () => {
   const wallets = useSelector((state) => state.walletReducer.wallets);
-  // aca van a estar todos los incomes, de acá va a tener q mapear luego const incomes = useSelector((state) => state.incomeReducer.incomes);
+  const incomes = useSelector((state) => state.movementReducer.movements);
+  const authAlert = useSelector((store) => store.authReducers.authAlert);
+
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    action.getWallet(dispatch);
-    // action.getIncomes(dispatch);
-  }, [dispatch]);
-  // const [income, SetIncome] = useState({
-  //   amount: '',
-  //   generation_date: '',
-  //   description: '',
-  //   type: 'INCOME',
-  //   wallet_id: '',
-  // });
-  const [incomes, setIncomes] = useState([]);
-  // const [error, setError] = useState({});
-  // const [errors, setErros] = useState(false);
-  const [showIncomeMsj, setShowIncomeMsj] = useState(false);
+  // useEffect(() => {
+  //   action.getWallet(dispatch);
+  //   action.getMovements(dispatch);
+  // }, [dispatch]);
 
+  useEffect(() => {
+    if (authAlert.fire) {
+      const position = authAlert.type === 'success' ? 'center' : 'top-end';
+
+      Swal.fire({
+        title: authAlert.message,
+        icon: authAlert.type,
+        toast: true,
+        position,
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        if (authAlert.type === 'success') {
+          action.setAlert(dispatch);
+        } else {
+          action.setAlert(dispatch);
+        }
+      });
+    }
+    action.getMovements(dispatch);
+    action.getWallet(dispatch);
+  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
+
+  const incomesFiltered = incomes.filter((i) => i.type === 'INCOME');
+  console.log(incomesFiltered);
+  // const [showIncomeMsj, setShowIncomeMsj] = useState(false);
+  console.log(incomes);
   const validate = (values) => {
     const errors = {};
     if (!/^[0-9]*$/gm.test(values.amount)) {
@@ -46,6 +65,7 @@ const Income = () => {
     }
     return errors;
   };
+
   const formik = useFormik({
     initialValues: {
       amount: null,
@@ -53,15 +73,16 @@ const Income = () => {
       generation_date: '',
       description: '',
       wallet_id: '',
+      // budget_id: '',
     },
     validate,
     onSubmit: (values) => {
-      setShowIncomeMsj(!showIncomeMsj);
-      setIncomes([...incomes, values]);
-      // action.addIncome(values, dispatch);
+      console.log(values);
+      const newValues = { ...values, amount: parseInt(values.amount, 10) };
+      console.log(newValues, 'soy new values');
+      action.addIncome(newValues, dispatch);
     },
   });
-
   return (
     <div className="d-flex flex-column m-3">
       <div className="card card-success align-self-center" style={{ width: '40%' }}>
@@ -175,7 +196,7 @@ const Income = () => {
         </form>
       </div>
       <div className="">
-        <IncomeTable movements={incomes} wallets={wallets} />
+        <IncomeTable movements={incomesFiltered} wallets={wallets} />
       </div>
     </div>
   );

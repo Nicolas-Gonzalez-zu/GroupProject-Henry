@@ -3,6 +3,7 @@ import IncomeModalEdit from './IncomeModalEdit';
 
 const IncomeTable = ({ movements }) => (
   <div className="row">
+    {console.log(movements.wallet)}
     <div className="col-12">
       <div className="card card-info">
         <div className="card-header">
@@ -20,11 +21,12 @@ const IncomeTable = ({ movements }) => (
             </thead>
             <tbody>
               {movements &&
-                movements.map((m) => (
+                movements.slice(0, 10).map((m) => (
                   <tr>
                     <td>{m.description}</td>
-                    <td>$ {m.amount}</td>
-                    <td>{m.generation_date.replace('T', ' ')}</td>
+                    <td className="text-success">$ +{m.amount}</td>
+                    <td>{m.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
+                    <td>{m.wallet.name}</td>
                     <td>
                       <IncomeModalEdit />
                     </td>
