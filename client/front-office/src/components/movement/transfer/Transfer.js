@@ -29,11 +29,14 @@ export default function Transfer() {
           action.setAlert(dispatch);
         }
       });
-      action.getTransfer(dispatch);
+
       action.getWallet(dispatch);
     }
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
+  useEffect(() => {
+    action.getTransfer(dispatch);
+  }, [dispatch]);
   const validate = (values) => {
     const errors = {};
 
