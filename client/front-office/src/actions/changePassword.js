@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config()
 import axios from 'axios';
 import * as actionType from './types';
 import { getMe, redirect } from './creators';
