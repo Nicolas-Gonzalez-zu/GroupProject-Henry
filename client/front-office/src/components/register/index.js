@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-dotenv.config()
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
@@ -9,7 +8,10 @@ import Swal from 'sweetalert2';
 
 import * as action from '../../actions/creators';
 
-const regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+dotenv.config();
+
+const regex =
+  /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
 const BASE_URL = 'http://localhost:3001/api/';
 const serverPetition = axios.create({
@@ -343,10 +345,8 @@ export default Register;
 const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword) => {
   let valid;
 
-
   const regexp =
-     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
   switch (name) {
     case 'first_name':

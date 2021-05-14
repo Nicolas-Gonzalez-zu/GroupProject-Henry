@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
-dotenv.config()
 
 import axios from 'axios';
 
 import * as actionType from './types';
 
+dotenv.config();
 const BASE_URL = 'http://localhost:3001/api/';
 
 const serverPetition = axios.create({
