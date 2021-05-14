@@ -28,6 +28,19 @@ router.get('/', (req, res) => {
           budget,
         } = movement.dataValues;
 
+        let conditionalBudget = {};
+        if (budget) {
+          conditionalBudget = {
+            id: budget.id,
+            name: budget.name,
+            amount: budget.amount,
+          };
+        } else {
+          conditionalBudget = {
+            message: 'No bucket assigned',
+          };
+        }
+
         return {
           id,
           amount,
@@ -39,7 +52,7 @@ router.get('/', (req, res) => {
             name: origin_wallet.name,
             balance: origin_wallet.balance,
           },
-          budget: budget.name,
+          budget: conditionalBudget,
         };
       });
       res.status(statusCode.OK).json(processedMovements);
