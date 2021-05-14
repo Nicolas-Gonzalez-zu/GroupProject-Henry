@@ -11,7 +11,7 @@ module.exports = {
       }),
     ]);
   },
-
+  // eslint-disable-next-line no-unused-vars
   down(queryInterface, Sequelize) {
     return Promise.all([
       queryInterface.removeColumn('ServiceCategories', 'createdAt'),

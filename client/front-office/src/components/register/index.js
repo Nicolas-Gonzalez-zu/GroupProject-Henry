@@ -154,16 +154,14 @@ const Register = () => {
   const submitHandler = (e) => {
     setIsSubmitting(true);
     e.preventDefault();
-    serverPetition
-      .post('auth/register', fields)
-      .then(({ data: response }) => {
-        if (response.success) {
-          action.setAlert(dispatch, 'Registration successful, redirecting...', true, 'success');
-        }
-      })
-      .catch((err) => {
-        action.setError(err, dispatch);
-      });
+    serverPetition.post('auth/register', fields).then(({ data: response }) => {
+      if (response.success) {
+        action.setAlert(dispatch, 'Registration successful, redirecting...', true, 'success');
+      }
+    });
+    // .catch((err) => {
+    //   action.setError(err, dispatch);
+    // });
   };
 
   return (
@@ -342,8 +340,9 @@ export default Register;
 const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword) => {
   let valid;
 
-  const regexp =
-    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
+  const regexp = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
 
   switch (name) {
     case 'first_name':
