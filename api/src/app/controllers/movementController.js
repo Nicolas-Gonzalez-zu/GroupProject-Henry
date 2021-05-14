@@ -79,11 +79,11 @@ router.post('/add', async (req, res) => {
     const createdMovement = await db.Movement.create(newMovement, { transaction: transac });
     const foundedWallet = await db.Wallet.findByPk(newMovement.wallet_id);
 
-    let updatedBalance = foundedWallet.dataValues.balance;
+    let updatedBalance = Number(foundedWallet.dataValues.balance);
     if (newMovement.type === supportCode.INCOME) {
-      updatedBalance += newMovement.amount;
+      updatedBalance += Number(newMovement.amount);
     } else {
-      updatedBalance -= newMovement.amount;
+      updatedBalance -= Number(newMovement.amount);
       if (updatedBalance < 0) throw new Error(errorCode.UNFINISHED_OPERATION);
     }
 
