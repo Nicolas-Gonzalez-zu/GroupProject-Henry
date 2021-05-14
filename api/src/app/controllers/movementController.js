@@ -17,7 +17,6 @@ router.get('/', (req, res) => {
     ],
   })
     .then((foundMovements) => {
-      console.log(foundMovements);
       const processedMovements = foundMovements.map((movement) => {
         const {
           id,
