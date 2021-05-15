@@ -104,32 +104,14 @@ export default function Movement() {
                             {x.wallet.name}
                             <br /> <span className="text-info">$ {x.wallet.balance}.00</span>
                           </td>
-                            <td>
-                              <p className="text-center">{x.budget.name}</p>
-                              <div className="progress progress-xs">
-                                <div
-                                  className="progress-bar bg-purple"
-                                  style={{
-                                    width: `${(30 / x.wallet.balance) * 100}%`,
-                                  }}
-                                />
-                              </div>
-                            </td>
-                            <td>{x.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
-                            <td className="text-center">
-                              <MovementModalEdit
-                                id={x.id}
-                                description={x.description}
-                                date={x.generation_date}
                           <td>
                             <p className="text-center">{x.budget.name}</p>
                             <div className="progress progress-xs">
                               <div
                                 className="progress-bar bg-purple"
                                 style={{
-                                  width: `${(x.budget.amount / x.wallet.balance) * 100}%`,
+                                  width: `${(30 / x.wallet.balance) * 100}%`,
                                 }}
-
                               />
                             </div>
                           </td>
@@ -140,6 +122,25 @@ export default function Movement() {
                               description={x.description}
                               date={x.generation_date}
                             />
+                            <td>
+                              <p className="text-center">{x.budget.name}</p>
+                              <div className="progress progress-xs">
+                                <div
+                                  className="progress-bar bg-purple"
+                                  style={{
+                                    width: `${(x.budget.amount / x.wallet.balance) * 100}%`,
+                                  }}
+                                />
+                              </div>
+                            </td>
+                            <td>{x.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
+                            <td className="text-center">
+                              <MovementModalEdit
+                                id={x.id}
+                                description={x.description}
+                                date={x.generation_date}
+                              />
+                            </td>
                           </td>
                         </tr>
                       </tbody>

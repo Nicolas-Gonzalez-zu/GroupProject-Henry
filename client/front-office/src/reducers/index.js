@@ -8,7 +8,6 @@ import movementReducer from './movementReducer';
 
 import transferReducer from './transferReducer';
 
-
 const rootReducer = combineReducers({
   authReducers,
   walletReducer,
