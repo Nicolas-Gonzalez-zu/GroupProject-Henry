@@ -1,6 +1,8 @@
 const express = require('express');
-const app = express();
+//const app = express();
 const pdf = require('html-pdf');
+const pug = require('pug');
+const path = require('path');
 
 const checkIfLoggedIn = require('../auth/authorizeMiddleware');
 const db = require('../../db/models');
@@ -9,18 +11,18 @@ const { errorCode, statusCode, supportCode } = require('../utils/globalCodes');
 const router = express.Router();
 router.use(checkIfLoggedIn);
 
-app.use('/static', express.static(__dirname + '/public'));
+//router.use('/static', express.static(__dirname + '/public'));
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+router.use(express.urlencoded({ extended: false }));
+router.use(express.json());
 
-app.set('views', './views');
-
-app.set('view engine', 'pug');
+//router.set('views', '../views');
+//router.set('view engine', 'pug');
 
 router.get('/', (req, res) => {
   const name = req.user.first_name;
   const lastname = req.user.last_name;
+  var file = null;
   db.Movement.findAll({
     where: { customer_id: req.user.id },
     include: [
@@ -67,11 +69,33 @@ router.get('/', (req, res) => {
           budget: conditionalBudget,
         };
       });
-      res.render('prueba.pug', { processedMovements, name, lastname });
+      //res.render('prueba.pug', { processedMovements, name, lastname });
+      const template = path.resolve(__dirname, '..', 'views', 'prueba.pug');
+      const compiledFunction = pug.compileFile(template);
+      const compiledHtml = compiledFunction({ processedMovements, name, lastname });
+      pdf.create(compiledHtml).toStream((err, file) => {
+        if (err) {
+          res.status(500).json(err);
+        } else {
+          file.pipe(res);
+          // res.status(200).json(file);
+        }
+      });
     })
-    .catch(() => {
-      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: errorCode.REJECTED_OPERATION });
+    .catch((e) => {
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: e.message });
     });
 });
 
 module.exports = router;
+
+// pug.renderFile(path, { processedMovements, name, lastname }, function (err, result) {
+//   if (result) {
+//     html = result;
+//   } else {
+//     res.end('An error occurred');
+//     console.log(err);
+//   }
+// });
+
+//res.render('prueba.pug', { processedMovements, name, lastname });
