@@ -30,7 +30,7 @@ const Wallet = () => {
   useEffect(() => {
     if (!wallet.name) {
       setError({ ...error, name: 'the name is required!' });
-    } else if (!/^[a-z][a-z\s]*$/g.test(wallet.name)) {
+    } else if (!/^[a-zA-Z\s]+$/g.test(wallet.name)) {
       setError({ ...error, name: 'this field only accepts letters!' });
     } else if (!wallet.balance) {
       setError({ ...error, balance: 'the balance is required!' });

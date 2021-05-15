@@ -17,7 +17,7 @@ const WalletModalEdit = ({ id }) => {
   useEffect(() => {
     if (!newWallet.name.length) {
       setErrorEdit({ ...errorEdit, name: 'the name is required!' });
-    } else if (!/^[a-z][a-z\s]*$/g.test(newWallet.name)) {
+    } else if (!/^[a-zA-Z\s]+$/g.test(newWallet.name)) {
       setErrorEdit({ ...errorEdit, name: 'this field only accepts letters!' });
     } else if (!newWallet.balance) {
       setErrorEdit({ ...errorEdit, balance: 'the balance is required!' });
