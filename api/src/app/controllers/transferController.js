@@ -44,8 +44,8 @@ router.get('/', (req, res) => {
       });
       res.status(statusCode.OK).json(processedTransfers);
     })
-    .catch((error) => {
-      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    .catch(() => {
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: errorCode.REJECTED_OPERATION });
     });
 });
 
@@ -65,9 +65,10 @@ router.post('/add', async (req, res) => {
     const foundOriginWallet = await db.Wallet.findByPk(newTransfer.origin_wallet_id);
     const foundDestinationWallet = await db.Wallet.findByPk(newTransfer.destination_wallet_id);
 
-    const updatedOriginBalance = foundOriginWallet.dataValues.balance - newTransfer.amount;
+    const updatedOriginBalance =
+      Number(foundOriginWallet.dataValues.balance) - Number(newTransfer.amount);
     const updatedDestinationBalance =
-      foundDestinationWallet.dataValues.balance - newTransfer.amount;
+      Number(foundDestinationWallet.dataValues.balance) + Number(newTransfer.amount);
 
     if (updatedOriginBalance < 0) throw new Error(errorCode.UNFINISHED_OPERATION);
 
@@ -93,7 +94,7 @@ router.post('/add', async (req, res) => {
     res.status(statusCode.CREATED).json(createdTransfer);
   } catch (error) {
     await transac.rollback();
-    res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 });
 

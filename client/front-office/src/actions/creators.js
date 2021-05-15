@@ -1,13 +1,16 @@
+import dotenv from 'dotenv';
+
 import axios from 'axios';
 import { getIn } from 'formik';
 
 import * as actionType from './types';
 
+dotenv.config();
 const BASE_URL = 'http://localhost:3001/api/';
 
 const serverPetition = axios.create({
   withCredentials: true,
-  baseURL: BASE_URL,
+  baseURL: process.env.REACT_APP_BACKEND_URL || BASE_URL,
   headers: {
     'Access-Control-Allow-Origin': 'localhost:3001',
   },
@@ -305,4 +308,29 @@ export const editIncome = (incomeEdited, dispatch) => {
       }
     })
     .catch((err) => setError(dispatch, err));
+};
+
+export const getTransfer = (dispatch) => {
+  serverPetition
+    .get('fo/transfer')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_TRANSFERS,
+        payload: data,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+export const addTransfer = (newTransfer, dispatch) => {
+  serverPetition
+    .post('fo/transfer/add', newTransfer)
+    .then(({ data }) => {
+      if (!data.error) {
+        getTransfer(dispatch);
+        setAlert(dispatch, 'Created Transfer Success', true, 'success');
+      }
+    })
+    .catch((e) => setError(e, dispatch));
 };

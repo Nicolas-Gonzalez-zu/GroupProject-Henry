@@ -25,11 +25,11 @@ function Budget() {
 
   const filterLabels = budgets.filter((x) => x.status === true);
   const data = {
-    labels: filterLabels.map((x) => x.name),
+    labels: filterLabels.slice(0, 10).map((x) => x.name),
     datasets: [
       {
         label: '# of Votes',
-        data: budgets.map((x) => (x.status ? x.amount : '')),
+        data: budgets.slice(0, 10).map((x) => (x.status ? x.amount : '')),
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -49,6 +49,22 @@ function Budget() {
         borderWidth: 1,
       },
     ],
+  };
+
+  const options = {
+    indexAxis: 'y',
+
+    elements: {
+      bar: {
+        borderWidth: 1,
+      },
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right',
+      },
+    },
   };
 
   const handleChange = (e) => {
@@ -161,29 +177,31 @@ function Budget() {
   };
   return (
     <div className="mx-3 mt-3">
-      {!loading && <InternalLoader />}
-      <div className="d-flex justify-content-center">
-        <div className="col-lg-3 col-6 ">
-          <div className="small-box bg-info">
-            <div className="inner">
-              <h3 className="text-center"> Total $ {total}.00</h3>
-            </div>
-            <div className="icon">
-              <i className="ion ion-bag" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="mt-3 mb-3">
-        <Doughnut width={200} height={200} data={data} options={{ maintainAspectRatio: false }} />
-      </div>
-
-      <br />
       <div className="d-flex flex-column justify-content-around">
-        <div className="align-self-center" style={{ width: '70%' }}>
+        <div className="align-self-center" style={{ width: '100%' }}>
           <div className="card card-info">
             <div className="card-header d-flex justify-content-between">
-              <h2 className="card-title align-self-center mr-auto ">Budgets</h2>
+              <h2 className="card-title align-self-center mr-auto ">Budgets Info</h2>
+            </div>
+            {!loading && <InternalLoader />}
+            <div className="d-flex justify-content-around">
+              <div className="col-lg-3 col-6 mt-5">
+                <div className="small-box bg-purple mt-5">
+                  <div className="inner">
+                    <h3 className="text-center"> Total $ {total}.00</h3>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-bag" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <Doughnut width={300} height={250} data={data} options={options} />
+              </div>
+            </div>
+
+            <div className="card-header bg-info d-flex justify-content-between">
+              <h2 className="card-title align-self-center mr-auto ">Budgets Details</h2>
             </div>
             <table className="table table-bordered ">
               <thead>
@@ -209,7 +227,7 @@ function Budget() {
               </thead>
               {loading &&
                 budgets &&
-                budgets.map((x) => (
+                budgets.slice(0, 10).map((x) => (
                   <>
                     <tbody>
                       <tr>

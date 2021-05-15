@@ -1,12 +1,14 @@
+import dotenv from 'dotenv';
 import axios from 'axios';
 import * as actionType from './types';
 import { getMe, redirect } from './creators';
 
+dotenv.config();
 const BASE_URL = 'http://localhost:3001/api/';
 
 const serverPetition = axios.create({
   withCredentials: true,
-  baseURL: BASE_URL,
+  baseURL: process.env.REACT_APP_BACKEND_URL || BASE_URL,
 });
 
 export default function changePassword(editPassword) {

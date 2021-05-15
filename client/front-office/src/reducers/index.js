@@ -6,6 +6,9 @@ import editFormReducer from './editFormReducer';
 import movementReducer from './movementReducer';
 // import incomeReducer from './incomeReducer';
 
+import transferReducer from './transferReducer';
+
+
 const rootReducer = combineReducers({
   authReducers,
   walletReducer,
@@ -13,6 +16,7 @@ const rootReducer = combineReducers({
   editFormReducer,
   movementReducer,
   // incomeReducer,
+  transferReducer,
 });
 
 export default rootReducer;

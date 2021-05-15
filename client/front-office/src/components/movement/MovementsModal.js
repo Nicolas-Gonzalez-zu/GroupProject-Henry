@@ -9,8 +9,9 @@ import * as action from '../../actions/creators';
 export default function MovementsModal() {
   const [modal, setModal] = useState(false);
   const budgets = useSelector((state) => state.budgetReducer.budgets);
-  const dispatch = useDispatch();
+  const wallets = useSelector((state) => state.walletReducer.wallets);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (authAlert.fire) {
@@ -32,12 +33,8 @@ export default function MovementsModal() {
       });
     }
     action.getBudget(dispatch);
-  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
-
-  const wallets = useSelector((state) => state.walletReducer.wallets);
-  useEffect(() => {
     action.getWallet(dispatch);
-  }, [dispatch]);
+  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const validate = (values) => {
     const errors = {};
@@ -79,11 +76,21 @@ export default function MovementsModal() {
     },
     validate,
     onSubmit: (values) => {
-      setTimeout(() => setModal(false), 1500);
+      setTimeout(() => setModal(false), 1400);
 
       action.addMovement(values, dispatch);
-
-      // alert(JSON.stringify(values, null, 2));
+      setTimeout(
+        () =>
+          formik.resetForm({
+            amount: null,
+            type: 'OUTGO',
+            generation_date: '',
+            description: '',
+            wallet_id: '',
+            budget_id: '',
+          }),
+        1500,
+      );
     },
   });
 
@@ -102,9 +109,6 @@ export default function MovementsModal() {
       <Modal show={modal} dialogClassName="modal-90w">
         <Modal.Header>
           <h3>Create a New Movement</h3>
-          <Button onClick={showModal} className="btn btn-danger">
-            X
-          </Button>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={formik.handleSubmit}>
@@ -205,8 +209,11 @@ export default function MovementsModal() {
                   <b className="text-danger">{formik.errors.budget_id}</b>
                 ) : null}
 
-                <Button type="submit" className="btn btn-success mt-5 ml-5 col-9">
+                <Button type="submit" className="btn btn-success mt-5 ml-5 col-5">
                   Create
+                </Button>
+                <Button onClick={showModal} className="btn btn-danger mt-5 ml-4">
+                  Cancel
                 </Button>
               </div>
             </div>

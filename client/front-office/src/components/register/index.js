@@ -1,18 +1,21 @@
+import dotenv from 'dotenv';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
 import * as action from '../../actions/creators';
 
 const regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+dotenv.config();
+
+const regex =
+  /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
 const BASE_URL = 'http://localhost:3001/api/';
 const serverPetition = axios.create({
   withCredentials: true,
-  baseURL: BASE_URL,
+  baseURL: process.env.REACT_APP_BACKEND_URL || BASE_URL,
   headers: {
     'Access-Control-Allow-Origin': 'localhost:3001',
   },
@@ -340,6 +343,10 @@ const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword
   let valid;
 
   const regexp = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
+  const regexp =
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
 
   switch (name) {
     case 'first_name':

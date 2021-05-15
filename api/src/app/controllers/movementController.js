@@ -57,8 +57,8 @@ router.get('/', (req, res) => {
       });
       res.status(statusCode.OK).json(processedMovements);
     })
-    .catch((error) => {
-      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    .catch(() => {
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: errorCode.REJECTED_OPERATION });
     });
 });
 
@@ -73,17 +73,17 @@ router.post('/add', async (req, res) => {
     budget_id: req.body.budget_id,
   };
 
-  const t = await sequelize.transaction();
+  const transac = await sequelize.transaction();
 
   try {
-    const createdMovement = await db.Movement.create(newMovement, { transaction: t });
+    const createdMovement = await db.Movement.create(newMovement, { transaction: transac });
     const foundedWallet = await db.Wallet.findByPk(newMovement.wallet_id);
 
-    let updatedBalance = foundedWallet.dataValues.balance;
+    let updatedBalance = Number(foundedWallet.dataValues.balance);
     if (newMovement.type === supportCode.INCOME) {
-      updatedBalance += newMovement.amount;
+      updatedBalance += Number(newMovement.amount);
     } else {
-      updatedBalance -= newMovement.amount;
+      updatedBalance -= Number(newMovement.amount);
       if (updatedBalance < 0) throw new Error(errorCode.UNFINISHED_OPERATION);
     }
 
@@ -95,11 +95,11 @@ router.post('/add', async (req, res) => {
         plain: true,
       },
     );
-    await t.commit();
+    await transac.commit();
     res.status(statusCode.CREATED).json(createdMovement);
   } catch (error) {
-    await t.rollback();
-    res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    await transac.rollback();
+    res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 });
 
@@ -119,14 +119,16 @@ router.put('/edit', (req, res) => {
         .then((updatedMovement) => {
           res.status(statusCode.OK).json(updatedMovement[1]);
         })
-        .catch((error) => {
-          res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: error.message });
+        .catch(() => {
+          res
+            .status(statusCode.INTERNAL_SERVER_ERROR)
+            .json({ error: errorCode.REJECTED_OPERATION });
         });
     } else {
-      res.status(statusCode.BAD_REQUEST).json({ message: errorCode.INCONSISTENT_DATA });
+      res.status(statusCode.BAD_REQUEST).json({ error: errorCode.INCONSISTENT_DATA });
     }
   } else {
-    res.status(statusCode.BAD_REQUEST).json({ message: errorCode.MISSING_ATTRIBUTES });
+    res.status(statusCode.BAD_REQUEST).json({ error: errorCode.MISSING_ATTRIBUTES });
   }
 });
 
