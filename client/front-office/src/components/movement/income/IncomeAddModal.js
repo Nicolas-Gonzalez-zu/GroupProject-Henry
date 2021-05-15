@@ -34,7 +34,6 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
     action.getWallet(dispatch);
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
-  // console.log(incomesFiltered);
   console.log(incomes);
 
   const validate = (values) => {
@@ -91,7 +90,9 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
       </Button>
       <Modal show={showModal}>
         <Modal.Header className="d-flex bg-info justify-content-between w-100 p-2 rounded-top">
-          <div>Add your Income</div>
+          <div>
+            <h4>Add your Income</h4>
+          </div>
           {/* <div className="align-self-end"> */}
           <button
             type="button"

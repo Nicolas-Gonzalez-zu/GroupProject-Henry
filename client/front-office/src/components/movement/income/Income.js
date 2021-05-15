@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import IncomeModalEdit from './IncomeModalEdit';
 import IncomeAddModal from './IncomeAddModal';
-import { setAlert } from '../../../actions/creators';
 
 const Income = () => {
-  const wallets = useSelector((state) => state.walletReducer.wallets);
   const incomes = useSelector((state) => state.movementReducer.movements);
-  const authAlert = useSelector((store) => store.authReducers.authAlert);
-  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const showModalHandler = () => {
     setShowModal(!showModal);
@@ -21,7 +16,7 @@ const Income = () => {
       <div className="col-12">
         <div className="card card-info">
           <div className="d-flex bg-info justify-content-between w-100 p-2 rounded-top">
-            <h3 className="card-title">Movements</h3>
+            <h3 className="">Movements - Income</h3>
             <IncomeAddModal showModal={showModal} showModalHandler={showModalHandler} />
           </div>
           <div className="card-body table-responsive p-0">
@@ -45,6 +40,7 @@ const Income = () => {
                       <td>
                         <IncomeModalEdit
                           description={m.description}
+                          name={m.wallet.name}
                           id={m.id}
                           date={m.generation_date}
                         />
