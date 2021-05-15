@@ -53,6 +53,7 @@ const IncomeModalEdit = ({ id, description, date }) => {
     validate,
     onSubmit: (values) => {
       console.log(values);
+
       action.editIncome(values, dispatch);
     },
   });
@@ -68,13 +69,17 @@ const IncomeModalEdit = ({ id, description, date }) => {
       <Modal show={showModal}>
         <Modal.Header>Edit Your Income</Modal.Header>
         <Modal.Body>
-          <form className="form-horizontal" onSubmit={formik.handleSubmit}>
+          <form
+            className="form-column d-flex flex-column justify-content-center"
+            onSubmit={formik.handleSubmit}
+          >
             <div className="card-body">
-              <div className="form-group row">
-                <label htmlFor="inputPassword3" className="col-3 col-form-label">
+              <div className=" d-inline-flex form-group flex-column ">
+                <label htmlFor="inputPassword3" className="col-4 col-form-label">
                   Generation Date
                 </label>
-                <div className="col-5">
+                <div className="col-7">
+                  <p>Date before: {date.replace('T', ' ~ ').replace('.000Z', ' ')}</p>
                   <input
                     type="datetime-local"
                     className={formik.errors.date ? 'form-control is-invalid' : 'form-control'}
@@ -94,11 +99,11 @@ const IncomeModalEdit = ({ id, description, date }) => {
                 </div>
               </div>
 
-              <div className="form-group row">
+              <div className="d-flex form-group flex-column align-self-center">
                 <label htmlFor="inputPassword3" className="col-3 col-form-label">
                   Description
                 </label>
-                <div className="col-5">
+                <div className="col-7">
                   <input
                     type="text"
                     className={
