@@ -11,7 +11,6 @@ const WalletModalEdit = ({ name, balance, id }) => {
 
   const showModalEditHandler = () => {
     setShowModalEdit(!showModalEdit);
-    console.log(id);
   };
 
   const validate = (values) => {
