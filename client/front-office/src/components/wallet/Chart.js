@@ -30,7 +30,22 @@ const Chart = ({ array }) => {
       },
     ],
   };
-  return <Doughnut width={200} height={200} data={data} options={{ maintainAspectRatio: false }} />;
+  const options = {
+    indexAxis: 'y',
+
+    elements: {
+      bar: {
+        borderWidth: 1,
+      },
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right',
+      },
+    },
+  };
+  return <Doughnut width={150} height={150} data={data} options={options} />;
 };
 
 export default Chart;
