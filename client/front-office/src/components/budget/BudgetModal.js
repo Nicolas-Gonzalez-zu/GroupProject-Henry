@@ -1,18 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import Swal from 'sweetalert2';
 import * as action from '../../actions/creators';
 
-const BudgetsEdit = ({ name, amount, id }) => {
-  const [showModalEdit, setShowModalEdit] = useState(false);
-
+const BudgetModal = () => {
+  const [showModal, setShowModal] = useState(false);
+  const authAlert = useSelector((state) => state.authReducers.authAlert);
   const dispatch = useDispatch();
-
-  const showModalEditHandler = () => {
-    setShowModalEdit(!showModalEdit);
-    console.log(id);
+  const setModalHandler = () => {
+    setShowModal(!showModal);
   };
+
+  useEffect(() => {
+    if (authAlert.fire) {
+      const position = authAlert.type === 'success' ? 'center' : 'top-end';
+
+      Swal.fire({
+        title: authAlert.message,
+        icon: authAlert.type,
+        toast: true,
+        position,
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        if (authAlert.type === 'success') {
+          action.setAlert(dispatch);
+        } else {
+          action.setAlert(dispatch);
+        }
+      });
+    }
+  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const validate = (values) => {
     const errors = {};
@@ -36,44 +56,39 @@ const BudgetsEdit = ({ name, amount, id }) => {
     },
     validate,
     onSubmit: (values) => {
-      const budgetEdit = { ...values, amount: Number(values.amount, 10), id };
-      action.editBudget(budgetEdit, dispatch);
-
+      const newBudget = { ...values, amount: Number(values.amount, 10) };
+      action.addBudget(newBudget, dispatch);
       setTimeout(() => {
-        showModalEditHandler();
-        formik.resetForm({
-          name: '',
-          amount: '',
-        });
+        setModalHandler();
+        formik.resetForm({ name: '', amount: '' });
       }, 1500);
     },
   });
-
   return (
     <div>
-      <Button onClick={showModalEditHandler} className="btn btn-info">
-        <i className="fas fa-edit	" />
+      <Button onClick={setModalHandler} className="btn-success">
+        Add Budget
       </Button>
-      <Modal show={showModalEdit}>
+      <Modal show={showModal}>
         <Modal.Header>
           <h3>
-            Edit your Budget : <b className="text-info">{name}</b>
+            Create you new <b className="text-info">Budget</b>
           </h3>
         </Modal.Header>
         <Modal.Body>
-          <form className="d-flex flex-column" onSubmit={formik.handleSubmit}>
-            <div className="d-flex flex-column justify-content-center m-3">
+          <form
+            className="d-flex flex-column justify-content-center"
+            onSubmit={formik.handleSubmit}
+          >
+            <div className="d-flex flex-column m-3">
               <label className="align-self-center">Name</label>
-              <p className="align-self-center">
-                Name before: <span className="text-danger">{name}</span>
-              </p>
               <input
                 type="text"
-                placeholder="Budget Name..."
                 name="name"
-                autoComplete="off"
-                onChange={formik.handleChange}
                 value={formik.values.name}
+                onChange={formik.handleChange}
+                placeholder="Budget Name..."
+                autoComplete="off"
                 className={
                   formik.errors.name
                     ? 'form-control is-invalid w-50 align-self-center'
@@ -86,18 +101,15 @@ const BudgetsEdit = ({ name, amount, id }) => {
                 ''
               )}
             </div>
-            <div className="d-flex flex-column justify-content m-3">
+            <div className="d-flex flex-column m-3">
               <label className="align-self-center">Amount</label>
-              <p className="align-self-center">
-                Amount before: <span className="text-danger">${amount}</span>
-              </p>
               <input
                 type="text"
-                placeholder="amount..."
                 name="amount"
-                onChange={formik.handleChange}
-                autoComplete="off"
                 value={formik.values.amount}
+                onChange={formik.handleChange}
+                placeholder="300..."
+                autoComplete="off"
                 className={
                   formik.errors.amount
                     ? 'form-control is-invalid w-50 align-self-center'
@@ -112,9 +124,9 @@ const BudgetsEdit = ({ name, amount, id }) => {
             </div>
             <div className="d-flex justify-content-center">
               <Button type="submit" className="btn btn-success">
-                Edit wallet
+                Add Budget
               </Button>
-              <Button className="btn btn-danger ml-3" onClick={showModalEditHandler}>
+              <Button className="btn btn-danger ml-3" onClick={setModalHandler}>
                 Cancel
               </Button>
             </div>
@@ -124,5 +136,4 @@ const BudgetsEdit = ({ name, amount, id }) => {
     </div>
   );
 };
-
-export default BudgetsEdit;
+export default BudgetModal;
