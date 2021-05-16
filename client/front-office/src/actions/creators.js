@@ -108,10 +108,11 @@ export const editWallet = (walletEdited, dispatch) => {
     .then(({ data }) => {
       if (!data.error) {
         getWallet(dispatch);
+        setAlert(dispatch, 'Wallet edited', true, 'success');
       }
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 //     Budgets

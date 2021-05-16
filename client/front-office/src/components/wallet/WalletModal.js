@@ -6,10 +6,6 @@ import Swal from 'sweetalert2';
 import * as action from '../../actions/creators';
 
 const WalletModal = () => {
-  // const [wallet, setWallet] = useState({
-  //   name: '',
-  //   balance: null,
-  // });
   const [showModal, setShowModal] = useState(false);
   const authAlert = useSelector((state) => state.authReducers.authAlert);
   const dispatch = useDispatch();

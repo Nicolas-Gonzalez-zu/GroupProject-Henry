@@ -1,116 +1,123 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
 import * as action from '../../actions/creators';
-import WalletModaEditlMsj from './WalletModalEditMsj';
 
-const WalletModalEdit = ({ id }) => {
+const WalletModalEdit = ({ name, balance, id }) => {
   const [showModalEdit, setShowModalEdit] = useState(false);
-  const [newWallet, setNewWallet] = useState({
-    name: '',
-    balance: null,
-  });
-  const [errorEdit, setErrorEdit] = useState({});
-  const [errorsEdit, setErrorsEdit] = useState(false);
-  const [showModalEditMsj, setShowModalMsjEdit] = useState(false);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (!newWallet.name.length) {
-      setErrorEdit({ ...errorEdit, name: 'the name is required!' });
-    } else if (!/^[a-zA-Z\s]+$/g.test(newWallet.name)) {
-      setErrorEdit({ ...errorEdit, name: 'this field only accepts letters!' });
-    } else if (!newWallet.balance) {
-      setErrorEdit({ ...errorEdit, balance: 'the balance is required!' });
-    } else if (!/^[0-9]*$/gm.test(newWallet.balance)) {
-      setErrorEdit({ ...errorEdit, balance: 'this field only accepts numbers!' });
-    }
-  }, [newWallet]);
 
-  const showModalHandler = () => {
+  const dispatch = useDispatch();
+
+  const showModalEditHandler = () => {
     setShowModalEdit(!showModalEdit);
     console.log(id);
   };
-  const setNewWalletHandler = (e) => {
-    setNewWallet({ ...newWallet, [e.target.name]: e.target.value });
-    setErrorEdit({ ...errorEdit, [e.target.name]: '' });
-  };
-  const setModalEditHandler = () => {
-    if (errorEdit.name.length > 0 || errorEdit.balance.length > 0) {
-      setShowModalMsjEdit(!showModalEditMsj);
-    } else {
-      setShowModalMsjEdit(!showModalEditMsj);
-      setShowModalEdit(!showModalEdit);
+
+  const validate = (values) => {
+    const errors = {};
+    if (!values.name) {
+      errors.name = 'The name is required!';
+    } else if (!/^[a-zA-Z\s]+$/g.test(values.name)) {
+      errors.name = 'This field only accept letters!';
     }
+    if (!values.balance) {
+      errors.balance = 'The balance is required!';
+    } else if (!/^[0-9]*$/gm.test(values.balance)) {
+      errors.balance = 'This field only accept numbers!';
+    }
+    return errors;
   };
 
-  const submitEditWallet = (e) => {
-    if (errorEdit.name.length > 0 || errorEdit.balance.length > 0) {
-      setErrorsEdit(true);
-      return setModalEditHandler();
-    }
-    setErrorsEdit(false);
-    const walletEdited = { ...newWallet, id };
-    action.editWallet(walletEdited, dispatch);
-    setNewWallet({ name: '', balance: null });
-    return setModalEditHandler();
-  };
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      balance: '',
+    },
+    validate,
+    onSubmit: (values) => {
+      const walletEdited = { ...values, balance: Number(values.balance, 10), id };
+      action.editWallet(walletEdited, dispatch);
+
+      setTimeout(() => {
+        showModalEditHandler();
+        formik.resetForm({
+          name: '',
+          balance: '',
+        });
+      }, 1500);
+    },
+  });
 
   return (
     <div>
-      {showModalEditMsj ? (
-        <WalletModaEditlMsj
-          showModalEditMsj={showModalEditMsj}
-          setModalEditHandler={setModalEditHandler}
-          errorsEdit={errorsEdit}
-        />
-      ) : (
-        <div>
-          <Button onClick={showModalHandler} className="btn btn-info">
-            <i className="fas fa-edit	" />
+      <Button onClick={showModalEditHandler} className="btn btn-info">
+        <i className="fas fa-edit	" />
+      </Button>
+      <Modal show={showModalEdit}>
+        <Modal.Header className="d-flex flex-column bg-info">
+          <Button className="btn btn-danger align-self-end" onClick={showModalEditHandler}>
+            X
           </Button>
-          <Modal show={showModalEdit}>
-            <Modal.Header>Edit your wallet please {id}</Modal.Header>
-            <Modal.Body>
-              <div className="d-flex flex-column">
-                <input
-                  type="text"
-                  placeholder="cash..."
-                  name="name"
-                  autoComplete="off"
-                  onChange={setNewWalletHandler}
-                  value={newWallet.name}
-                  className={errorEdit.name ? 'border border-danger' : 'mb-3'}
-                />
-                {errorEdit.name ? (
-                  <p className="text-danger align-self-center">{errorEdit.name}</p>
-                ) : (
-                  ''
-                )}
-                <input
-                  type="text"
-                  placeholder="balance..."
-                  name="balance"
-                  onChange={setNewWalletHandler}
-                  autoComplete="off"
-                  value={newWallet.balance}
-                  className={errorEdit.balance ? 'border border-danger' : 'mb-3'}
-                />
-                {errorEdit.balance ? (
-                  <p className="text-danger align-self-center">{errorEdit.balance}</p>
-                ) : (
-                  ''
-                )}
-              </div>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button className="btn-success" onClick={submitEditWallet}>
+          <div className="d-flex flex-column">
+            <h4>Edit your wallet </h4>
+            <h5>{name}</h5>
+          </div>
+        </Modal.Header>
+        <Modal.Body>
+          <form className="d-flex flex-column" onSubmit={formik.handleSubmit}>
+            <div className="d-flex flex-column justify-content-center m-3">
+              <label className="align-self-center">Name</label>
+
+              <input
+                type="text"
+                placeholder="cash..."
+                name="name"
+                autoComplete="off"
+                onChange={formik.handleChange}
+                value={formik.values.name}
+                className={
+                  formik.errors.name
+                    ? 'form-control is-invalid w-50 align-self-center'
+                    : 'form-control w-50 align-self-center'
+                }
+              />
+              {formik.errors.name ? (
+                <p className="text text-danger align-self-center">{formik.errors.name}</p>
+              ) : (
+                ''
+              )}
+            </div>
+            <div className="d-flex flex-column justify-content m-3">
+              <label className="align-self-center">Balance</label>
+              <p className="align-self-center">Balance before: ${balance}</p>
+              <input
+                type="text"
+                placeholder="balance..."
+                name="balance"
+                onChange={formik.handleChange}
+                autoComplete="off"
+                value={formik.values.balance}
+                className={
+                  formik.errors.balance
+                    ? 'form-control is-invalid w-50 align-self-center'
+                    : 'form-control w-50 align-self-center'
+                }
+              />
+              {formik.errors.balance ? (
+                <p className="text text-danger align-self-center">{formik.errors.balance}</p>
+              ) : (
+                ''
+              )}
+            </div>
+            <div className="d-flex justify-content-center">
+              <Button type="submit" className="btn btn-success">
                 Edit wallet
               </Button>
-              <Button onClick={showModalHandler}>Cancel</Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-      )}
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

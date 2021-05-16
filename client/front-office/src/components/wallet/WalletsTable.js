@@ -42,7 +42,7 @@ const WalletTable = ({ wallets }) => {
                 <div className="btn-group btn-group-sm">
                   {w.status ? (
                     <div className="d-flex">
-                      <WalletModalEdit id={w.id} />
+                      <WalletModalEdit id={w.id} name={w.name} balance={w.balance} />
                       <button
                         type="button"
                         className="btn btn-danger ml-2"
