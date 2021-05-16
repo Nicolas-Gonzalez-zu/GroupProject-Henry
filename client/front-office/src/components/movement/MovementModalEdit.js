@@ -77,7 +77,7 @@ export default function MovementModalEdit({ id, description, date }) {
         <Modal.Header>
           <h3>
             Movement to Edit ~ ID: <b className="text-info">{id}</b>
-          </h3>{' '}
+          </h3>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={formik.handleSubmit} className="text-center">
@@ -128,7 +128,7 @@ export default function MovementModalEdit({ id, description, date }) {
             <Button onClick={setEditOn} className="btn btn-danger mt-4 ml-4">
               Cancel
             </Button>
-          </form>{' '}
+          </form>
         </Modal.Body>
       </Modal>
     </>
