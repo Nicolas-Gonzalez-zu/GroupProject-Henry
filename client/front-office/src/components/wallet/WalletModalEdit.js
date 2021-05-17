@@ -55,9 +55,6 @@ const WalletModalEdit = ({ name, balance, id }) => {
       </Button>
       <Modal show={showModalEdit}>
         <Modal.Header className="d-flex flex-column bg-info">
-          <Button className="btn btn-danger align-self-end" onClick={showModalEditHandler}>
-            X
-          </Button>
           <div className="d-flex flex-column">
             <h4>Edit your wallet </h4>
             <h5>{name}</h5>
@@ -89,7 +86,12 @@ const WalletModalEdit = ({ name, balance, id }) => {
             </div>
             <div className="d-flex flex-column justify-content m-3">
               <label className="align-self-center">Balance</label>
-              <p className="align-self-center">Balance before: ${balance}</p>
+              <p className="align-self-center">
+                Balance before:
+                <span className="text-info">
+                  <b>${balance}</b>
+                </span>
+              </p>
               <input
                 type="text"
                 placeholder="balance..."
@@ -112,6 +114,9 @@ const WalletModalEdit = ({ name, balance, id }) => {
             <div className="d-flex justify-content-center">
               <Button type="submit" className="btn btn-success">
                 Edit wallet
+              </Button>
+              <Button className="btn btn-danger ml-3" onClick={showModalEditHandler}>
+                Cancel
               </Button>
             </div>
           </form>
