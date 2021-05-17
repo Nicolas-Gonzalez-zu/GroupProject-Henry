@@ -50,16 +50,16 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
 
   const formik = useFormik({
     initialValues: {
-      movement_id: id,
       description: '',
       date: '',
     },
     validate,
     onSubmit: (values) => {
-      action.editIncome(values, dispatch);
+      const newValues = { ...values, movement_id: id };
+      action.editIncome(newValues, dispatch);
       setTimeout(() => {
         showModalEditHandler();
-        formik.resetForm({ movement_id: id, description: '', date: '' });
+        formik.resetForm({ description: '', date: '' });
       }, 1500);
     },
   });
@@ -71,13 +71,6 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
       </Button>
       <Modal show={showModalEdit}>
         <Modal.Header className="d-flex flex-column bg-info justify-content-between w-100 p-2 rounded-top">
-          <button
-            type="button"
-            className="btn btn-danger align-self-end"
-            onClick={showModalEditHandler}
-          >
-            X
-          </button>
           <div>
             <h4>
               Edit your Income for <b>{name}</b>
@@ -148,6 +141,13 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
             <div className="d-flex justify-content-center mt-3">
               <Button type="submit" className="btn btn-success">
                 Edit income
+              </Button>
+              <Button
+                type="button"
+                className="btn btn-danger align-self-end ml-3"
+                onClick={showModalEditHandler}
+              >
+                Cancel
               </Button>
             </div>
           </form>
