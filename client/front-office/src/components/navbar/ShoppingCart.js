@@ -10,7 +10,7 @@ const ShoppingCart = () => (
   <li className="nav-item dropdown">
     <a className="nav-link" data-toggle="dropdown" href="/">
       <i className="fas fa-shopping-cart" />
-      <span className="badge badge-warning navbar-badge">{fakeServices.length}</span>
+      <span className="badge badge-danger navbar-badge">404</span>
     </a>
     <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
       <span className="dropdown-item dropdown-header">Cart ({fakeServices.length})</span>

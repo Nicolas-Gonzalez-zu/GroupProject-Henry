@@ -57,6 +57,8 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
     return errors;
   };
 
+  const walletsAvailable = wallets.filter((w) => w.status);
+
   const formik = useFormik({
     initialValues: {
       amount: '',
@@ -94,13 +96,6 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
             <h4>Add your Income</h4>
           </div>
           {/* <div className="align-self-end"> */}
-          <button
-            type="button"
-            className="btn btn-danger align-self-end"
-            onClick={showModalHandler}
-          >
-            X
-          </button>
         </Modal.Header>
         <Modal.Body>
           <form
@@ -164,7 +159,8 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
                 }
               >
                 <option selected>-</option>
-                {wallets && wallets.map((w) => <option value={w.id}>{w.name}</option>)}
+                {walletsAvailable &&
+                  walletsAvailable.map((w) => <option value={w.id}>{w.name}</option>)}
               </select>
               {formik.errors.wallet_id ? (
                 <p className="text-danger align-self-center">
@@ -198,6 +194,13 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
             <div className="d-flex justify-content-center mt-3">
               <button type="submit" className="btn btn-success align-self-end">
                 Add Income
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger align-self-end ml-3"
+                onClick={showModalHandler}
+              >
+                Cancel
               </button>
             </div>
           </form>
