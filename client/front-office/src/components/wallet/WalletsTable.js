@@ -37,7 +37,6 @@ const WalletTable = ({ wallets }) => {
                   </p>
                 )}
               </td>
-              <td>{w.id}</td>
               <td className="text-right py-0 align-middle justify-content-between">
                 <div className="btn-group btn-group-sm">
                   {w.status ? (
