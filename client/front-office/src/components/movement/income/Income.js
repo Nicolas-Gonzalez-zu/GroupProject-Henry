@@ -31,7 +31,7 @@ const Income = () => {
               </thead>
               <tbody>
                 {incomesFiltered &&
-                  incomesFiltered.slice(0, 10).map((m) => (
+                  incomesFiltered.slice(0, 7).map((m) => (
                     <tr>
                       <td>{m.description}</td>
                       <td className="text-success">$ +{m.amount}</td>

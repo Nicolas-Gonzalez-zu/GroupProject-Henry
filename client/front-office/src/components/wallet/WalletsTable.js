@@ -22,10 +22,10 @@ const WalletTable = ({ wallets }) => {
       </thead>
       <tbody>
         {wallets &&
-          wallets.map((w, i) => (
+          wallets.slice(0, 10).map((w, i) => (
             <tr>
               <td>{w.name}</td>
-              <td>${w.balance}</td>
+              <td>$ {w.balance}.00</td>
               <td>
                 {w.status ? (
                   <p className="text-success">

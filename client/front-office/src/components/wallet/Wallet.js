@@ -28,25 +28,25 @@ const Wallet = () => {
   };
 
   return (
-    <div className="d-flex p-3 flex-column">
+    <div className="d-flex flex-column justify-content-around">
       {!loading && <InternalLoader />}
-      <div className="card card-info h-25 d-inline-block">
+      <div className="card card-info">
         <div className="card card-header">
           <h3>Wallet info</h3>
         </div>
-        <div className="d-flex justify-content-around p-3">
-          <div className="w-50 p-3 d-flex">
-            <div className="small-box bg-success p-3 align-self-center" style={{ width: '60%' }}>
+        <div className="d-flex justify-content-around ">
+          <div className="col-5 col-lg-3 mt-5">
+            <div className="small-box bg-success mt-4 ">
               <div className="inner">
                 <h4>Total balance</h4>
-                <h5 className="font-weight-bold">${total}</h5>
+                <h5 className="font-weight-bold">$ {total}.00</h5>
               </div>
               <div className="icon">
                 <i className="fas fa-wallet " />
               </div>
             </div>
           </div>
-          <div style={{ width: '30%' }}>
+          <div>
             <Chart array={wallets} />
           </div>
         </div>

@@ -5,11 +5,11 @@ import { Doughnut } from 'react-chartjs-2';
 const Chart = ({ array }) => {
   const filterLabels = array.filter((x) => x.status === true);
   const data = {
-    labels: filterLabels.map((x) => x.name),
+    labels: filterLabels.slice(0, 10).map((x) => x.name.slice(0, 4)),
     datasets: [
       {
         label: '# of votes',
-        data: array.map((el) => (el.status ? el.balance : '')),
+        data: array.slice(0, 10).map((el) => (el.status ? el.balance : '')),
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -32,20 +32,20 @@ const Chart = ({ array }) => {
   };
   const options = {
     indexAxis: 'y',
-
+    maintainAspectRatio: false,
+    responsive: false,
     elements: {
       bar: {
         borderWidth: 1,
       },
     },
-    responsive: true,
     plugins: {
       legend: {
         position: 'right',
       },
     },
   };
-  return <Doughnut width={150} height={150} data={data} options={options} />;
+  return <Doughnut width={300} height={250} data={data} options={options} />;
 };
 
 export default Chart;
