@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 
 import axios from 'axios';
-import { getIn } from 'formik';
 
 import * as actionType from './types';
 

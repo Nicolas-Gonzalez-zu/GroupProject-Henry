@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { Modal, Button, Alert } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import './modalcss.css';
@@ -15,21 +15,15 @@ export default function MovementsModal() {
 
   useEffect(() => {
     if (authAlert.fire) {
-      const position = authAlert.type === 'success' ? 'center' : 'top-end';
-
       Swal.fire({
         title: authAlert.message,
         icon: authAlert.type,
         toast: true,
-        position,
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
       }).then(() => {
-        if (authAlert.type === 'success') {
-          action.setAlert(dispatch);
-        } else {
-          action.setAlert(dispatch);
-        }
+        action.setAlert(dispatch);
       });
     }
     action.getBudget(dispatch);

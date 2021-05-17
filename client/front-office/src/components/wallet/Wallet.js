@@ -37,7 +37,7 @@ const Wallet = () => {
     } else if (!/^[0-9]*$/gm.test(wallet.balance)) {
       setError({ ...error, balance: 'this field only accepts numbers!' });
     }
-  }, [wallet]);
+  }, [error, wallet]);
 
   const balances = wallets.filter((w) => w.status === true);
   const total = balances.reduce((acc, b) => acc + parseInt(b.balance, 10), 0);

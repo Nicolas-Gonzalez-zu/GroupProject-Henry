@@ -19,7 +19,7 @@ import Services from '../shop/services/Services';
 import Orders from '../orders/Orders';
 import Reports from '../reports/Reports';
 
-// import * as action from '../../actions/creators';
+// import '../../assets/plugins/bootstrap/js/bootstrap.min';
 
 const ContentWrapper = () => {
   const history = useHistory();

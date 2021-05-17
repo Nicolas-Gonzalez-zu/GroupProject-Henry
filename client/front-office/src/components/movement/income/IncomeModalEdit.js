@@ -29,7 +29,7 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
         }
       });
     }
-  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
+  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type, authAlert.title]);
 
   const showModalEditHandler = () => {
     setShowModalEdit(!showModalEdit);

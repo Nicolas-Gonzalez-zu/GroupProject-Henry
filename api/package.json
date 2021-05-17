@@ -29,10 +29,10 @@
   },
   "devDependencies": {
     "debug": "~2.6.9",
-    "eslint": "^7.25.0",
-    "eslint-config-airbnb": "^18.2.1",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.23.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.4.0",
     "nodemon": "^2.0.7",

@@ -24,7 +24,7 @@ const WalletModalEdit = ({ id }) => {
     } else if (!/^[0-9]*$/gm.test(newWallet.balance)) {
       setErrorEdit({ ...errorEdit, balance: 'this field only accepts numbers!' });
     }
-  }, [newWallet]);
+  }, [errorEdit, newWallet]);
 
   const showModalHandler = () => {
     setShowModalEdit(!showModalEdit);
