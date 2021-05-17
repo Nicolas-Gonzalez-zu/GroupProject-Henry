@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import Swal from 'sweetalert2';
-import NoAddWalletModal from './example';
+import NoAddWalletModal from './NoAddWalletModal';
 import * as action from '../../actions/creators';
 
 const WalletModal = () => {

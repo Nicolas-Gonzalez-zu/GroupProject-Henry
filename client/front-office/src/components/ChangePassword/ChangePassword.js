@@ -1,11 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+import Swal from 'sweetalert2';
+import { setAlert } from '../../actions/creators';
 import action from '../../actions/changePassword';
 
 const ChangePassword = () => {
   const dispatch = useDispatch();
-
+  const authAlert = useSelector((store) => store.authReducers.authAlert);
   const [editPassword, setEditPassword] = useState({
     actualPassword: '',
     newPassword: '',
@@ -16,6 +19,25 @@ const ChangePassword = () => {
     displayMsg: 'none',
     valid: '',
   });
+  useEffect(() => {
+    if (authAlert.fire) {
+      Swal.fire({
+        title: authAlert.message,
+        icon: authAlert.type,
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        setAlert(dispatch);
+        setEditPassword({
+          actualPassword: '',
+          newPassword: '',
+          newPassword2: '',
+        });
+      });
+    }
+  }, [authAlert, dispatch]);
 
   useEffect(() => {
     if (editPassword.actualPassword && editPassword.newPassword && editPassword.newPassword2) {
