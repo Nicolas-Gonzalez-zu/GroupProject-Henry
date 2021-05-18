@@ -5,10 +5,9 @@ import { useFormik } from 'formik';
 import Swal from 'sweetalert2';
 import * as action from '../../actions/creators';
 
-const WalletModal = () => {
+const BudgetModal = () => {
   const [showModal, setShowModal] = useState(false);
   const authAlert = useSelector((state) => state.authReducers.authAlert);
-  const wallets = useSelector((state) => state.walletReducer.wallets);
   const dispatch = useDispatch();
   const setModalHandler = () => {
     setShowModal(!showModal);
@@ -33,7 +32,6 @@ const WalletModal = () => {
         }
       });
     }
-    action.getWallet(dispatch);
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const validate = (values) => {
@@ -43,10 +41,10 @@ const WalletModal = () => {
     } else if (!/^[a-zA-Z\s]+$/g.test(values.name)) {
       errors.name = 'This field only accept letters!';
     }
-    if (!values.balance) {
-      errors.balance = 'The balance is required!';
-    } else if (!/^[0-9]*$/gm.test(values.balance)) {
-      errors.balance = 'This field only accept numbers!';
+    if (!values.amount) {
+      errors.amount = 'The amount is required!';
+    } else if (!/^[0-9]*$/gm.test(values.amount)) {
+      errors.amount = 'This field only accept numbers!';
     }
     return errors;
   };
@@ -54,34 +52,28 @@ const WalletModal = () => {
   const formik = useFormik({
     initialValues: {
       name: '',
-      balance: '',
+      amount: '',
     },
     validate,
     onSubmit: (values) => {
-      const newWallet = { ...values, balance: Number(values.balance, 10) };
-      action.addWallet(newWallet, dispatch);
+      const newBudget = { ...values, amount: Number(values.amount, 10) };
+      action.addBudget(newBudget, dispatch);
       setTimeout(() => {
         setModalHandler();
-        formik.resetForm({ name: '', balance: '' });
+        formik.resetForm({ name: '', amount: '' });
       }, 1500);
     },
   });
-
-  const walletsAvailable = wallets.filter((w) => w.status);
   return (
     <div>
-      {walletsAvailable.length < 10 ? (
-        <Button onClick={setModalHandler} className="btn-success">
-          Add Wallet
-        </Button>
-      ) : (
-        <Button className="btn-warning" disabled>
-          You cant add a new wallet
-        </Button>
-      )}
+      <Button onClick={setModalHandler} className="btn-success">
+        Add Budget
+      </Button>
       <Modal show={showModal}>
-        <Modal.Header className="d-flex flex-column bg-info">
-          <h4>Complete the inputs please</h4>
+        <Modal.Header>
+          <h3>
+            Create you new <b className="text-info">Budget</b>
+          </h3>
         </Modal.Header>
         <Modal.Body>
           <form
@@ -95,7 +87,7 @@ const WalletModal = () => {
                 name="name"
                 value={formik.values.name}
                 onChange={formik.handleChange}
-                placeholder="cash..."
+                placeholder="Budget Name..."
                 autoComplete="off"
                 className={
                   formik.errors.name
@@ -110,29 +102,29 @@ const WalletModal = () => {
               )}
             </div>
             <div className="d-flex flex-column m-3">
-              <label className="align-self-center">Balance</label>
+              <label className="align-self-center">Amount</label>
               <input
                 type="text"
-                name="balance"
-                value={formik.values.balance}
+                name="amount"
+                value={formik.values.amount}
                 onChange={formik.handleChange}
                 placeholder="300..."
                 autoComplete="off"
                 className={
-                  formik.errors.balance
+                  formik.errors.amount
                     ? 'form-control is-invalid w-50 align-self-center'
                     : 'form-control w-50 align-self-center'
                 }
               />
-              {formik.errors.balance ? (
-                <p className="text text-danger align-self-center">{formik.errors.balance}</p>
+              {formik.errors.amount ? (
+                <p className="text text-danger align-self-center">{formik.errors.amount}</p>
               ) : (
                 ''
               )}
             </div>
             <div className="d-flex justify-content-center">
               <Button type="submit" className="btn btn-success">
-                Add wallet
+                Add Budget
               </Button>
               <Button className="btn btn-danger ml-3" onClick={setModalHandler}>
                 Cancel
@@ -144,4 +136,4 @@ const WalletModal = () => {
     </div>
   );
 };
-export default WalletModal;
+export default BudgetModal;

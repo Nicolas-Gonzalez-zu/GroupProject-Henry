@@ -1,14 +1,18 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+
+import Swal from 'sweetalert2';
 import axios from 'axios';
+import { setAlert } from '../../actions/creators';
 import * as action from '../../actions/editForm';
 
 const EditForm = () => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const userData = useSelector((store) => store.authReducers.sessionData.loggedUser);
+  const authAlert = useSelector((store) => store.authReducers.authAlert);
   const [editProfile, setEditProfile] = useState({
     file: null,
     userInfo: null,
@@ -20,8 +24,7 @@ const EditForm = () => {
   });
   const BASE_URL = 'http://localhost:3001/api/';
   const [validatingMail, setvalidatingMail] = useState(false);
-  const regex =
-    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+  const regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
   const serverPetition = axios.create({
     withCredentials: true,
     baseURL: BASE_URL,
@@ -29,6 +32,23 @@ const EditForm = () => {
       'Access-Control-Allow-Origin': 'localhost:3001',
     },
   });
+
+  useEffect(() => {
+    if (authAlert.fire) {
+      Swal.fire({
+        title: authAlert.message,
+        icon: authAlert.type,
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        setAlert(dispatch);
+        setEditProfile({ ...editProfile, userInfo: null });
+      });
+    }
+  }, [authAlert, dispatch]);
+
   const onChange = (e) => {
     console.log(e.target.name);
     if (e.target.name === 'email') {
@@ -42,7 +62,7 @@ const EditForm = () => {
               const { exists } = data;
               if (exists) {
                 setFormValid({ ...formValid, valid: 'is-invalid', displayMsg: 'inline' });
-                console.log(formValid, ' estoy aca');
+
                 setvalidatingMail(false);
               } else {
                 setFormValid({ ...formValid, valid: 'is-valid', displayMsg: 'none' });
@@ -92,8 +112,8 @@ const EditForm = () => {
       </div>
       <form onSubmit={submitHandler} encType="multipart/form-data">
         <div className="card-body">
-          <div className="input-group mb-3 col-7">
-            <label htmlFor="exampleInputEmail1">Email address</label>
+          <label htmlFor="exampleInputEmail1">Email address</label>
+          <div className="input-group pb-3">
             <span
               id="exampleInputEmail1-error"
               className="error invalid-feedback col-12"
@@ -107,8 +127,9 @@ const EditForm = () => {
               onChange={(e) => onChange(e)}
               name="email"
               type="email"
-              className={`form-control ${formValid.valid}`}
+              className={`form-control ${formValid.valid} `}
               id="exampleInputEmail1"
+              value={editProfile.userInfo ? editProfile.userInfo.email : ''}
               placeholder="Enter email"
             />
             <div className="input-group-append">
@@ -117,16 +138,22 @@ const EditForm = () => {
               </div>
             </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputTel">Phone</label>
+          <label htmlFor="exampleInputTel">Phone</label>
+          <div className="input-group pb-3">
             <input
               onChange={(e) => onChange(e)}
               name="phone"
               type="number"
               className="form-control"
               id="exampleInputTel"
+              value={editProfile.userInfo ? editProfile.userInfo.phone : ''}
               placeholder="Enter phone"
             />
+            <div className="input-group-append">
+              <div className="input-group-text">
+                <span className="fas fa-phone" />
+              </div>
+            </div>
           </div>
           <Link to="/changePassword" className="btn btn-primary">
             <b>Change Password</b>

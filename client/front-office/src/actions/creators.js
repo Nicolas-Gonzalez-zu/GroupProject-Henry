@@ -81,10 +81,11 @@ export const addWallet = (newWallet, dispatch) => {
     .then(({ data }) => {
       if (!data.error) {
         getWallet(dispatch);
+        setAlert(dispatch, 'Wallet added', true, 'success');
       }
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 export const changeWalletStatus = (dataChange, dispatch) => {
@@ -94,10 +95,11 @@ export const changeWalletStatus = (dataChange, dispatch) => {
       console.log(data, 'soy la data del action');
       if (!data.error) {
         getWallet(dispatch);
+        setAlert(dispatch, 'Wallet status changed', true, 'success');
       }
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 export const editWallet = (walletEdited, dispatch) => {
@@ -106,10 +108,11 @@ export const editWallet = (walletEdited, dispatch) => {
     .then(({ data }) => {
       if (!data.error) {
         getWallet(dispatch);
+        setAlert(dispatch, 'Wallet edited', true, 'success');
       }
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 //     Budgets
@@ -133,10 +136,11 @@ export const addBudget = (newBudget, dispatch) => {
     .then(({ data }) => {
       if (!data.error) {
         getBudget(dispatch);
+        setAlert(dispatch, 'Budget added', true, 'success');
       }
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 export const changeBudgetStatus = (dataChange, dispatch) => {
@@ -146,10 +150,11 @@ export const changeBudgetStatus = (dataChange, dispatch) => {
       console.log(data, 'soy la data del action');
       if (!data.error) {
         getBudget(dispatch);
+        setAlert(dispatch, 'Budget status changed', true, 'success');
       }
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 export const editBudget = (budgetEdited, dispatch) => {
@@ -158,10 +163,11 @@ export const editBudget = (budgetEdited, dispatch) => {
     .then(({ data }) => {
       if (!data.error) {
         getBudget(dispatch);
+        setAlert(dispatch, 'Budget edited', true, 'success');
       }
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 

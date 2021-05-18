@@ -22,10 +22,10 @@ const WalletTable = ({ wallets }) => {
       </thead>
       <tbody>
         {wallets &&
-          wallets.map((w, i) => (
+          wallets.slice(0, 10).map((w, i) => (
             <tr>
               <td>{w.name}</td>
-              <td>${w.balance}</td>
+              <td>$ {w.balance}.00</td>
               <td>
                 {w.status ? (
                   <p className="text-success">
@@ -37,12 +37,11 @@ const WalletTable = ({ wallets }) => {
                   </p>
                 )}
               </td>
-              <td>{w.id}</td>
               <td className="text-right py-0 align-middle justify-content-between">
                 <div className="btn-group btn-group-sm">
                   {w.status ? (
                     <div className="d-flex">
-                      <WalletModalEdit id={w.id} />
+                      <WalletModalEdit id={w.id} name={w.name} balance={w.balance} />
                       <button
                         type="button"
                         className="btn btn-danger ml-2"
