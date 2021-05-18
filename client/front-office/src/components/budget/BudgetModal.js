@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import Swal from 'sweetalert2';
+import FormDefault from '../FormDefault/FormDefault';
 import * as action from '../../actions/creators';
 
 const BudgetModal = () => {
@@ -80,48 +81,12 @@ const BudgetModal = () => {
             className="d-flex flex-column justify-content-center"
             onSubmit={formik.handleSubmit}
           >
-            <div className="d-flex flex-column m-3">
-              <label className="align-self-center">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                placeholder="Budget Name..."
-                autoComplete="off"
-                className={
-                  formik.errors.name
-                    ? 'form-control is-invalid w-50 align-self-center'
-                    : 'form-control w-50 align-self-center'
-                }
-              />
-              {formik.errors.name ? (
-                <p className="text text-danger align-self-center">{formik.errors.name}</p>
-              ) : (
-                ''
-              )}
-            </div>
-            <div className="d-flex flex-column m-3">
-              <label className="align-self-center">Amount</label>
-              <input
-                type="text"
-                name="amount"
-                value={formik.values.amount}
-                onChange={formik.handleChange}
-                placeholder="300..."
-                autoComplete="off"
-                className={
-                  formik.errors.amount
-                    ? 'form-control is-invalid w-50 align-self-center'
-                    : 'form-control w-50 align-self-center'
-                }
-              />
-              {formik.errors.amount ? (
-                <p className="text text-danger align-self-center">{formik.errors.amount}</p>
-              ) : (
-                ''
-              )}
-            </div>
+            <FormDefault
+              values={formik.values}
+              errors={formik.errors}
+              handleChange={formik.handleChange}
+              inputType={['text', 'text']}
+            />
             <div className="d-flex justify-content-center">
               <Button type="submit" className="btn btn-success">
                 Add Budget
@@ -137,3 +102,48 @@ const BudgetModal = () => {
   );
 };
 export default BudgetModal;
+
+{
+  /* <div className="d-flex flex-column m-3">
+<label className="align-self-center">Name</label>
+<input
+  type="text"
+  name="name"
+  value={formik.values.name}
+  onChange={formik.handleChange}
+  placeholder="Budget Name..."
+  autoComplete="off"
+  className={
+    formik.errors.name
+      ? 'form-control is-invalid w-50 align-self-center'
+      : 'form-control w-50 align-self-center'
+  }
+/>
+{formik.errors.name ? (
+  <p className="text text-danger align-self-center">{formik.errors.name}</p>
+) : (
+  ''
+)}
+</div>
+<div className="d-flex flex-column m-3">
+<label className="align-self-center">Amount</label>
+<input
+  type="text"
+  name="amount"
+  value={formik.values.amount}
+  onChange={formik.handleChange}
+  placeholder="300..."
+  autoComplete="off"
+  className={
+    formik.errors.amount
+      ? 'form-control is-invalid w-50 align-self-center'
+      : 'form-control w-50 align-self-center'
+  }
+/>
+{formik.errors.amount ? (
+  <p className="text text-danger align-self-center">{formik.errors.amount}</p>
+) : (
+  ''
+)}
+</div> */
+}
