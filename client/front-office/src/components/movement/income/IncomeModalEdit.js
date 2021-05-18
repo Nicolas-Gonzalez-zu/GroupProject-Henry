@@ -1,16 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import * as action from '../../../actions/creators';
 
-const IncomeModalEdit = ({ id, description, date }) => {
-  const [showModal, setShowModal] = useState(false);
+const IncomeModalEdit = ({ name, id, description, date }) => {
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const authAlert = useSelector((state) => state.authReducers.authAlert);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (authAlert.fire) {
+      const position = authAlert.type === 'success' ? 'center' : 'top-end';
+
+      Swal.fire({
+        title: authAlert.title,
+        icon: authAlert.type,
+        toast: true,
+        position,
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        if (authAlert.type === 'success') {
+          action.setAlert(dispatch);
+        } else {
+          action.setAlert(dispatch);
+        }
+      });
+    }
+  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
+
+  const showModalEditHandler = () => {
+    setShowModalEdit(!showModalEdit);
+  };
+
   const validate = (values) => {
     const errors = {};
-    if (!values.generation_date) {
-      errors.generation_date = 'the generation date is required';
+    if (!values.date) {
+      errors.date = 'the generation date is required';
     }
     if (!values.description) {
       errors.description = 'the description is required';
@@ -22,93 +50,110 @@ const IncomeModalEdit = ({ id, description, date }) => {
 
   const formik = useFormik({
     initialValues: {
-      movement_id: id,
-      description,
-      date,
+      description: '',
+      date: '',
     },
     validate,
     onSubmit: (values) => {
-      setShowModal(!showModal);
-      action.editIncome(values, dispatch);
+      const newValues = { ...values, movement_id: id };
+      action.editIncome(newValues, dispatch);
+      setTimeout(() => {
+        showModalEditHandler();
+        formik.resetForm({ description: '', date: '' });
+      }, 1500);
     },
   });
-  const showModalHandler = () => {
-    setShowModal(!showModal);
-  };
 
   return (
-    <>
-      <Button onClick={showModalHandler}>
+    <div className="d-flex">
+      <Button onClick={showModalEditHandler}>
         <i className="fas fa-edit" />
       </Button>
-      <Modal show={showModal}>
-        <Modal.Header>Edit Your Income</Modal.Header>
-        <Modal.Body>
-          <form className="form-horizontal" onSubmit={formik.handleSubmit}>
-            <div className="card-body">
-              <div className="form-group row">
-                <label htmlFor="inputPassword3" className="col-3 col-form-label">
-                  Generation Date
-                </label>
-                <div className="col-5">
-                  <input
-                    type="datetime-local"
-                    className={
-                      formik.errors.generation_date ? 'form-control is-invalid' : 'form-control'
-                    }
-                    placeholder=".col-3"
-                    name="generation_date"
-                    value={formik.values.generation_date}
-                    onChange={formik.handleChange}
-                  />
-                  {formik.errors.generation_date ? (
-                    <p className="text-danger">
-                      <b>{formik.errors.generation_date}</b>
-                    </p>
-                  ) : (
-                    ''
-                  )}
-                </div>
-              </div>
+      <Modal show={showModalEdit}>
+        <Modal.Header className="d-flex flex-column bg-info justify-content-between w-100 p-2 rounded-top">
+          <div>
+            <h4>
+              Edit your Income for <b>{name}</b>
+            </h4>
+          </div>
 
-              <div className="form-group row">
-                <label htmlFor="inputPassword3" className="col-3 col-form-label">
-                  Description
-                </label>
-                <div className="col-5">
-                  <input
-                    type="text"
-                    className={
-                      formik.errors.description ? 'form-control is-invalid' : 'form-control'
-                    }
-                    placeholder="description..."
-                    name="description"
-                    value={formik.values.description}
-                    autoComplete="off"
-                    onChange={formik.handleChange}
-                  />
-                  {formik.errors.description ? (
-                    <p className="text-danger">
-                      <b>{formik.errors.description}</b>
-                    </p>
-                  ) : (
-                    ''
-                  )}
-                </div>
-              </div>
+          {/* <div className="align-self-end"> */}
+        </Modal.Header>
+        <Modal.Body>
+          <form
+            className="d-flex flex-column justify-content-center"
+            onSubmit={formik.handleSubmit}
+          >
+            <div className="d-flex flex-column m-3">
+              <label className="align-self-center">Generation Date</label>
+
+              <input
+                type="datetime-local"
+                className={
+                  formik.errors.date
+                    ? 'form-control is-invalid w-50 align-self-center'
+                    : 'form-control w-50 align-self-center'
+                }
+                name="date"
+                value={formik.values.date}
+                onChange={formik.handleChange}
+              />
+              <p className="align-self-center">
+                Date before:{' '}
+                <b className="text text-info">{date.replace('T', ' ~ ').replace('.000Z', ' ')}</b>
+              </p>
+              {formik.errors.date ? (
+                <p className="text-danger align-self-center">
+                  <b>{formik.errors.date}</b>
+                </p>
+              ) : (
+                ''
+              )}
             </div>
-            <div className="card-footer d-flex justify-content-between w-100">
+
+            <div className="d-flex flex-column m-3">
+              <label className="align-self-center">Description</label>
+
+              <input
+                type="text"
+                className={
+                  formik.errors.description
+                    ? 'form-control is-invalid w-55 align-self-center'
+                    : 'form-control w-55 align-self-center'
+                }
+                name="description"
+                autoComplete="off"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+              />
+              <p className="align-self-center">
+                Description before: <b className="text text-info">{description}</b>
+              </p>
+              {formik.errors.description ? (
+                <p className="text-danger align-self-center">
+                  <b>{formik.errors.description}</b>
+                </p>
+              ) : (
+                ''
+              )}
+            </div>
+            <hr />
+            <div className="d-flex justify-content-center mt-3">
               <Button type="submit" className="btn btn-success">
                 Edit income
               </Button>
-              <Button className="btn btn-info " onClick={showModalHandler}>
+              <Button
+                type="button"
+                className="btn btn-danger align-self-end ml-3"
+                onClick={showModalEditHandler}
+              >
                 Cancel
               </Button>
             </div>
           </form>
         </Modal.Body>
       </Modal>
-    </>
+    </div>
   );
 };
 export default IncomeModalEdit;

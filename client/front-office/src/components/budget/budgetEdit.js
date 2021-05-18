@@ -1,149 +1,125 @@
 import React, { useState } from 'react';
-import { Modal, Button, Alert } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
 import * as action from '../../actions/creators';
 
-const BudgetsEdit = ({ id, name }) => {
-  const [errors, setErrors] = useState({});
+const BudgetsEdit = ({ name, amount, id }) => {
   const [showModalEdit, setShowModalEdit] = useState(false);
-  const [stateError, setstateError] = useState(false);
-  const [stateok, setstateok] = useState(false);
-  const [newBudget, setnewBudget] = useState({
-    name: '',
-    amount: null,
-  });
+
   const dispatch = useDispatch();
-  const showModalHandler = () => {
+
+  const showModalEditHandler = () => {
     setShowModalEdit(!showModalEdit);
+    console.log(id);
   };
 
-  const showModal = () => {
-    setstateError(!stateError);
-    setTimeout(() => setstateError(false), 2000);
-  };
-  const showModalok = () => {
-    setstateok(!stateok);
-    setTimeout(() => setstateok(false), 1000);
+  const validate = (values) => {
+    const errors = {};
+    if (!values.name) {
+      errors.name = 'The name is required!';
+    } else if (!/^[a-zA-Z\s]+$/g.test(values.name)) {
+      errors.name = 'This field only accept letters!';
+    }
+    if (!values.amount) {
+      errors.amount = 'The amount is required!';
+    } else if (!/^[0-9]*$/gm.test(values.amount)) {
+      errors.amount = 'This field only accept numbers!';
+    }
+    return errors;
   };
 
-  const setnewBudgetHandler = (e) => {
-    setnewBudget({ ...newBudget, [e.target.name]: e.target.value });
-    setErrors(
-      validate({
-        ...newBudget,
-        [e.target.name]: e.target.value,
-      }),
-    );
-  };
-  const submitEditBudget = () => {
-    if (!newBudget.name || !newBudget.amount) {
-      return showModal();
-    }
-    if (
-      typeof newBudget.name === 'number' ||
-      /[a-zA-Z]+/g.test(newBudget.amount) ||
-      newBudget.amount.length < 2
-    ) {
-      console.log(typeof newBudget.name, typeof newBudget.amount);
-      return showModal();
-    }
-    const budgetEdits = { ...newBudget, id };
-    action.editBudget(budgetEdits, dispatch);
-    setTimeout(() => setShowModalEdit(!showModalEdit), 1000);
-    setnewBudget({
+  const formik = useFormik({
+    initialValues: {
       name: '',
-      amount: null,
-    });
-    return showModalok();
-  };
+      amount: '',
+    },
+    validate,
+    onSubmit: (values) => {
+      const budgetEdit = { ...values, amount: Number(values.amount, 10), id };
+      action.editBudget(budgetEdit, dispatch);
 
-  const validate = () => {
-    const error = {};
-    console.log(newBudget.amount, 'asa');
-
-    if (!newBudget.name) {
-      error.name = ' • Budget name is required';
-    }
-
-    if (isNaN(newBudget.amount) || !newBudget.amount) {
-      error.amount = ' • Amount must be a Number!';
-    }
-
-    return error;
-  };
+      setTimeout(() => {
+        showModalEditHandler();
+        formik.resetForm({
+          name: '',
+          amount: '',
+        });
+      }, 1500);
+    },
+  });
 
   return (
     <div>
-      <Button onClick={showModalHandler} className="btn btn-info">
+      <Button onClick={showModalEditHandler} className="btn btn-info">
         <i className="fas fa-edit	" />
       </Button>
       <Modal show={showModalEdit}>
         <Modal.Header>
           <h3>
-            Edit your Budget <span className="text-info">{name}</span>
+            Edit your Budget : <b className="text-info">{name}</b>
           </h3>
         </Modal.Header>
         <Modal.Body>
-          <div className="d-flex justify-content-around mb-2">
-            <b>Budget Name</b>
-            <b>Amount</b>
-          </div>
-
-          <div className="d-flex center">
-            <div className="input-group mb-3">
-              <div className="input-group-prepend">
-                <span className="input-group-text">
-                  <i className="fas fa-file-contract" />
-                </span>
-              </div>
+          <form className="d-flex flex-column" onSubmit={formik.handleSubmit}>
+            <div className="d-flex flex-column justify-content-center m-3">
+              <label className="align-self-center">Name</label>
+              <p className="align-self-center">
+                Name before: <span className="text-danger">{name}</span>
+              </p>
               <input
                 type="text"
                 placeholder="Budget Name..."
-                className={`${errors.name ? 'form-control is-invalid' : 'form-control'}`}
                 name="name"
                 autoComplete="off"
-                onChange={setnewBudgetHandler}
-                value={newBudget.name}
+                onChange={formik.handleChange}
+                value={formik.values.name}
+                className={
+                  formik.errors.name
+                    ? 'form-control is-invalid w-50 align-self-center'
+                    : 'form-control w-50 align-self-center'
+                }
               />
+              {formik.errors.name ? (
+                <p className="text text-danger align-self-center">{formik.errors.name}</p>
+              ) : (
+                ''
+              )}
             </div>
-
-            <div className="input-group mb-3 ml-2">
-              {' '}
-              <div className="input-group-prepend">
-                <span className="input-group-text">
-                  <i className="fas fa-dollar-sign" />
-                </span>
-              </div>
+            <div className="d-flex flex-column justify-content m-3">
+              <label className="align-self-center">Amount</label>
+              <p className="align-self-center">
+                Amount before: <span className="text-danger">${amount}</span>
+              </p>
               <input
                 type="text"
-                className={`${errors.amount ? 'form-control is-invalid' : 'form-control '}`}
-                placeholder="Amount..."
-                autoComplete="off"
+                placeholder="amount..."
                 name="amount"
-                onChange={setnewBudgetHandler}
-                value={newBudget.amount}
+                onChange={formik.handleChange}
+                autoComplete="off"
+                value={formik.values.amount}
+                className={
+                  formik.errors.amount
+                    ? 'form-control is-invalid w-50 align-self-center'
+                    : 'form-control w-50 align-self-center'
+                }
               />
+              {formik.errors.amount ? (
+                <p className="text text-danger align-self-center">{formik.errors.amount}</p>
+              ) : (
+                ''
+              )}
             </div>
-          </div>
-          <p className="d-flex justify-content-around  ">
-            {errors.name && <p className="text-danger">{errors.name}!</p>}
-            {errors.amount && <p className="text-danger">{errors.amount}!</p>}
-          </p>
+            <div className="d-flex justify-content-center">
+              <Button type="submit" className="btn btn-success">
+                Edit wallet
+              </Button>
+              <Button className="btn btn-danger ml-3" onClick={showModalEditHandler}>
+                Cancel
+              </Button>
+            </div>
+          </form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button className="btn-success" onClick={submitEditBudget}>
-            Change Budget
-          </Button>
-          <Button onClick={showModalHandler} className="btn-danger">
-            Cancel
-          </Button>
-        </Modal.Footer>
-        <Alert show={stateError} variant="danger" className="text-center m-2">
-          Please complete the both values corretly
-        </Alert>
-        <Alert show={stateok} variant="success" className="text-center m-2">
-          Budget Change success
-        </Alert>
       </Modal>
     </div>
   );

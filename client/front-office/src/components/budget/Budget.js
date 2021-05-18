@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { useSelector, useDispatch } from 'react-redux';
-import { Alert } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import * as action from '../../actions/creators';
 import BudgetsEdit from './budgetEdit';
 import InternalLoader from '../loaders/InternalLoader';
+import BudgetModal from './BudgetModal';
 
 function Budget() {
-  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
-  const [stateError, setstateError] = useState(false);
-  const [stateok, setstateok] = useState(false);
-  const [newBudgets, setNewBudgets] = useState({
-    name: '',
-    amount: '',
-  });
 
   const budgets = useSelector((state) => state.budgetReducer.budgets);
   const dispatch = useDispatch();
@@ -25,11 +19,11 @@ function Budget() {
 
   const filterLabels = budgets.filter((x) => x.status === true);
   const data = {
-    labels: filterLabels.map((x) => x.name),
+    labels: filterLabels.slice(0, 10).map((x) => x.name.slice(0, 4)),
     datasets: [
       {
         label: '# of Votes',
-        data: budgets.map((x) => (x.status ? x.amount : '')),
+        data: budgets.slice(0, 10).map((x) => (x.status ? x.amount : '')),
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -51,35 +45,20 @@ function Budget() {
     ],
   };
 
-  const handleChange = (e) => {
-    setNewBudgets({
-      ...newBudgets,
-      [e.target.name]: e.target.value,
-    });
-    setErrors(
-      validate({
-        ...newBudgets,
-        [e.target.name]: e.target.value,
-      }),
-    );
-  };
+  const options = {
+    indexAxis: 'y',
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!newBudgets.name || !newBudgets.amount) {
-      return showModal();
-    }
-    if (
-      typeof newBudgets.name === 'number' ||
-      /[a-zA-Z]+/g.test(newBudgets.amount) ||
-      newBudgets.amount.length < 2
-    ) {
-      console.log(typeof newBudgets.name, typeof newBudgets.amount);
-      return showModal();
-    }
-    action.addBudget(newBudgets, dispatch);
-
-    return showModalok();
+    elements: {
+      bar: {
+        borderWidth: 1,
+      },
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right',
+      },
+    },
   };
 
   const changeStatus = (id, status) => {
@@ -137,53 +116,40 @@ function Budget() {
     reset();
   };
 
-  const validate = () => {
-    const error = {};
-
-    if (!newBudgets.name || newBudgets.name.length < 2) {
-      error.name = ' • Budget name is required';
-    }
-    console.log(newBudgets.amount.length, 'ss');
-    if (isNaN(newBudgets.amount) || !newBudgets.amount) {
-      error.amount = ' • Amount must be a Number!';
-    }
-
-    return error;
-  };
-
-  const showModal = () => {
-    setstateError(!stateError);
-    setTimeout(() => setstateError(false), 2000);
-  };
-  const showModalok = () => {
-    setstateok(!stateok);
-    setTimeout(() => setstateok(false), 1000);
-  };
   return (
     <div className="mx-3 mt-3">
-      {!loading && <InternalLoader />}
-      <div className="d-flex justify-content-center">
-        <div className="col-lg-3 col-6 ">
-          <div className="small-box bg-info">
-            <div className="inner">
-              <h3 className="text-center"> Total $ {total}.00</h3>
-            </div>
-            <div className="icon">
-              <i className="ion ion-bag" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="mt-3 mb-3">
-        <Doughnut width={200} height={200} data={data} options={{ maintainAspectRatio: false }} />
-      </div>
-
-      <br />
       <div className="d-flex flex-column justify-content-around">
-        <div className="align-self-center" style={{ width: '70%' }}>
+        <div className="align-self-center" style={{ width: '100%' }}>
           <div className="card card-info">
             <div className="card-header d-flex justify-content-between">
-              <h2 className="card-title align-self-center mr-auto ">Budgets</h2>
+              <h3>Budgets Info</h3>
+            </div>
+            {!loading && <InternalLoader />}
+            <div className="d-flex justify-content-around">
+              <div className="col-lg-3 col-6 mt-5">
+                <div className="small-box bg-purple mt-5">
+                  <div className="inner">
+                    <h3 className="text-center"> Total $ {total}.00</h3>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-bag" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <Doughnut width={300} height={250} data={data} options={options} />
+              </div>
+            </div>
+
+            <div className="card-header bg-info d-flex justify-content-between">
+              <h2 className="card-title align-self-center mr-auto ">Budgets Details</h2>
+              {budgets.length < 10 ? (
+                <BudgetModal />
+              ) : (
+                <Button className="btn-warning" disabled>
+                  You cant add a new Budget
+                </Button>
+              )}
             </div>
             <table className="table table-bordered ">
               <thead>
@@ -209,7 +175,7 @@ function Budget() {
               </thead>
               {loading &&
                 budgets &&
-                budgets.map((x) => (
+                budgets.slice(0, 10).map((x) => (
                   <>
                     <tbody>
                       <tr>
@@ -232,7 +198,7 @@ function Budget() {
                                 
                             {x.status ? (
                               <>
-                                <BudgetsEdit id={x.id} name={x.name} />
+                                <BudgetsEdit id={x.id} name={x.name} amount={x.amount} />
                                     
                                 <button
                                   type="button"
@@ -261,92 +227,6 @@ function Budget() {
           </div>
         </div>
       </div>
-      {budgets.length < 15 ? (
-        <>
-          <div>
-            <button
-              className="btn btn-success btn-lg btn-block"
-              type="button"
-              data-toggle="collapse"
-              data-target="#collapseExample"
-              aria-expanded="false"
-              aria-controls="collapseExample"
-            >
-              Open to Create a New Budget
-            </button>
-          </div>
-          <div className="collapse" id="collapseExample">
-            <div className="card card-body ">
-              <form>
-                <div className="d-flex justify-content-center">
-                  <b>                            Budget Name </b>
-                                                
-                  <b>   Budget Ammount </b>                              
-                </div>
-                <div className="d-flex justify-content-center ">
-                  <div className="d-flex justify-content-center col-4">
-                    <div className="input-group-prepend">
-                      <span className="input-group-text">
-                        <i className="fas fa-file-contract" />
-                      </span>
-                    </div>
-                    <input
-                      placeholder="Budget name..."
-                      type="text"
-                      className={`${errors.name ? 'form-control is-invalid' : 'form-control'}`}
-                      name="name"
-                      autoComplete="off"
-                      onChange={(e) => handleChange(e)}
-                      value={newBudgets.name}
-                    />
-                      
-                    <div className="input-group-prepend">
-                      <span className="input-group-text">
-                        <i className="fas fa-dollar-sign" />
-                      </span>
-                    </div>
-                    <input
-                      placeholder="Budget amount..."
-                      type="text"
-                      className={`${errors.amount ? 'form-control is-invalid' : 'form-control'}`}
-                      name="amount"
-                      autoComplete="off"
-                      onChange={(e) => handleChange(e)}
-                      value={newBudgets.amount}
-                    />
-                     
-                  </div>
-                      
-                </div>
-                <p className="d-flex justify-content-center  ">
-                  {errors.name && <p className="text-danger">{errors.name}!</p>}    
-                  {errors.amount && <p className="text-danger">{errors.amount}!</p>}
-                </p>{' '}
-                <div className="d-flex justify-content-center">
-                  <Alert show={stateError} variant="danger">
-                    Please complete the both values corretly
-                  </Alert>
-                  <Alert show={stateok} variant="success">
-                    Budget Change success
-                  </Alert>
-                </div>
-                <br />
-                <div className="d-flex justify-content-center">
-                  <button
-                    type="submit"
-                    className="btn btn-success btn-sm "
-                    onClick={(e) => handleSubmit(e)}
-                  >
-                    Create a New Budget
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </>
-      ) : (
-        <> </>
-      )}
 
       <br />
     </div>
