@@ -22,7 +22,6 @@ router.use(express.json());
 router.get('/', (req, res) => {
   const name = req.user.first_name;
   const lastname = req.user.last_name;
-  var file = null;
   db.Movement.findAll({
     where: { customer_id: req.user.id },
     include: [
@@ -69,8 +68,7 @@ router.get('/', (req, res) => {
           budget: conditionalBudget,
         };
       });
-      //res.render('prueba.pug', { processedMovements, name, lastname });
-      const template = path.resolve(__dirname, '..', 'views', 'prueba.pug');
+      const template = path.resolve(__dirname, '..', 'views', 'template.pug');
       const compiledFunction = pug.compileFile(template);
       const compiledHtml = compiledFunction({ processedMovements, name, lastname });
       pdf.create(compiledHtml).toStream((err, file) => {
@@ -78,7 +76,6 @@ router.get('/', (req, res) => {
           res.status(500).json(err);
         } else {
           file.pipe(res);
-          // res.status(200).json(file);
         }
       });
     })
@@ -88,14 +85,3 @@ router.get('/', (req, res) => {
 });
 
 module.exports = router;
-
-// pug.renderFile(path, { processedMovements, name, lastname }, function (err, result) {
-//   if (result) {
-//     html = result;
-//   } else {
-//     res.end('An error occurred');
-//     console.log(err);
-//   }
-// });
-
-//res.render('prueba.pug', { processedMovements, name, lastname });
