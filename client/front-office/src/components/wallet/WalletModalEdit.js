@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import FormDefault from '../FormDefault/FormDefault';
 import * as action from '../../actions/creators';
 
 const WalletModalEdit = ({ name, balance, id }) => {
@@ -62,7 +63,7 @@ const WalletModalEdit = ({ name, balance, id }) => {
         </Modal.Header>
         <Modal.Body>
           <form className="d-flex flex-column" onSubmit={formik.handleSubmit}>
-            <div className="d-flex flex-column justify-content-center m-3">
+            {/* <div className="d-flex flex-column justify-content-center m-3">
               <label className="align-self-center">Name</label>
 
               <input
@@ -111,6 +112,20 @@ const WalletModalEdit = ({ name, balance, id }) => {
                 ''
               )}
             </div>
+            <div className="d-flex justify-content-center">
+              <Button type="submit" className="btn btn-success">
+                Edit wallet
+              </Button>
+              <Button className="btn btn-danger ml-3" onClick={showModalEditHandler}>
+                Cancel
+              </Button>
+            </div> */}
+            <FormDefault
+              values={formik.values}
+              errors={formik.errors}
+              handleChange={formik.handleChange}
+              inputType={['text', 'text']}
+            />
             <div className="d-flex justify-content-center">
               <Button type="submit" className="btn btn-success">
                 Edit wallet

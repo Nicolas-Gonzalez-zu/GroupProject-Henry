@@ -3,6 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import FormDefault from '../../FormDefault/FormDefault';
 import * as action from '../../../actions/creators';
 
 const IncomeModalEdit = ({ name, id, description, date }) => {
@@ -29,7 +30,7 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
         }
       });
     }
-  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
+  }, [dispatch, authAlert.fire, authAlert.title, authAlert.type]);
 
   const showModalEditHandler = () => {
     setShowModalEdit(!showModalEdit);
@@ -50,12 +51,12 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
 
   const formik = useFormik({
     initialValues: {
-      description: '',
       date: '',
+      description: '',
     },
     validate,
     onSubmit: (values) => {
-      const newValues = { ...values, movement_id: id };
+      const newValues = { ...values, generation_date: values.date, movement_id: id };
       action.editIncome(newValues, dispatch);
       setTimeout(() => {
         showModalEditHandler();
@@ -76,15 +77,13 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
               Edit your Income for <b>{name}</b>
             </h4>
           </div>
-
-          {/* <div className="align-self-end"> */}
         </Modal.Header>
         <Modal.Body>
           <form
             className="d-flex flex-column justify-content-center"
             onSubmit={formik.handleSubmit}
           >
-            <div className="d-flex flex-column m-3">
+            {/* <div className="d-flex flex-column m-3">
               <label className="align-self-center">Generation Date</label>
 
               <input
@@ -137,7 +136,13 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
                 ''
               )}
             </div>
-            <hr />
+            <hr /> */}
+            <FormDefault
+              values={formik.values}
+              errors={formik.errors}
+              handleChange={formik.handleChange}
+              inputType={['datetime-local', 'text']}
+            />
             <div className="d-flex justify-content-center mt-3">
               <Button type="submit" className="btn btn-success">
                 Edit income

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import FormDefault from '../../FormDefault/FormDefault';
 import * as action from '../../../actions/creators';
 
 const IncomeAddModal = ({ showModal, showModalHandler }) => {
@@ -61,23 +62,26 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
 
   const formik = useFormik({
     initialValues: {
-      amount: '',
-      type: 'INCOME',
-      generation_date: '',
+      wallet: '',
       description: '',
-      wallet_id: '',
+      amount: '',
+      generation_date: '',
     },
     validate,
     onSubmit: (values) => {
       console.log(values);
-      const newValues = { ...values, amount: Number(values.amount, 10) };
+      const newValues = {
+        ...values,
+        wallet_id: values.wallet,
+        amount: Number(values.amount, 10),
+        type: 'INCOME',
+      };
       console.log(newValues, 'soy new values');
       action.addIncome(newValues, dispatch);
       setTimeout(() => {
         showModalHandler();
         formik.resetForm({
           amount: '',
-          type: 'INCOME',
           generation_date: '',
           description: '',
           wallet_id: '',
@@ -95,14 +99,13 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
           <div>
             <h4>Add your Income</h4>
           </div>
-          {/* <div className="align-self-end"> */}
         </Modal.Header>
         <Modal.Body>
           <form
             className="d-flex flex-column justify-content-center"
             onSubmit={formik.handleSubmit}
           >
-            <div className="d-flex flex-column">
+            {/* <div className="d-flex flex-column">
               <label className="align-self-center">Amount</label>
               <input
                 type="text"
@@ -148,6 +151,7 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
             </div>
             <div className="d-flex flex-column">
               <label className="align-self-center">Wallet</label>
+              {console.log(formik.values.wallet_id)}
               <select
                 name="wallet_id"
                 onChange={formik.handleChange}
@@ -190,7 +194,14 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
               ) : (
                 ''
               )}
-            </div>
+            </div> */}
+            <FormDefault
+              values={formik.values}
+              errors={formik.errors}
+              handleChange={formik.handleChange}
+              inputType={['select', 'text', 'text', 'datetime-local']}
+              selectFrom={[walletsAvailable]}
+            />
             <div className="d-flex justify-content-center mt-3">
               <button type="submit" className="btn btn-success align-self-end">
                 Add Income
