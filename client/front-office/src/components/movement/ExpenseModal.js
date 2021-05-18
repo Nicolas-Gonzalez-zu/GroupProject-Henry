@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import './modalcss.css';
 import * as action from '../../actions/creators';
 
-export default function MovementsModal() {
+export default function ExpenseModal() {
   const [modal, setModal] = useState(false);
   const budgets = useSelector((state) => state.budgetReducer.budgets);
   const wallets = useSelector((state) => state.walletReducer.wallets);
@@ -174,7 +174,7 @@ export default function MovementsModal() {
                   <option value="none">Choose One</option>
                   {filterwallets &&
                     filterwallets.map((b) => (
-                      <option value={b.id}>{`${b.name} ~ $${b.balance}.00`}</option>
+                      <option key={b.id} value={b.id}>{`${b.name} ~ $${b.balance}.00`}</option>
                     ))}
                 </select>
                 {formik.errors.wallet_id ? (
@@ -196,7 +196,7 @@ export default function MovementsModal() {
                   <option value="none">Choose One</option>
                   {filterbudgets &&
                     filterbudgets.map((b) => (
-                      <option value={b.id}>{`${b.name} ~ $${b.amount}`}</option>
+                      <option key={b.id} value={b.id}>{`${b.name} ~ $${b.amount}`}</option>
                     ))}
                 </select>
                 {formik.errors.budget_id ? (

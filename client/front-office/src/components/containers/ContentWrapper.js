@@ -10,7 +10,7 @@ import Budget from '../budget/Budget';
 import Wallet from '../wallet/Wallet';
 import EditForm from '../EditForm/EditForm';
 import ChangePassword from '../ChangePassword/ChangePassword';
-import Movement from '../movement/Movement';
+import Expense from '../movement/Expense';
 import Transfer from '../movement/transfer/Transfer';
 import Income from '../movement/income/Income';
 import Shop from '../shop/Shop';
@@ -62,17 +62,9 @@ const ContentWrapper = () => {
             <Budget />
           </Route>
 
-          <Route exact path="/movements">
-            <Movement />
-          </Route>
-
-          <Route exact path="/transfer">
-            <Transfer />
-          </Route>
-
-          <Route exact path="/income">
-            <Income />
-          </Route>
+          <Route exact path="/income" component={Income} />
+          <Route exact path="/expense" component={Expense} />
+          <Route exact path="/transfer" component={Transfer} />
 
           <Route exact path="/reports">
             <Reports />

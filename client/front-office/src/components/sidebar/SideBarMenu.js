@@ -1,24 +1,25 @@
-import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 
 const SideBarMenu = () => {
-  const onMenuOPen = (e) => {
-    if (e.target.tagName === 'I') {
-      if (e.target.parentNode.parentNode.parentNode.classList.contains('menu-open')) {
-        e.target.parentNode.parentNode.parentNode.classList.remove('menu-is-opening');
-        e.target.parentNode.parentNode.parentNode.classList.remove('menu-open');
-      } else {
-        e.target.parentNode.parentNode.parentNode.classList.add('menu-is-opening');
-        e.target.parentNode.parentNode.parentNode.classList.add('menu-open');
-      }
-    } else if (e.target.parentNode.classList.contains('menu-open')) {
-      e.target.parentNode.classList.remove('menu-is-opening');
-      e.target.parentNode.classList.remove('menu-open');
+  const route = useLocation();
+  const [movmActive, setMovmActive] = useState(false);
+  const [shopmActive, setShopmActive] = useState(false);
+
+  useEffect(() => {
+    const movmRoutes = ['/income', '/expense', '/transfer'];
+    const shopmRoutes = ['/invoices', '/services'];
+    if (movmRoutes.includes(route.pathname)) {
+      setMovmActive(true);
     } else {
-      e.target.parentNode.classList.add('menu-is-opening');
-      e.target.parentNode.classList.add('menu-open');
+      setMovmActive(false);
     }
-  };
+    if (shopmRoutes.includes(route.pathname)) {
+      setShopmActive(true);
+    } else {
+      setShopmActive(false);
+    }
+  }, [route.pathname]);
   return (
     <nav className="mt-2">
       <ul
@@ -50,28 +51,39 @@ const SideBarMenu = () => {
           </NavLink>
         </li>
         <li className="nav-item">
-          <Link to="#" className="nav-link" data-target="#collapseExample2" onClick={onMenuOPen}>
+          <Link
+            to="#"
+            className={`nav-link ${movmActive ? 'active' : 'collapsed'}`}
+            data-toggle="collapse"
+            data-target="#collapseExample2"
+          >
             <i className="nav-icon fas fa-hand-holding-usd" />
             <p>
               Movements
-              <i className="right fas fa-angle-left" data-target="#collapseExample2" />
+              <i className="right fas fa-angle-down" />
             </p>
           </Link>
           <ul
-            data-widget="treeview "
+            data-widget="treeview"
             role="menu"
             data-accordion="false"
             id="collapseExample2"
-            className="nav nav-treeview"
+            className={`collapse nav nav-treeview ${movmActive ? 'show' : ''}`}
           >
-            <li>
-              <NavLink to="/income">
+            <li className="nav-item">
+              <NavLink to="/income" className="nav-link">
                 <i className="nav-icon fas fa-file-invoice" />
-                Income
+                Incomes
               </NavLink>
             </li>
-            <li>
-              <NavLink to="/transfer">
+            <li className="nav-item">
+              <NavLink to="/expense" className="nav-link">
+                <i className="nav-icon fas fa-file-invoice" />
+                Expenses
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/transfer" className="nav-link">
                 <i className="nav-icon fas fa-file-alt" />
                 Transfers
               </NavLink>
@@ -85,27 +97,34 @@ const SideBarMenu = () => {
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink
-            to="/shop"
-            className="nav-link"
+          <Link
+            to="#"
+            className={`nav-link ${shopmActive ? 'active' : 'collapsed'}`}
             data-toggle="collapse"
-            data-target="#collapseExample1"
-            aria-expanded="false"
-            aria-controls="collapseExample"
+            data-target="#shopMenu"
           >
             <i className="nav-icon fas fa-shopping-cart" />
-            <p> Shop</p>
-          </NavLink>
-          <ul data-widget="treeview" role="menu" data-accordion="false" id="collapseExample1">
-            <li>
-              <NavLink to="/invoices">
+            <p>
+              Shop
+              <i className="right fas fa-angle-down" />
+            </p>
+          </Link>
+          <ul
+            data-widget="treeview"
+            role="menu"
+            data-accordion="false"
+            id="shopMenu"
+            className={`collapse nav nav-treeview ${shopmActive ? 'show' : ''}`}
+          >
+            <li className="nav-item">
+              <NavLink to="/invoices" className="nav-link">
                 <i className="nav-icon fas fa-file-invoice" />
                 Invoices
               </NavLink>
             </li>
-            <li>
-              <NavLink to="/services">
-                <i className="nav-icon fas fa-file-alt" />
+            <li className="nav-item">
+              <NavLink to="/services" className="nav-link">
+                <i className="nav-icon fas fa-box" />
                 Services
               </NavLink>
             </li>

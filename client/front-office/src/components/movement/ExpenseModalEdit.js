@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import * as action from '../../actions/creators';
 
-export default function MovementModalEdit({ id, description, date }) {
+export default function ExpenseModalEdit({ id, description, date }) {
   const [edit, setEdit] = useState(false);
 
   const dispatch = useDispatch();
