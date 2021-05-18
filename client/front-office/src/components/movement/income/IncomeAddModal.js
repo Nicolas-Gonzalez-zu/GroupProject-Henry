@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, Button } from 'react-bootstrap';
@@ -7,7 +7,7 @@ import * as action from '../../../actions/creators';
 
 const IncomeAddModal = ({ showModal, showModalHandler }) => {
   const wallets = useSelector((state) => state.walletReducer.wallets);
-  const incomes = useSelector((state) => state.movementReducer.movements);
+  // const incomes = useSelector((state) => state.movementReducer.movements);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
 
@@ -33,8 +33,6 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
     action.getMovements(dispatch);
     action.getWallet(dispatch);
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
-
-  console.log(incomes);
 
   const validate = (values) => {
     const errors = {};
@@ -160,7 +158,7 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
               >
                 <option selected>-</option>
                 {walletsAvailable &&
-                  walletsAvailable.map((w) => <option value={w.id}>{w.name}</option>)}
+                  walletsAvailable.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}
               </select>
               {formik.errors.wallet_id ? (
                 <p className="text-danger align-self-center">

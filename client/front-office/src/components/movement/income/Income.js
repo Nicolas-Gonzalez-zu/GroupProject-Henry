@@ -12,7 +12,6 @@ const Income = () => {
   const incomesFiltered = incomes.filter((i) => i.type === 'INCOME');
   return (
     <div className="row">
-      {console.log(incomesFiltered)}
       <div className="col-12">
         <div className="card card-info">
           <div className="d-flex bg-info justify-content-between w-100 p-2 rounded-top">
@@ -31,8 +30,8 @@ const Income = () => {
               </thead>
               <tbody>
                 {incomesFiltered &&
-                  incomesFiltered.slice(0, 7).map((m) => (
-                    <tr>
+                  incomesFiltered.slice(0, 10).map((m) => (
+                    <tr key={m.id}>
                       <td>{m.description}</td>
                       <td className="text-success">$ +{m.amount}</td>
                       <td>{m.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
