@@ -347,6 +347,13 @@ export const getAllReports = (dispatch) => {
       const file = new Blob([response.data], { type: 'application/pdf' });
       const fileURL = URL.createObjectURL(file);
       window.open(fileURL);
+      const date = new Date();
+      const linkSource = fileURL;
+      const downloadLink = document.createElement('a');
+      const fileName = `Reports_${date.toString().slice(4, 24).replace(/ /g, '_')}.pdf`;
+      downloadLink.href = linkSource;
+      downloadLink.download = fileName;
+      downloadLink.click();
     })
     .catch((e) => {
       console.log(e);
