@@ -6,7 +6,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as action from '../../actions/creators';
 
-const regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+const regex =
+  /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 dotenv.config();
 
 const BASE_URL = 'http://localhost:3001/api/';
@@ -340,7 +341,8 @@ export default Register;
 const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword) => {
   let valid;
 
-  const regexp = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+  const regexp =
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
   switch (name) {
     case 'first_name':

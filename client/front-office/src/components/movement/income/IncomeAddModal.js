@@ -158,7 +158,11 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
               >
                 <option selected>-</option>
                 {walletsAvailable &&
-                  walletsAvailable.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}
+                  walletsAvailable.map((w) => (
+                    <option key={w.id} value={w.id}>
+                      {w.name}
+                    </option>
+                  ))}
               </select>
               {formik.errors.wallet_id ? (
                 <p className="text-danger align-self-center">
