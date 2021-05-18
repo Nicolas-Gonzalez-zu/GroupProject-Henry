@@ -19,8 +19,6 @@ import Services from '../shop/services/Services';
 import Orders from '../orders/Orders';
 import Reports from '../reports/Reports';
 
-// import '../../assets/plugins/bootstrap/js/bootstrap.min';
-
 const ContentWrapper = () => {
   const history = useHistory();
   const loggedIn = useSelector((store) => store.authReducers.sessionData.loggedIn);
@@ -35,7 +33,6 @@ const ContentWrapper = () => {
   return (
     <div className="content-wrapper">
       <ContentHeader />
-
       <section className="content">
         <div className="card">
           <Route exact path="/">
