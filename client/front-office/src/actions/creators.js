@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 
 import axios from 'axios';
-import { getIn } from 'formik';
 
 import * as actionType from './types';
 
@@ -339,4 +338,17 @@ export const addTransfer = (newTransfer, dispatch) => {
       }
     })
     .catch((e) => setError(e, dispatch));
+};
+
+export const getAllReports = (dispatch) => {
+  serverPetition
+    .get('fo/reports', { responseType: 'blob' })
+    .then((response) => {
+      const file = new Blob([response.data], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 };

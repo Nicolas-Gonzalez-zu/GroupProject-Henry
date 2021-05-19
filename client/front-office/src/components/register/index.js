@@ -15,7 +15,7 @@ const serverPetition = axios.create({
   withCredentials: true,
   baseURL: process.env.REACT_APP_BACKEND_URL || BASE_URL,
   headers: {
-    'Access-Control-Allow-Origin': 'localhost:3001',
+    'Access-Control-Allow-Origin': process.env.REACT_APP_BACKEND_URL || 'localhost:3001',
   },
 });
 
@@ -88,7 +88,6 @@ const Register = () => {
               setValidation({ ...formValid, email });
               setvalidatingMail(false);
             });
-          console.log('validating...');
         }, 500);
       }
     }
@@ -155,14 +154,16 @@ const Register = () => {
   const submitHandler = (e) => {
     setIsSubmitting(true);
     e.preventDefault();
-    serverPetition.post('auth/register', fields).then(({ data: response }) => {
-      if (response.success) {
-        action.setAlert(dispatch, 'Registration successful, redirecting...', true, 'success');
-      }
-    });
-    // .catch((err) => {
-    //   action.setError(err, dispatch);
-    // });
+    serverPetition
+      .post('auth/register', fields)
+      .then(({ data: response }) => {
+        if (response.success) {
+          action.setAlert(dispatch, 'Registration successful, redirecting...', true, 'success');
+        }
+      })
+      .catch((err) => {
+        action.setError(err, dispatch);
+      });
   };
 
   return (
@@ -353,7 +354,9 @@ const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword
 
   const regexp =
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
   const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
+
   switch (name) {
     case 'first_name':
       valid = value !== '' && value.length > 3 ? 'is-valid' : 'is-invalid';
@@ -397,6 +400,13 @@ const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword
     }
     return { ...formValid, password };
   }
+  if (name === 'email') {
+    const email = {
+      value: valid,
+      message: 'none',
+    };
+    return { ...formValid, email };
+  }
   return { ...formValid, [name]: valid };
 };
 
@@ -404,6 +414,6 @@ const enableRegister = (fieldsValues) =>
   fieldsValues.first_name === 'is-valid' &&
   fieldsValues.last_name === 'is-valid' &&
   fieldsValues.phone === 'is-valid' &&
-  fieldsValues.email === 'is-valid' &&
+  fieldsValues.email.value === 'is-valid' &&
   fieldsValues.password.password === 'is-valid' &&
   fieldsValues.password.confirm_password === 'is-valid';

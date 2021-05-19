@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { Modal, Button, Alert } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import * as action from '../../actions/creators';
 
-export default function MovementModalEdit({ id, description, date }) {
+export default function ExpenseModalEdit({ id, description, date }) {
   const [edit, setEdit] = useState(false);
 
   const dispatch = useDispatch();
@@ -23,18 +23,13 @@ export default function MovementModalEdit({ id, description, date }) {
         showConfirmButton: false,
         timer: 2000,
       }).then(() => {
-        if (authAlert.type === 'success') {
-          action.setAlert(dispatch);
-        } else {
-          action.setAlert(dispatch);
-        }
+        action.setAlert(dispatch);
       });
     }
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const validate = (values) => {
     const errors = {};
-
     if (!values.description) {
       errors.description = 'Description Required';
     } else if (values.description.length < 2) {
@@ -57,10 +52,7 @@ export default function MovementModalEdit({ id, description, date }) {
     validate,
     onSubmit: (values) => {
       setTimeout(() => setEdit(false), 1000);
-
       action.editMovement(values, dispatch);
-
-      // alert(JSON.stringify(values, null, 2));
     },
   });
 

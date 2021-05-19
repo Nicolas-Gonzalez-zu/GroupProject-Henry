@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Swal from 'sweetalert2';
 import axios from 'axios';
@@ -10,7 +10,6 @@ import * as action from '../../actions/editForm';
 
 const EditForm = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const userData = useSelector((store) => store.authReducers.sessionData.loggedUser);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const [editProfile, setEditProfile] = useState({
