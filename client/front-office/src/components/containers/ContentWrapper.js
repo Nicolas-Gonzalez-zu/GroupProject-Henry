@@ -18,6 +18,7 @@ import Invoices from '../shop/invoices/Invoices';
 import Services from '../shop/services/Services';
 import Orders from '../orders/Orders';
 import Reports from '../reports/Reports';
+import PdfPreview from '../pdfPreview/PdfPreview';
 
 const ContentWrapper = () => {
   const history = useHistory();
@@ -86,6 +87,10 @@ const ContentWrapper = () => {
 
           <Route exact path="/orders">
             <Orders />
+          </Route>
+
+          <Route exact path="/preview">
+            <PdfPreview />
           </Route>
         </div>
       </section>

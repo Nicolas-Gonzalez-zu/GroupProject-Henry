@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import { Redirect } from 'react-router';
 
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 export default function Reports() {
   const [filter, setFilter] = useState('default');
   const [options, setOptions] = useState([]);
   const movements = useSelector((state) => state.movementReducer.movements);
+  const reports = useSelector((state) => state.reportReducer.reports);
 
   const toType = movements
     .map((x) => x.type)
@@ -44,6 +49,7 @@ export default function Reports() {
 
   return (
     <div>
+      {reports && <Redirect to={{ pathname: '/preview', state: { reports } }} />}
       <div className="bg-warning d-flex justify-content-between w-100 p-3 rounded-top">
         <h5>Download your movements reports </h5>
       </div>

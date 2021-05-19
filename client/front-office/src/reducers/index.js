@@ -5,6 +5,7 @@ import budgetReducer from './budgetReducer';
 import editFormReducer from './editFormReducer';
 import movementReducer from './movementReducer';
 // import incomeReducer from './incomeReducer';
+import reportReducer from './reportReducer';
 
 import transferReducer from './transferReducer';
 
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   movementReducer,
   // incomeReducer,
   transferReducer,
+  reportReducer,
 });
 
 export default rootReducer;

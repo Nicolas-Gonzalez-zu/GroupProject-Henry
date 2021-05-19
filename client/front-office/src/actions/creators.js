@@ -346,7 +346,6 @@ export const getAllReports = (dispatch) => {
     .then((response) => {
       const file = new Blob([response.data], { type: 'application/pdf' });
       const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
       const date = new Date();
       const linkSource = fileURL;
       const downloadLink = document.createElement('a');
@@ -354,8 +353,21 @@ export const getAllReports = (dispatch) => {
       downloadLink.href = linkSource;
       downloadLink.download = fileName;
       downloadLink.click();
+      return file;
+    })
+    .then((fileURL) => {
+      dispatch({
+        type: actionType.GET_ALL_REPORTS,
+        payload: fileURL,
+      });
     })
     .catch((e) => {
       console.log(e);
     });
+};
+
+export const resetReports = (dispatch) => {
+  dispatch({
+    type: actionType.RESET_REPORTS,
+  });
 };
