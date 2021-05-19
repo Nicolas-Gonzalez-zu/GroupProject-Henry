@@ -30,7 +30,7 @@ const SideBarMenu = () => {
       >
         {' '}
         <li className="nav-item">
-          <NavLink exact to="/" className="nav-link">
+          <NavLink exact to="/pro" className="nav-link">
             <i className="nav-icon fas fa-chess-knight text-warning" />
             <p>
               Account PRO

@@ -31,7 +31,7 @@ export default function Transfer() {
       });
     }
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
-
+  console.log(wallets, 'wallet');
   useEffect(() => {
     action.getWallet(dispatch);
     action.getTransfer(dispatch);
@@ -174,7 +174,7 @@ export default function Transfer() {
               ) : null}{' '}
             </div>
 
-            <button className="btn btn-success col-1 ml-3" type="submit">
+            <button className="btn btn-success ml-3" type="submit">
               Transfer
             </button>
           </div>

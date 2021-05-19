@@ -126,13 +126,14 @@ function Budget() {
             </div>
             {!loading && <InternalLoader />}
             <div className="d-flex justify-content-around">
-              <div className="col-lg-3 col-6 mt-5">
-                <div className="small-box bg-purple mt-5">
+              <div className="col-5 col-lg-3 mt-5">
+                <div className="small-box bg-purple mt-4 ">
                   <div className="inner">
-                    <h3 className="text-center"> Total $ {total}.00</h3>
+                    <h4>Total Amount</h4>
+                    <h5 className="font-weight-bold">$ {total}.00</h5>
                   </div>
                   <div className="icon">
-                    <i className="ion ion-bag" />
+                    <i className="fas fa-money-check-alt" />
                   </div>
                 </div>
               </div>
