@@ -4,13 +4,14 @@ import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import * as action from '../../../actions/creators';
+import InternalLoader from '../../loaders/InternalLoader';
 
 export default function Transfer() {
   const transfer = useSelector((state) => state.transferReducer.transfers);
   const wallets = useSelector((state) => state.walletReducer.wallets);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
-  console.log(transfer, 'hola');
+
   useEffect(() => {
     if (authAlert.fire) {
       const position = authAlert.type === 'success' ? 'center' : 'top-end';
@@ -29,12 +30,11 @@ export default function Transfer() {
           action.setAlert(dispatch);
         }
       });
-
-      action.getWallet(dispatch);
     }
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
-
+  console.log(wallets, 'wallet');
   useEffect(() => {
+    action.getWallet(dispatch);
     action.getTransfer(dispatch);
   }, [dispatch]);
   const validate = (values) => {
@@ -82,12 +82,13 @@ export default function Transfer() {
   const filterwallets = wallets.filter((x) => x.status === true);
   return (
     <>
+      {transfer.length === 0 && <InternalLoader />}
       <div className="card-header bg-warning">
-        <h3 className=" p-2">~ Transfer money between wallets</h3>
+        <h3 className=" p-2">Movements - Transfer</h3>
       </div>
       <div className="card-body">
         <form onSubmit={formik.handleSubmit}>
-          <div className="row ">
+          <div className="row d-flex justify-content-center">
             <h3 className=" mr-1"> From </h3>
             <div className="col-2">
               <select
@@ -143,13 +144,17 @@ export default function Transfer() {
                 onChange={formik.handleChange}
               >
                 <option value="none">Choose One</option>
+
                 {filterwallets &&
                   filterwallets.map((b) => (
                     <option value={b.id}>{`${b.name} ~ $${b.balance}.00`}</option>
                   ))}
               </select>
+              <br />
             </div>
+          </div>
 
+          <div className="column d-flex justify-content-center">
             <h3 className="mr-1"> Date </h3>
             <div className="col-2 d-row ml-1 mr-2">
               <div className="d-flex">
@@ -171,7 +176,7 @@ export default function Transfer() {
               ) : null}{' '}
             </div>
 
-            <button className="btn btn-success col-2 ml-3" type="submit">
+            <button className="btn btn-success ml-3" type="submit">
               Transfer
             </button>
           </div>
@@ -213,7 +218,7 @@ export default function Transfer() {
                     <th
                       className="sorting sorting_desc"
                       aria-controls="example2"
-                      aria-label="Browser: activate to sort column ascending"
+                      aria-label="Browser: acti12ate to sort column ascending"
                       aria-sort="descending"
                     >
                       Origin wallet

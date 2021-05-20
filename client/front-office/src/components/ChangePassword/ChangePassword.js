@@ -7,6 +7,7 @@ import { setAlert } from '../../actions/creators';
 import action from '../../actions/changePassword';
 
 const ChangePassword = () => {
+  const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
   const dispatch = useDispatch();
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const [editPassword, setEditPassword] = useState({
@@ -18,6 +19,7 @@ const ChangePassword = () => {
   const [formValid, setFormValid] = useState({
     displayMsg: 'none',
     valid: '',
+    validationDisplayMsg: 'none',
   });
   useEffect(() => {
     if (authAlert.fire) {
@@ -35,6 +37,7 @@ const ChangePassword = () => {
           newPassword: '',
           newPassword2: '',
         });
+        setFormValid({ displayMsg: 'none', valid: '' });
       });
     }
   }, [authAlert, dispatch]);
@@ -42,11 +45,27 @@ const ChangePassword = () => {
   useEffect(() => {
     if (editPassword.actualPassword && editPassword.newPassword && editPassword.newPassword2) {
       if (editPassword.newPassword === editPassword.newPassword2) {
-        setformReady(!formReady);
-        setFormValid({ ...formValid, displayMsg: 'none', valid: 'is-valid' });
+        setFormValid({ ...formValid, displayMsg: 'none' });
+        if (regex.test(editPassword.newPassword)) {
+          setFormValid({ ...formValid, displayMsg: 'none', valid: 'is-valid' });
+          setformReady(true);
+        } else if (!regex.test(editPassword.newPassword)) {
+          setformReady(false);
+          setFormValid({
+            ...formValid,
+            displayMsg: 'none',
+            validationDisplayMsg: 'block',
+            valid: 'is-invalid',
+          });
+        }
       } else {
         setformReady(false);
-        setFormValid({ ...formValid, displayMsg: 'block', valid: 'is-invalid' });
+        setFormValid({
+          ...formValid,
+          displayMsg: 'block',
+          valid: 'is-invalid',
+          validationDisplayMsg: 'none',
+        });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,6 +102,7 @@ const ChangePassword = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    console.log(editPassword);
     dispatch(action(editPassword));
   };
 
@@ -101,6 +121,16 @@ const ChangePassword = () => {
             }}
           >
             *password and Password confirmation does not match
+          </span>
+          <span
+            id="exampleInputEmail1-error"
+            className="error invalid-feedback col-12"
+            style={{
+              display: formValid.validationDisplayMsg,
+            }}
+          >
+            *At least 1 number, 1 lower case, 1 upper case. Use at least 8 character in your
+            password
           </span>
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">Actual Password</label>

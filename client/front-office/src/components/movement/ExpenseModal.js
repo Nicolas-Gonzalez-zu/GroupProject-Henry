@@ -206,7 +206,7 @@ export default function ExpenseModal() {
                 <Button type="submit" className="btn btn-success mt-5 ml-5 col-5">
                   Create
                 </Button>
-                <Button onClick={showModal} className="btn btn-danger mt-5 ml-4">
+                <Button onClick={showModal} className="btn btn-danger mt-5 ml-2">
                   Cancel
                 </Button>
               </div>

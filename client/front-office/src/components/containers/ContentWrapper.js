@@ -18,6 +18,8 @@ import Invoices from '../shop/invoices/Invoices';
 import Services from '../shop/services/Services';
 import Orders from '../orders/Orders';
 import Reports from '../reports/Reports';
+import PdfPreview from '../pdfPreview/PdfPreview';
+import Pro from '../Pro/Pro';
 
 const ContentWrapper = () => {
   const history = useHistory();
@@ -38,12 +40,15 @@ const ContentWrapper = () => {
           <Route exact path="/">
             <div className="container-fluid d-flex justify-content-center p-3 mt-5">
               <img
+                alt=""
                 className="col-5"
                 src="https://www.ccisua.org/wp-content/uploads/2017/05/fa-work-in-progress-computer.png"
               />
             </div>
           </Route>
-
+          <Route exact path="/pro">
+            <Pro />
+          </Route>
           <Route exact path="/profile">
             <Profile />
           </Route>
@@ -86,6 +91,10 @@ const ContentWrapper = () => {
 
           <Route exact path="/orders">
             <Orders />
+          </Route>
+
+          <Route exact path="/preview">
+            <PdfPreview />
           </Route>
         </div>
       </section>

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
+import InternalLoader from '../loaders/InternalLoader';
 import ExpenseModal from './ExpenseModal';
 import ExpenseModalEdit from './ExpenseModalEdit';
 
@@ -17,9 +18,10 @@ export default function Expense() {
 
   return (
     <>
+      {filterMovement.length === 0 && <InternalLoader />}
       <div className="card">
         <div className="bg-warning d-flex justify-content-between w-100 p-3 rounded-top">
-          <h3>~ Register your expenses </h3>
+          <h3>Movements - Expense</h3>
           <ExpenseModal />
         </div>
       </div>
@@ -121,25 +123,6 @@ export default function Expense() {
                             description={x.description}
                             date={x.generation_date}
                           />
-                          <td>
-                            <p className="text-center">{x.budget.name}</p>
-                            <div className="progress progress-xs">
-                              <div
-                                className="progress-bar bg-purple"
-                                style={{
-                                  width: `${(x.budget.amount / x.wallet.balance) * 100}%`,
-                                }}
-                              />
-                            </div>
-                          </td>
-                          <td>{x.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
-                          <td className="text-center">
-                            <ExpenseModalEdit
-                              id={x.id}
-                              description={x.description}
-                              date={x.generation_date}
-                            />
-                          </td>
                         </td>
                       </tr>
                     </tbody>
