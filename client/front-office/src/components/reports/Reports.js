@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router';
 
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
@@ -6,17 +7,19 @@ import * as action from '../../actions/creators';
 export default function Reports() {
   const [filter, setFilter] = useState('default');
   const [options, setOptions] = useState([]);
+  const [send, setSend] = useState([]);
   const movements = useSelector((state) => state.movementReducer.movements);
+  const reports = useSelector((state) => state.reportReducer.reports);
 
-  const toType = movements
-    .map((x) => x.type)
-    .reduce((newTempArr, el) => (newTempArr.includes(el) ? newTempArr : [...newTempArr, el]), []);
-  const toDate = movements
-    .map((x) => x.generation_date.slice(0, 10))
-    .reduce((newTempArr, el) => (newTempArr.includes(el) ? newTempArr : [...newTempArr, el]), []);
-  const toWallet = movements
-    .map((x) => x.wallet.name)
-    .reduce((newTempArr, el) => (newTempArr.includes(el) ? newTempArr : [...newTempArr, el]), []);
+  function removeDuplicatesBy(keyFn, array) {
+    const mySet = new Set();
+    return array.filter((x) => {
+      const key = keyFn(x);
+      const isNew = !mySet.has(key);
+      if (isNew) mySet.add(key);
+      return isNew;
+    });
+  }
 
   const dispatch = useDispatch();
 
@@ -30,20 +33,80 @@ export default function Reports() {
   }
 
   function handleChange(e) {
+    if (filter !== 'default') {
+      document.getElementById('myform').value = 'default';
+      setSend([]);
+    }
     setFilter(e.target.value);
-    if (e.target.value === 'type') {
+    handleFilter(e.target.value);
+  }
+
+  function handleSend(e) {
+    if (filter === 'type') {
+      setSend([
+        {
+          filt: 'type',
+          value: e.target.value,
+        },
+      ]);
+    }
+    if (filter === 'wallet') {
+      setSend([
+        {
+          filt: 'wallet_id',
+          value: e.target.value,
+        },
+      ]);
+    }
+    if (filter === 'date') {
+      setSend([
+        {
+          filt: 'generation_date',
+          value: e.target.value,
+        },
+      ]);
+    }
+  }
+  console.log(send);
+
+  function handleFilter(prop) {
+    if (prop === 'type') {
+      const data = movements.map((x) => {
+        const { type } = x;
+        return { name: type, value: type };
+      });
+      const toType = removeDuplicatesBy((x) => x.name, data);
       setOptions(toType);
     }
-    if (e.target.value === 'date') {
-      setOptions(toDate);
+    if (prop === 'wallet') {
+      const data = movements.map((x) => {
+        const {
+          wallet, // eslint-disable-line camelcase
+        } = x;
+        return { name: wallet.name, value: wallet.id };
+      });
+      const toType = removeDuplicatesBy((x) => x.name, data);
+      setOptions(toType);
     }
-    if (e.target.value === 'wallet') {
-      setOptions(toWallet);
+    if (prop === 'date') {
+      const data = movements.map((x) => {
+        const {
+          generation_date, // eslint-disable-line camelcase
+        } = x;
+        return { name: generation_date.slice(0, 10), value: generation_date };
+      });
+      const toType = removeDuplicatesBy((x) => x.name, data);
+      setOptions(toType);
     }
+  }
+  function downloadFilter(e) {
+    e.preventDefault();
+    action.getFilteredReports(send[0], dispatch);
   }
 
   return (
     <div>
+      {reports && <Redirect to={{ pathname: '/preview', state: { reports } }} />}
       <div className="bg-warning d-flex justify-content-between w-100 p-3 rounded-top">
         <h5>Download your movements reports </h5>
       </div>
@@ -71,14 +134,26 @@ export default function Reports() {
       {filter !== 'default' && (
         <div className="d-flex justify-content-center p-3">
           <label>This {filter}:</label>
-          <select name="select" onChange={(e) => handleChange(e)}>
-            {options.length > 0 && options.map((e) => <option>{e}</option>)}
+          <select name="select" id="myform" onChange={(e) => handleSend(e)} defaultValue="default">
+            <option value="default" disabled>
+              Select
+            </option>
+            {options.length > 0 &&
+              options.map((e) => (
+                <option key={e.value} value={e.value}>
+                  {e.name}
+                </option>
+              ))}
           </select>
         </div>
       )}
-      {filter !== 'default' && (
+      {send.length > 0 && (
         <div className="d-flex w-100 justify-content-center p-1">
-          <button type="button" className="btn btn-block btn-info btn-xs w-25">
+          <button
+            type="button"
+            className="btn btn-block btn-info btn-xs w-25"
+            onClick={(e) => downloadFilter(e)}
+          >
             <h6>Download filtered by {filter}</h6>
           </button>
         </div>
