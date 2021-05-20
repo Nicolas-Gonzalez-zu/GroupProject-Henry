@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { Redirect } from 'react-router';
 import { useLocation } from 'react-router-dom';
@@ -55,7 +55,7 @@ export default function PdfPreview() {
           </div>
         )}
       </div>
-      <div className="d-flex justify-content-center">
+      <div className="d-flex justify-content-center" style={{ paddingBottom: 10 }}>
         <button
           type="button"
           className="btn btn-block btn-outline-warning"

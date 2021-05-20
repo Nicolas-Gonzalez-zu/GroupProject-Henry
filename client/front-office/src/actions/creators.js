@@ -371,3 +371,29 @@ export const resetReports = (dispatch) => {
     type: actionType.RESET_REPORTS,
   });
 };
+
+export const getFilteredReports = (data, dispatch) => {
+  serverPetition
+    .get(`fo/reports/filter?filter=${data.filt}&value=${data.value}`, { responseType: 'blob' })
+    .then((response) => {
+      const file = new Blob([response.data], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(file);
+      const date = new Date();
+      const linkSource = fileURL;
+      const downloadLink = document.createElement('a');
+      const fileName = `Reports_${date.toString().slice(4, 24).replace(/ /g, '_')}.pdf`;
+      downloadLink.href = linkSource;
+      downloadLink.download = fileName;
+      downloadLink.click();
+      return file;
+    })
+    .then((fileURL) => {
+      dispatch({
+        type: actionType.GET_ALL_REPORTS,
+        payload: fileURL,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
