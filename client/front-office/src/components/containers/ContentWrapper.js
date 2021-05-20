@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
+
 import { Route, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import ContentHeader from './ContentHeader';
+
 import Profile from '../profile/Profile';
 import Budget from '../budget/Budget';
 import Wallet from '../wallet/Wallet';
@@ -10,6 +13,7 @@ import ChangePassword from '../ChangePassword/ChangePassword';
 import Expense from '../movement/Expense';
 import Transfer from '../movement/transfer/Transfer';
 import Income from '../movement/income/Income';
+
 import Invoices from '../shop/invoices/Invoices';
 import Services from '../shop/services/Services';
 import Orders from '../orders/Orders';
