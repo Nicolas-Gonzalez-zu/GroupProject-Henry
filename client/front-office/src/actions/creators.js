@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 
 import axios from 'axios';
-import { getIn } from 'formik';
 
 import * as actionType from './types';
 
@@ -96,10 +95,11 @@ export const changeWalletStatus = (dataChange, dispatch) => {
       console.log(data, 'soy la data del action');
       if (!data.error) {
         getWallet(dispatch);
+        setAlert(dispatch, 'Wallet status changed', true, 'success');
       }
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 export const editWallet = (walletEdited, dispatch) => {
@@ -136,10 +136,11 @@ export const addBudget = (newBudget, dispatch) => {
     .then(({ data }) => {
       if (!data.error) {
         getBudget(dispatch);
+        setAlert(dispatch, 'Budget added', true, 'success');
       }
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 export const changeBudgetStatus = (dataChange, dispatch) => {
@@ -149,10 +150,11 @@ export const changeBudgetStatus = (dataChange, dispatch) => {
       console.log(data, 'soy la data del action');
       if (!data.error) {
         getBudget(dispatch);
+        setAlert(dispatch, 'Budget status changed', true, 'success');
       }
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 export const editBudget = (budgetEdited, dispatch) => {
@@ -161,10 +163,11 @@ export const editBudget = (budgetEdited, dispatch) => {
     .then(({ data }) => {
       if (!data.error) {
         getBudget(dispatch);
+        setAlert(dispatch, 'Budget edited', true, 'success');
       }
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 
@@ -335,4 +338,62 @@ export const addTransfer = (newTransfer, dispatch) => {
       }
     })
     .catch((e) => setError(e, dispatch));
+};
+
+export const getAllReports = (dispatch) => {
+  serverPetition
+    .get('fo/reports', { responseType: 'blob' })
+    .then((response) => {
+      const file = new Blob([response.data], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(file);
+      const date = new Date();
+      const linkSource = fileURL;
+      const downloadLink = document.createElement('a');
+      const fileName = `Reports_${date.toString().slice(4, 24).replace(/ /g, '_')}.pdf`;
+      downloadLink.href = linkSource;
+      downloadLink.download = fileName;
+      downloadLink.click();
+      return file;
+    })
+    .then((fileURL) => {
+      dispatch({
+        type: actionType.GET_ALL_REPORTS,
+        payload: fileURL,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+export const resetReports = (dispatch) => {
+  dispatch({
+    type: actionType.RESET_REPORTS,
+  });
+};
+
+export const getFilteredReports = (data, dispatch) => {
+  serverPetition
+    .get(`fo/reports/filter?filter=${data.filt}&value=${data.value}`, { responseType: 'blob' })
+    .then((response) => {
+      const file = new Blob([response.data], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(file);
+      const date = new Date();
+      const linkSource = fileURL;
+      const downloadLink = document.createElement('a');
+      const fileName = `Reports_${date.toString().slice(4, 24).replace(/ /g, '_')}.pdf`;
+      downloadLink.href = linkSource;
+      downloadLink.download = fileName;
+      downloadLink.click();
+      return file;
+    })
+    .then((fileURL) => {
+      dispatch({
+        type: actionType.GET_ALL_REPORTS,
+        payload: fileURL,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 };

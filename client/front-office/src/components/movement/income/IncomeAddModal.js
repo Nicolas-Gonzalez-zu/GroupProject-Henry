@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import FormDefault from '../../FormDefault/FormDefault';
 import * as action from '../../../actions/creators';
 
 const IncomeAddModal = ({ showModal, showModalHandler }) => {
   const wallets = useSelector((state) => state.walletReducer.wallets);
-  const incomes = useSelector((state) => state.movementReducer.movements);
+  // const incomes = useSelector((state) => state.movementReducer.movements);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
 
@@ -34,8 +35,6 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
     action.getWallet(dispatch);
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
-  console.log(incomes);
-
   const validate = (values) => {
     const errors = {};
     if (!/^[0-9]*$/gm.test(values.amount)) {
@@ -57,25 +56,30 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
     return errors;
   };
 
+  const walletsAvailable = wallets.filter((w) => w.status);
+
   const formik = useFormik({
     initialValues: {
-      amount: '',
-      type: 'INCOME',
-      generation_date: '',
+      wallet: '',
       description: '',
-      wallet_id: '',
+      amount: '',
+      generation_date: '',
     },
     validate,
     onSubmit: (values) => {
       console.log(values);
-      const newValues = { ...values, amount: Number(values.amount, 10) };
+      const newValues = {
+        ...values,
+        wallet_id: values.wallet,
+        amount: Number(values.amount, 10),
+        type: 'INCOME',
+      };
       console.log(newValues, 'soy new values');
       action.addIncome(newValues, dispatch);
       setTimeout(() => {
         showModalHandler();
         formik.resetForm({
           amount: '',
-          type: 'INCOME',
           generation_date: '',
           description: '',
           wallet_id: '',
@@ -93,111 +97,29 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
           <div>
             <h4>Add your Income</h4>
           </div>
-          {/* <div className="align-self-end"> */}
-          <button
-            type="button"
-            className="btn btn-danger align-self-end"
-            onClick={showModalHandler}
-          >
-            X
-          </button>
         </Modal.Header>
         <Modal.Body>
           <form
             className="d-flex flex-column justify-content-center"
             onSubmit={formik.handleSubmit}
           >
-            <div className="d-flex flex-column">
-              <label className="align-self-center">Amount</label>
-              <input
-                type="text"
-                name="amount"
-                value={formik.values.amount}
-                autoComplete="off"
-                onChange={formik.handleChange}
-                placeholder="Amount..."
-                className={
-                  formik.errors.amount
-                    ? 'form-control is-invalid w-50 align-self-center'
-                    : 'form-control w-50 align-self-center'
-                }
-              />
-              {formik.errors.amount ? (
-                <p className="text-danger align-self-center">
-                  <b>{formik.errors.amount}</b>
-                </p>
-              ) : (
-                ''
-              )}
-            </div>
-            <div className="d-flex flex-column">
-              <label className="align-self-center">Generation Date</label>
-              <input
-                type="datetime-local"
-                className={
-                  formik.errors.generation_date
-                    ? 'form-control is-invalid w-50 align-self-center'
-                    : 'form-control w-50 align-self-center'
-                }
-                name="generation_date"
-                value={formik.values.generation_date}
-                onChange={formik.handleChange}
-              />
-              {formik.errors.generation_date ? (
-                <p className="text-danger align-self-center">
-                  <b>{formik.errors.generation_date}</b>
-                </p>
-              ) : (
-                ''
-              )}
-            </div>
-            <div className="d-flex flex-column">
-              <label className="align-self-center">Wallet</label>
-              <select
-                name="wallet_id"
-                onChange={formik.handleChange}
-                value={formik.values.wallet_id}
-                className={
-                  formik.errors.wallet_id
-                    ? ' "custom-select form-control is-invalid w-50 align-self-center'
-                    : ' "custom-select form-control w-50 align-self-center'
-                }
-              >
-                <option selected>-</option>
-                {wallets && wallets.map((w) => <option value={w.id}>{w.name}</option>)}
-              </select>
-              {formik.errors.wallet_id ? (
-                <p className="text-danger align-self-center">
-                  <b>{formik.errors.wallet_id}</b>
-                </p>
-              ) : (
-                ''
-              )}
-            </div>
-            <div className="d-flex flex-column">
-              <label className="align-self-center">Description</label>
-              <input
-                type="text"
-                className={
-                  formik.errors.description
-                    ? 'form-control is-invalid w-55 align-self-center'
-                    : 'form-control w-55 align-self-center'
-                }
-                name="description"
-                value={formik.values.description}
-                onChange={formik.handleChange}
-              />
-              {formik.errors.description ? (
-                <p className="text-danger align-self-center">
-                  <b>{formik.errors.description}</b>
-                </p>
-              ) : (
-                ''
-              )}
-            </div>
+            <FormDefault
+              values={formik.values}
+              errors={formik.errors}
+              handleChange={formik.handleChange}
+              inputType={['select', 'text', 'text', 'datetime-local']}
+              selectFrom={[walletsAvailable]}
+            />
             <div className="d-flex justify-content-center mt-3">
               <button type="submit" className="btn btn-success align-self-end">
                 Add Income
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger align-self-end ml-3"
+                onClick={showModalHandler}
+              >
+                Cancel
               </button>
             </div>
           </form>

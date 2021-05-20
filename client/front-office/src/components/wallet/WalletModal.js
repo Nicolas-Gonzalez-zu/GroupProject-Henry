@@ -8,6 +8,7 @@ import * as action from '../../actions/creators';
 const WalletModal = () => {
   const [showModal, setShowModal] = useState(false);
   const authAlert = useSelector((state) => state.authReducers.authAlert);
+  const wallets = useSelector((state) => state.walletReducer.wallets);
   const dispatch = useDispatch();
   const setModalHandler = () => {
     setShowModal(!showModal);
@@ -32,6 +33,7 @@ const WalletModal = () => {
         }
       });
     }
+    action.getWallet(dispatch);
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const validate = (values) => {
@@ -64,16 +66,21 @@ const WalletModal = () => {
       }, 1500);
     },
   });
+
+  const walletsAvailable = wallets.filter((w) => w.status);
   return (
     <div>
-      <Button onClick={setModalHandler} className="btn-success">
-        Add Wallet
-      </Button>
+      {walletsAvailable.length < 10 ? (
+        <Button onClick={setModalHandler} className="btn-success">
+          Add Wallet
+        </Button>
+      ) : (
+        <Button className="btn-warning" disabled>
+          You cant add a new wallet
+        </Button>
+      )}
       <Modal show={showModal}>
         <Modal.Header className="d-flex flex-column bg-info">
-          <Button className="btn btn-danger align-self-end" onClick={setModalHandler}>
-            X
-          </Button>
           <h4>Complete the inputs please</h4>
         </Modal.Header>
         <Modal.Body>
@@ -126,6 +133,9 @@ const WalletModal = () => {
             <div className="d-flex justify-content-center">
               <Button type="submit" className="btn btn-success">
                 Add wallet
+              </Button>
+              <Button className="btn btn-danger ml-3" onClick={setModalHandler}>
+                Cancel
               </Button>
             </div>
           </form>

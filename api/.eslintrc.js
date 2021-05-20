@@ -4,11 +4,8 @@ module.exports = {
     browser: false,
     es6: true,
   },
-  extends: ['plugin:node/recommended', 'airbnb', 'prettier', 'eslint:recommended'],
+  extends: ['plugin:node/recommended', 'airbnb-base', 'prettier', 'eslint:recommended'],
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
     ecmaVersion: 12,
     sourceType: 'module',
   },

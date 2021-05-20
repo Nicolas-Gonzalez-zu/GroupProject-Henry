@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import axios from 'axios';
 import * as actionType from './types';
-import { getMe, redirect } from './creators';
+import { getMe, redirect, setAlert, setError } from './creators';
 
 dotenv.config();
 const BASE_URL = 'http://localhost:3001/api/';
@@ -32,10 +32,10 @@ export function editUser(fileType, userInfo) {
         .then(({ data }) => {
           if (data.success) {
             getMe(dispatch);
-            redirect(dispatch, '/profile');
+            setAlert(dispatch, 'change success', true, 'success');
           }
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => setError(err, dispatch));
     }
 
     if (fileType) {

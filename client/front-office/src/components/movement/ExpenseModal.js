@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { Modal, Button, Alert } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import './modalcss.css';
 import * as action from '../../actions/creators';
 
-export default function MovementsModal() {
+export default function ExpenseModal() {
   const [modal, setModal] = useState(false);
   const budgets = useSelector((state) => state.budgetReducer.budgets);
   const wallets = useSelector((state) => state.walletReducer.wallets);
@@ -15,21 +15,15 @@ export default function MovementsModal() {
 
   useEffect(() => {
     if (authAlert.fire) {
-      const position = authAlert.type === 'success' ? 'center' : 'top-end';
-
       Swal.fire({
         title: authAlert.message,
         icon: authAlert.type,
         toast: true,
-        position,
+        position: 'top-end',
         showConfirmButton: false,
         timer: 2000,
       }).then(() => {
-        if (authAlert.type === 'success') {
-          action.setAlert(dispatch);
-        } else {
-          action.setAlert(dispatch);
-        }
+        action.setAlert(dispatch);
       });
     }
     action.getBudget(dispatch);
@@ -180,7 +174,7 @@ export default function MovementsModal() {
                   <option value="none">Choose One</option>
                   {filterwallets &&
                     filterwallets.map((b) => (
-                      <option value={b.id}>{`${b.name} ~ $${b.balance}.00`}</option>
+                      <option key={b.id} value={b.id}>{`${b.name} ~ $${b.balance}.00`}</option>
                     ))}
                 </select>
                 {formik.errors.wallet_id ? (
@@ -202,7 +196,7 @@ export default function MovementsModal() {
                   <option value="none">Choose One</option>
                   {filterbudgets &&
                     filterbudgets.map((b) => (
-                      <option value={b.id}>{`${b.name} ~ $${b.amount}`}</option>
+                      <option key={b.id} value={b.id}>{`${b.name} ~ $${b.amount}`}</option>
                     ))}
                 </select>
                 {formik.errors.budget_id ? (
@@ -212,7 +206,7 @@ export default function MovementsModal() {
                 <Button type="submit" className="btn btn-success mt-5 ml-5 col-5">
                   Create
                 </Button>
-                <Button onClick={showModal} className="btn btn-danger mt-5 ml-4">
+                <Button onClick={showModal} className="btn btn-danger mt-5 ml-2">
                   Cancel
                 </Button>
               </div>

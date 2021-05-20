@@ -10,7 +10,7 @@ import Budget from '../budget/Budget';
 import Wallet from '../wallet/Wallet';
 import EditForm from '../EditForm/EditForm';
 import ChangePassword from '../ChangePassword/ChangePassword';
-import Movement from '../movement/Movement';
+import Expense from '../movement/Expense';
 import Transfer from '../movement/transfer/Transfer';
 import Income from '../movement/income/Income';
 import Shop from '../shop/Shop';
@@ -18,8 +18,9 @@ import Invoices from '../shop/invoices/Invoices';
 import Services from '../shop/services/Services';
 import Orders from '../orders/Orders';
 import Reports from '../reports/Reports';
+import PdfPreview from '../pdfPreview/PdfPreview';
+import Pro from '../Pro/Pro';
 
-// import * as action from '../../actions/creators';
 
 const ContentWrapper = () => {
   const history = useHistory();
@@ -35,13 +36,19 @@ const ContentWrapper = () => {
   return (
     <div className="content-wrapper">
       <ContentHeader />
-
       <section className="content">
         <div className="card">
           <Route exact path="/">
-            <div>dashboard</div>
+            <div className="container-fluid d-flex justify-content-center p-3 mt-5">
+              <img
+                className="col-5"
+                src="https://www.ccisua.org/wp-content/uploads/2017/05/fa-work-in-progress-computer.png"
+              />
+            </div>
           </Route>
-
+          <Route exact path="/pro">
+            <Pro />
+          </Route>
           <Route exact path="/profile">
             <Profile />
           </Route>
@@ -62,17 +69,9 @@ const ContentWrapper = () => {
             <Budget />
           </Route>
 
-          <Route exact path="/movements">
-            <Movement />
-          </Route>
-
-          <Route exact path="/transfer">
-            <Transfer />
-          </Route>
-
-          <Route exact path="/income">
-            <Income />
-          </Route>
+          <Route exact path="/income" component={Income} />
+          <Route exact path="/expense" component={Expense} />
+          <Route exact path="/transfer" component={Transfer} />
 
           <Route exact path="/reports">
             <Reports />
@@ -92,6 +91,10 @@ const ContentWrapper = () => {
 
           <Route exact path="/orders">
             <Orders />
+          </Route>
+
+          <Route exact path="/preview">
+            <PdfPreview />
           </Route>
         </div>
       </section>

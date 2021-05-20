@@ -19,7 +19,7 @@ function Budget() {
 
   const filterLabels = budgets.filter((x) => x.status === true);
   const data = {
-    labels: filterLabels.slice(0, 10).map((x) => x.name),
+    labels: filterLabels.slice(0, 10).map((x) => x.name.slice(0, 4)),
     datasets: [
       {
         label: '# of Votes',
@@ -122,17 +122,18 @@ function Budget() {
         <div className="align-self-center" style={{ width: '100%' }}>
           <div className="card card-info">
             <div className="card-header d-flex justify-content-between">
-              <h2 className="card-title align-self-center mr-auto ">Budgets Info</h2>
+              <h3>Budgets Info</h3>
             </div>
             {!loading && <InternalLoader />}
             <div className="d-flex justify-content-around">
-              <div className="col-lg-3 col-6 mt-5">
-                <div className="small-box bg-purple mt-5">
+              <div className="col-5 col-lg-3 mt-5">
+                <div className="small-box bg-purple mt-4 ">
                   <div className="inner">
-                    <h3 className="text-center"> Total $ {total}.00</h3>
+                    <h4>Total Amount</h4>
+                    <h5 className="font-weight-bold">$ {total}.00</h5>
                   </div>
                   <div className="icon">
-                    <i className="ion ion-bag" />
+                    <i className="fas fa-money-check-alt" />
                   </div>
                 </div>
               </div>
@@ -147,7 +148,7 @@ function Budget() {
                 <BudgetModal />
               ) : (
                 <Button className="btn-warning" disabled>
-                  You cant add new Budgets
+                  You cant add a new Budget
                 </Button>
               )}
             </div>

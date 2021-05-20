@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
-import MovementsModal from './MovementsModal';
-import MovementModalEdit from './MovementModalEdit';
+import ExpenseModal from './ExpenseModal';
+import ExpenseModalEdit from './ExpenseModalEdit';
 
-export default function Movement() {
+export default function Expense() {
   const movements = useSelector((state) => state.movementReducer.movements);
   const filterMovement = movements.filter((x) => x.type === 'OUTGO');
 
@@ -19,8 +19,8 @@ export default function Movement() {
     <>
       <div className="card">
         <div className="bg-warning d-flex justify-content-between w-100 p-3 rounded-top">
-          <h3>~ Register your expenses </h3>
-          <MovementsModal />
+          <h3>Movements - Expense</h3>
+          <ExpenseModal />
         </div>
       </div>
       <div className="card-body">
@@ -94,38 +94,36 @@ export default function Movement() {
                 </thead>
                 {filterMovement &&
                   filterMovement.slice(0, 7).map((x) => (
-                    <>
-                      <tbody>
-                        <tr className="odd">
-                          <td className="dtr-control">{x.id}</td>
-                          <td className="sorting_1 text-danger">$ -{x.amount}.00</td>
-                          <td>{x.description}</td>
-                          <td>
-                            {x.wallet.name}
-                            <br /> <span className="text-info">$ {x.wallet.balance}.00</span>
-                          </td>
-                          <td>
-                            <p className="text-center">{x.budget.name}</p>
-                            <div className="progress progress-xs">
-                              <div
-                                className="progress-bar bg-purple"
-                                style={{
-                                  width: `${(30 / x.wallet.balance) * 100}%`,
-                                }}
-                              />
-                            </div>
-                          </td>
-                          <td>{x.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
-                          <td className="text-center">
-                            <MovementModalEdit
-                              id={x.id}
-                              description={x.description}
-                              date={x.generation_date}
+                    <tbody>
+                      <tr className="odd" key={x.id}>
+                        <td className="dtr-control">{x.id}</td>
+                        <td className="sorting_1 text-danger">$ -{x.amount}.00</td>
+                        <td>{x.description}</td>
+                        <td>
+                          {x.wallet.name}
+                          <br /> <span className="text-info">$ {x.wallet.balance}.00</span>
+                        </td>
+                        <td>
+                          <p className="text-center">{x.budget.name}</p>
+                          <div className="progress progress-xs">
+                            <div
+                              className="progress-bar bg-purple"
+                              style={{
+                                width: `${(30 / x.wallet.balance) * 100}%`,
+                              }}
                             />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </>
+                          </div>
+                        </td>
+                        <td>{x.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
+                        <td className="text-center">
+                          <ExpenseModalEdit
+                            id={x.id}
+                            description={x.description}
+                            date={x.generation_date}
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
                   ))}
               </table>
             </div>

@@ -15,7 +15,7 @@ const serverPetition = axios.create({
   withCredentials: true,
   baseURL: process.env.REACT_APP_BACKEND_URL || BASE_URL,
   headers: {
-    'Access-Control-Allow-Origin': 'localhost:3001',
+    'Access-Control-Allow-Origin': process.env.REACT_APP_BACKEND_URL || 'localhost:3001',
   },
 });
 
@@ -42,6 +42,7 @@ const Register = () => {
       password: '',
       confirm_password: '',
       displayMsg: 'none',
+      validationDisplayMsg: 'none',
     },
   });
   const [formReady, setformReady] = useState(false);
@@ -87,7 +88,6 @@ const Register = () => {
               setValidation({ ...formValid, email });
               setvalidatingMail(false);
             });
-          console.log('validating...');
         }, 500);
       }
     }
@@ -154,14 +154,16 @@ const Register = () => {
   const submitHandler = (e) => {
     setIsSubmitting(true);
     e.preventDefault();
-    serverPetition.post('auth/register', fields).then(({ data: response }) => {
-      if (response.success) {
-        action.setAlert(dispatch, 'Registration successful, redirecting...', true, 'success');
-      }
-    });
-    // .catch((err) => {
-    //   action.setError(err, dispatch);
-    // });
+    serverPetition
+      .post('auth/register', fields)
+      .then(({ data: response }) => {
+        if (response.success) {
+          action.setAlert(dispatch, 'Registration successful, redirecting...', true, 'success');
+        }
+      })
+      .catch((err) => {
+        action.setError(err, dispatch);
+      });
   };
 
   return (
@@ -294,7 +296,17 @@ const Register = () => {
                 display: formValid.password.displayMsg,
               }}
             >
-              password and Password confirmation does not match
+              *password and Password confirmation does not match.
+            </span>
+            <span
+              id="exampleInputEmail1-error"
+              className="error invalid-feedback col-12"
+              style={{
+                display: formValid.password.validationDisplayMsg,
+              }}
+            >
+              *At least 1 number, 1 lower case, 1 upper case. Use at least 8 character in your
+              password
             </span>
           </div>
 
@@ -343,6 +355,8 @@ const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword
   const regexp =
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
+  const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
+
   switch (name) {
     case 'first_name':
       valid = value !== '' && value.length > 3 ? 'is-valid' : 'is-invalid';
@@ -357,10 +371,11 @@ const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword
       valid = regexp.test(value) ? 'is-valid' : 'is-invalid';
       break;
     case 'password':
-      valid = value.length > 5 ? 'is-valid' : 'is-invalid';
+      valid = regexPassword.test(value) ? 'is-valid' : 'is-invalid';
       break;
     case 'confirm_password':
-      valid = value.length > 5 && passwordValue === confirmPassword ? 'is-valid' : 'is-invalid';
+      valid =
+        regexPassword.test(value) && passwordValue === confirmPassword ? 'is-valid' : 'is-invalid';
       break;
     default:
       valid = '';
@@ -372,9 +387,25 @@ const validateForm = ({ name, value }, formValid, passwordValue, confirmPassword
       password.confirm_password = 'is-invalid';
     } else {
       password.displayMsg = 'none';
-      password.confirm_password = 'is-valid';
+      console.log(regexPassword.test(value));
+      if (regexPassword.test(value)) {
+        password.displayMsg = 'none';
+        password.validationDisplayMsg = 'none';
+        password.confirm_password = 'is-valid';
+      } else {
+        password.displayMsg = 'none';
+        password.validationDisplayMsg = 'block';
+        password.confirm_password = 'is-invalid';
+      }
     }
     return { ...formValid, password };
+  }
+  if (name === 'email') {
+    const email = {
+      value: valid,
+      message: 'none',
+    };
+    return { ...formValid, email };
   }
   return { ...formValid, [name]: valid };
 };
@@ -383,6 +414,6 @@ const enableRegister = (fieldsValues) =>
   fieldsValues.first_name === 'is-valid' &&
   fieldsValues.last_name === 'is-valid' &&
   fieldsValues.phone === 'is-valid' &&
-  fieldsValues.email === 'is-valid' &&
+  fieldsValues.email.value === 'is-valid' &&
   fieldsValues.password.password === 'is-valid' &&
   fieldsValues.password.confirm_password === 'is-valid';

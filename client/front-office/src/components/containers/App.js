@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 
-import { Route, Switch, Redirect } from 'react-router-dom';
-// import { Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import NavBar from '../navbar';
 import SideBar from '../sidebar';
 import ContentWrapper from './ContentWrapper';
 import Footer from './Footer';
-import AlternativeLogin from '../alternativeLogin';
 import Register from '../register';
 import FullLoading from '../loaders/FullLoading';
 

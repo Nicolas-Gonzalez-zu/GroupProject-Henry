@@ -29,9 +29,6 @@ const Profile = () => {
         <li className="list-group-item">
           <b>Plan</b> <p className="float-right">{userData.user ? userData.plan.name : ''}</p>
         </li>
-        <p className="btn btn-primary btn-block">
-          <b>Upgrade Profile</b>
-        </p>
         <li className="list-group-item">
           <b>Email</b> <p className="float-right">{userData.user ? userData.user.email : ''}</p>
         </li>
