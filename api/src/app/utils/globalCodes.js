@@ -3,7 +3,7 @@ const errorCode = Object.freeze({
   MISSING_ATTRIBUTES: 'The absence of one or more necessary parameters was detected',
   UNFINISHED_OPERATION: 'Operation canceled due to one or more actions not completed successfully',
   UNAUTHORIZED_OPERATION: 'Access to this endpoint is restricted',
-  REJECTED_OPERATION: 'The data sent could not be stored correctly. The operation was rejected.',
+  REJECTED_OPERATION: 'The data sent couldn`t be read / stored correctly. Operation rejected.',
 });
 
 const statusCode = Object.freeze({
