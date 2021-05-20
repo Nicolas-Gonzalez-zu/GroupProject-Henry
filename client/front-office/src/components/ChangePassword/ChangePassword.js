@@ -102,6 +102,7 @@ const ChangePassword = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    console.log(editPassword);
     dispatch(action(editPassword));
   };
 
