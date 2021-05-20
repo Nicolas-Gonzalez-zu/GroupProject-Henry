@@ -13,7 +13,7 @@ import ChangePassword from '../ChangePassword/ChangePassword';
 import Expense from '../movement/Expense';
 import Transfer from '../movement/transfer/Transfer';
 import Income from '../movement/income/Income';
-import Shop from '../shop/Shop';
+
 import Invoices from '../shop/invoices/Invoices';
 import Services from '../shop/services/Services';
 import Orders from '../orders/Orders';
@@ -75,10 +75,6 @@ const ContentWrapper = () => {
 
           <Route exact path="/reports">
             <Reports />
-          </Route>
-
-          <Route exact path="/shop">
-            <Shop />
           </Route>
 
           <Route exact path="/invoices">
