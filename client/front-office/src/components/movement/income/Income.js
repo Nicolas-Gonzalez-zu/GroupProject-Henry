@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import IncomeModalEdit from './IncomeModalEdit';
 import IncomeAddModal from './IncomeAddModal';
+import InternalLoader from '../../loaders/InternalLoader';
 
 const Income = () => {
   const incomes = useSelector((state) => state.movementReducer.movements);
@@ -14,6 +15,7 @@ const Income = () => {
     <div className="row">
       <div className="col-12">
         <div className="card card-info">
+          {incomesFiltered.length === 0 && <InternalLoader />}
           <div className="d-flex bg-info justify-content-between w-100 p-2 rounded-top">
             <h3 className="">Movements - Income</h3>
             <IncomeAddModal showModal={showModal} showModalHandler={showModalHandler} />

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
+import InternalLoader from '../loaders/InternalLoader';
 import ExpenseModal from './ExpenseModal';
 import ExpenseModalEdit from './ExpenseModalEdit';
 
@@ -17,6 +18,7 @@ export default function Expense() {
 
   return (
     <>
+      {filterMovement.length === 0 && <InternalLoader />}
       <div className="card">
         <div className="bg-warning d-flex justify-content-between w-100 p-3 rounded-top">
           <h3>Movements - Expense</h3>

@@ -3,8 +3,10 @@ import { Redirect } from 'react-router';
 
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
+import InternalLoader from '../loaders/InternalLoader';
 
 export default function Reports() {
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('default');
   const [options, setOptions] = useState([]);
   const [send, setSend] = useState([]);
@@ -21,6 +23,13 @@ export default function Reports() {
     });
   }
 
+  const reset = () => {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 3000);
+  };
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,6 +39,7 @@ export default function Reports() {
   function handleClick(e) {
     e.preventDefault();
     action.getAllReports(dispatch);
+    reset();
   }
 
   function handleChange(e) {
@@ -67,7 +77,6 @@ export default function Reports() {
       ]);
     }
   }
-  console.log(send);
 
   function handleFilter(prop) {
     if (prop === 'type') {
@@ -102,62 +111,71 @@ export default function Reports() {
   function downloadFilter(e) {
     e.preventDefault();
     action.getFilteredReports(send[0], dispatch);
+    reset();
   }
 
   return (
     <div>
       {reports && <Redirect to={{ pathname: '/preview', state: { reports } }} />}
-      <div className="bg-warning d-flex justify-content-between w-100 p-3 rounded-top">
-        <h5>Download your movements reports </h5>
-      </div>
-      <div className="d-flex w-100 justify-content-center p-4">
-        <button
-          type="button"
-          className="btn btn-block btn-info btn-xs w-50"
-          onClick={(e) => handleClick(e)}
-        >
-          <h5>Download all movements</h5>
-        </button>
-      </div>
-      <div className="d-flex justify-content-center">Or</div>
-      <div className="d-flex justify-content-center p-3">
-        <label>Filter by:</label>
-        <select name="select" onChange={(e) => handleChange(e)} defaultValue="default">
-          <option value="default" disabled>
-            None
-          </option>
-          <option value="type">Type</option>
-          <option value="date">Date</option>
-          <option value="wallet">Wallet</option>
-        </select>
-      </div>
-      {filter !== 'default' && (
-        <div className="d-flex justify-content-center p-3">
-          <label>This {filter}:</label>
-          <select name="select" id="myform" onChange={(e) => handleSend(e)} defaultValue="default">
-            <option value="default" disabled>
-              Select
-            </option>
-            {options.length > 0 &&
-              options.map((e) => (
-                <option key={e.value} value={e.value}>
-                  {e.name}
-                </option>
-              ))}
-          </select>
+      <div>
+        <div className="bg-warning d-flex justify-content-between w-100 p-3 rounded-top">
+          <h5>Download your movements reports </h5>
         </div>
-      )}
-      {send.length > 0 && (
-        <div className="d-flex w-100 justify-content-center p-1">
+        <div className="d-flex w-100 justify-content-center p-4">
           <button
             type="button"
-            className="btn btn-block btn-info btn-xs w-25"
-            onClick={(e) => downloadFilter(e)}
+            className="btn btn-block btn-info btn-xs w-50"
+            onClick={(e) => handleClick(e)}
           >
-            <h6>Download filtered by {filter}</h6>
+            <h5>Download all movements</h5>
           </button>
         </div>
-      )}
+        <div className="d-flex justify-content-center">Or</div>
+        <div className="d-flex justify-content-center p-3">
+          <label>Filter by:</label>
+          <select name="select" onChange={(e) => handleChange(e)} defaultValue="default">
+            <option value="default" disabled>
+              None
+            </option>
+            <option value="type">Type</option>
+            <option value="date">Date</option>
+            <option value="wallet">Wallet</option>
+          </select>
+        </div>
+        {filter !== 'default' && (
+          <div className="d-flex justify-content-center p-3">
+            <label>This {filter}:</label>
+            <select
+              name="select"
+              id="myform"
+              onChange={(e) => handleSend(e)}
+              defaultValue="default"
+            >
+              <option value="default" disabled>
+                Select
+              </option>
+              {options.length > 0 &&
+                options.map((e) => (
+                  <option key={e.value} value={e.value}>
+                    {e.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+        )}
+        {send.length > 0 && (
+          <div className="d-flex w-100 justify-content-center p-1">
+            <button
+              type="button"
+              className="btn btn-block btn-info btn-xs w-25"
+              onClick={(e) => downloadFilter(e)}
+            >
+              <h6>Download filtered by {filter}</h6>
+            </button>
+          </div>
+        )}
+      </div>
+      {!loading && <InternalLoader />}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import * as action from '../../../actions/creators';
+import InternalLoader from '../../loaders/InternalLoader';
 
 export default function Transfer() {
   const transfer = useSelector((state) => state.transferReducer.transfers);
@@ -81,6 +82,7 @@ export default function Transfer() {
   const filterwallets = wallets.filter((x) => x.status === true);
   return (
     <>
+      {transfer.length === 0 && <InternalLoader />}
       <div className="card-header bg-warning">
         <h3 className=" p-2">Movements - Transfer</h3>
       </div>

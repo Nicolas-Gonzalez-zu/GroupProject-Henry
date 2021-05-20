@@ -21,7 +21,6 @@ import Reports from '../reports/Reports';
 import PdfPreview from '../pdfPreview/PdfPreview';
 import Pro from '../Pro/Pro';
 
-
 const ContentWrapper = () => {
   const history = useHistory();
   const loggedIn = useSelector((store) => store.authReducers.sessionData.loggedIn);
