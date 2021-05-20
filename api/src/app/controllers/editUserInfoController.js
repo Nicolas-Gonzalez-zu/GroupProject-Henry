@@ -19,6 +19,7 @@ router.put('/', (req, res) => {
 
 router.put('/changePassword', (req, res) => {
   const { actualPassword, newPassword, newPassword2 } = req.body;
+  const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
   db.User.findAll({
     where: { id: req.user.id },
     attributes: ['password'],
@@ -26,7 +27,11 @@ router.put('/changePassword', (req, res) => {
     .then((pw) => {
       const pass = pw[0].dataValues.password;
       console.log(actualPassword);
-      if (bcryptUtils.validatePassword(actualPassword, pass) && newPassword === newPassword2) {
+      if (
+        bcryptUtils.validatePassword(actualPassword, pass) &&
+        newPassword === newPassword2 &&
+        regex.test(editPassword.newPassword)
+      ) {
         const passEncripted = bcryptUtils.encrypt(newPassword, 10);
         db.User.update({ password: passEncripted }, { where: { id: req.user.id } })
           .then(() => {
@@ -35,6 +40,10 @@ router.put('/changePassword', (req, res) => {
           .catch((e) => {
             res.status(500).json({ message: e.message, success: false });
           });
+      } else {
+        return res
+          .status(400)
+          .json({ message: "Your password didn't pass validations", success: false });
       }
     })
     .catch((e) => {
