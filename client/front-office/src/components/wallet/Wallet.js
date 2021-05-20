@@ -29,11 +29,11 @@ const Wallet = () => {
 
   return (
     <div className="d-flex flex-column justify-content-around">
-      {!loading && <InternalLoader />}
       <div className="card card-info">
         <div className="card card-header">
           <h3>Wallet info</h3>
         </div>
+        {!loading && <InternalLoader />}
         <div className="d-flex justify-content-around ">
           <div className="col-5 col-lg-3 mt-5">
             <div className="small-box bg-success mt-4 ">
@@ -50,30 +50,31 @@ const Wallet = () => {
             <Chart array={wallets} />
           </div>
         </div>
-      </div>
-
-      <div className="d-flex flex-column">
-        <div className="align-self-center w-100">
-          <div className="card card-info">
-            <div className="card-header d-flex justify-content-between">
-              <h3 className="card-title align-self-center mr-auto">Wallets</h3>
-              <div className="card-tools d-flex ">
-                <WalletModal />
-                <button
-                  type="button"
-                  className="btn btn-tool"
-                  data-card-widget="collapse"
-                  title="Collapse"
-                >
-                  <i className="fas fa-minus" />
-                </button>
+        {loading && (
+          <div className="d-flex flex-column">
+            <div className="align-self-center w-100">
+              <div className="card card-info">
+                <div className="card-header d-flex justify-content-between">
+                  <h3 className="card-title align-self-center mr-auto">Wallets</h3>
+                  <div className="card-tools d-flex ">
+                    <WalletModal />
+                    <button
+                      type="button"
+                      className="btn btn-tool"
+                      data-card-widget="collapse"
+                      title="Collapse"
+                    >
+                      <i className="fas fa-minus" />
+                    </button>
+                  </div>
+                </div>
+                <div className="card-body p-0">
+                  <WalletsTable wallets={wallets} />
+                </div>
               </div>
             </div>
-            <div className="card-body p-0">
-              <WalletsTable wallets={wallets} />
-            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -8,10 +8,10 @@ import SideBar from '../sidebar';
 import ContentWrapper from './ContentWrapper';
 import Footer from './Footer';
 import Register from '../register';
-import FullLoading from '../loaders/FullLoading';
 
 import { initialize } from '../../actions/creators';
 import Login from '../login';
+import InternalLoader from '../loaders/InternalLoader';
 
 function App() {
   const dispatch = useDispatch();
@@ -43,7 +43,13 @@ function App() {
       </Switch>
     );
   }
-  return <FullLoading />;
+  return (
+    <div
+      style={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: 'center' }}
+    >
+      <InternalLoader />
+    </div>
+  );
 }
 
 export default App;
