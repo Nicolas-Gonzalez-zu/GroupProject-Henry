@@ -12,6 +12,7 @@ const editUserInfoController = require('../../controllers/editUserInfoController
 const movementController = require('../../controllers/movementController');
 const transferController = require('../../controllers/transferController');
 const walletController = require('../../controllers/walletController');
+const categoryController = require('../../controllers/categoryController');
 
 router.get('/', (req, res) => {
   res.status(statusCode.UNAUTHORIZED).json({ message: errorCode.UNAUTHORIZED_OPERATION });
@@ -23,6 +24,7 @@ router.use('/editUserInfo', editUserInfoController);
 router.use('/movement', movementController);
 router.use('/transfer', transferController);
 router.use('/wallet', walletController);
+router.use('/category', categoryController);
 
 const Upload = require('../../controllers/avatarUploadsController');
 
