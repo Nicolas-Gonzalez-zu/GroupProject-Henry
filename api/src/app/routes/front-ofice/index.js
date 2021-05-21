@@ -14,6 +14,7 @@ const transferController = require('../../controllers/transferController');
 const walletController = require('../../controllers/walletController');
 const categoryController = require('../../controllers/categoryController');
 const serviceController = require('../../controllers/serviceController');
+const invoiceController = require('../../controllers/invoiceController');
 const reportsController = require('../../controllers/reportsController');
 
 router.get('/', (req, res) => {
@@ -29,6 +30,7 @@ router.use('/wallet', walletController);
 router.use('/category', categoryController);
 router.use('/service', serviceController);
 router.use('/reports', reportsController);
+router.use('/invoice', invoiceController);
 
 const Upload = require('../../controllers/avatarUploadsController');
 
