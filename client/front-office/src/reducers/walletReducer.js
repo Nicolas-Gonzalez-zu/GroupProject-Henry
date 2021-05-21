@@ -9,6 +9,7 @@ const initialState = {
 const walletReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionType.GET_WALLETS:
+      console.log('soy el walelt');
       return { ...state, wallets: [...action.payload].sort(sortWallet) };
     default:
       return { ...state };
