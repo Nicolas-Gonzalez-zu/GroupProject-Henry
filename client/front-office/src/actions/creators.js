@@ -411,3 +411,10 @@ export const getServices = (dispatch) => {
       console.log(e);
     });
 };
+
+export const addShop = (data, dispatch) => {
+  dispatch({ type: 'ADD_SHOP', payload: data });
+};
+export const deleteShop = (payload, dispatch) => {
+  dispatch({ type: 'DELETE_SHOP', payload });
+};
