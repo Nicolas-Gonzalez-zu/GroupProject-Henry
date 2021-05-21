@@ -14,6 +14,10 @@ const editFormReducer = (state = initialState, action) => {
 
     case actionType.EDIT_USER_PASSWORD:
       return { ...state };
+
+    case actionType.FORGOT_USER_PASSWORD:
+      return { ...state };
+
     default:
       return { ...state };
   }

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { NavLink } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { setAlert } from '../../actions/creators';
 import action from '../../actions/changePassword';
@@ -71,7 +71,6 @@ const ChangePassword = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editPassword]);
 
-  console.log(editPassword);
   const onChange = (e) => {
     switch (e.target.name) {
       case 'actualPassword':
@@ -102,7 +101,6 @@ const ChangePassword = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(editPassword);
     dispatch(action(editPassword));
   };
 
@@ -143,6 +141,9 @@ const ChangePassword = () => {
               id="exampleInputPassword1"
               placeholder="Actual Password"
             />
+            <p className="forgot-password text-left">
+              <NavLink to="/forgot">Forgot password?</NavLink>
+            </p>
           </div>
           <div className="form-group">
             <label htmlFor="exampleInputPassword2">New Password</label>

@@ -8,6 +8,8 @@ import SideBar from '../sidebar';
 import ContentWrapper from './ContentWrapper';
 import Footer from './Footer';
 import Register from '../register';
+import ForgotPassword from '../ForgotPassword';
+
 
 import { initialize } from '../../actions/creators';
 import Login from '../login';
@@ -30,6 +32,13 @@ function App() {
         <Route exact path="/register">
           <div className="register-box">
             <Register />
+          </div>
+        </Route>
+        <Route exact path="/forgot">
+          <div className="register-page">
+            <div className="register-box">
+              <ForgotPassword />
+            </div>
           </div>
         </Route>
         <Route path="/">

@@ -137,11 +137,13 @@ const Login = () => {
                         value={values.password}
                         autoComplete="off"
                       />
+
                       <div className="input-group-append">
                         <div className="input-group-text">
                           <span className="fas fa-lock" />
                         </div>
                       </div>
+
                       <span id="exampleInputEmail1-error" className="error invalid-feedback">
                         {errors.password}
                       </span>
@@ -179,11 +181,11 @@ const Login = () => {
             </div>
 
             <p className="mb-1">
-              <Link to="/login">I forgot my password</Link>
+              <Link to="/forgot">Forgot password?</Link>
             </p>
             <p className="mb-0">
               <Link to="/register" className="text-center">
-                Register a new membership
+                Sign up
               </Link>
             </p>
           </div>
