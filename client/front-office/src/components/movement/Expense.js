@@ -97,7 +97,7 @@ export default function Expense() {
                 {filterMovement &&
                   filterMovement.slice(0, 7).map((x) => (
                     <tbody>
-                      <tr className="odd" key={x.id}>
+                      <tr key={x.id}>
                         <td className="dtr-control">{x.id}</td>
                         <td className="sorting_1 text-danger">$ -{x.amount}.00</td>
                         <td>{x.description}</td>
