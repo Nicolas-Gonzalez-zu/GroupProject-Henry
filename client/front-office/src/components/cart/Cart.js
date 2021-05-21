@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
 
@@ -7,17 +8,55 @@ const Cart = () => {
 
   const dispatch = useDispatch();
   console.log(items);
-  useEffect(() => {
-    // action.getShop(dispatch);
-    // action.addShop(data, dispatch);
-  }, []);
 
   const agregarShop = (data) => {
     action.addShop(data, dispatch);
   };
 
-  const deleteShop = (data) => {
-    action.deleteShop(data, dispatch);
+  const toastMixin = Swal.mixin({
+    toast: true,
+    position: 'top-right',
+    showConfirmButton: false,
+    timer: 2500,
+    timerProgressBar: true,
+  });
+
+  const submitPayment = () => {
+    if (items.length) {
+      Swal.fire({
+        text: 'Quieres realizar la compra ? ',
+        icon: 'question',
+        showConfirmButton: true,
+        showCancelButton: true,
+      }).then((response) => {
+        console.log(response, 'soy el response');
+        if (response.isConfirmed) {
+          localStorage.clear();
+          toastMixin
+            .fire({
+              title: 'Compra realizada con exito',
+              icon: 'success',
+            })
+            .then(() => {
+              window.location.reload();
+            });
+        } else {
+          toastMixin.fire({
+            title: 'Compra cancelada',
+            icon: 'error',
+          });
+        }
+      });
+    } else {
+      toastMixin.fire({
+        title: 'Parece que tu carrito esta vacio...',
+        icon: 'warning',
+      });
+    }
+  };
+
+  const removeFromShop = (id) => {
+    action.removeFromShop(id, dispatch);
   };
 
   const data = {
@@ -77,13 +116,13 @@ const Cart = () => {
                     <td>{i.name}</td>
                     <td>{i.description}</td>
                     <td>{i.price}</td>
+                    <button type="button" onClick={() => removeFromShop(i.id)}>
+                      <i className="fas fa-trash" />
+                    </button>
                   </tr>
                 ))}
               <button type="button" onClick={() => agregarShop(data)}>
                 agregar
-              </button>
-              <button type="button" onClick={() => localStorage.clear()}>
-                delete
               </button>
             </tbody>
           </table>
@@ -106,10 +145,6 @@ const Cart = () => {
               width="100"
             />
           </div>
-          {/* <p className="text-muted well well-sm shadow-none" style={{ marginTop: '10px' }}>
-          Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya
-          handango imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-        </p> */}
         </div>
 
         <div className="col-8">
@@ -141,16 +176,9 @@ const Cart = () => {
       </div>
       <div className="row no-print">
         <div className="col-12">
-          <button type="button" className="btn btn-success float-right">
+          <button type="button" onClick={submitPayment} className="btn btn-success float-right">
             <i className="far fa-credit-card" /> Submit Payment
           </button>
-          {/* <button
-          type="button"
-          className="btn btn-primary float-right"
-          style={{ marginRight: '5px' }}
-        >
-          <i className="fas fa-download" /> Generate PDF
-        </button> */}
         </div>
       </div>
     </div>

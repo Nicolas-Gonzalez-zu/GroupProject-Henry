@@ -419,3 +419,7 @@ export const addShop = (data, dispatch) => {
 export const deleteShop = (payload, dispatch) => {
   dispatch({ type: 'DELETE_SHOP', payload });
 };
+
+export const removeFromShop = (payload, dispatch) => {
+  dispatch({ type: 'REMOVE_FROM_SHOP', payload });
+};
