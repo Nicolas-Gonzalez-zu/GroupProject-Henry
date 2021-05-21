@@ -10,7 +10,6 @@ import Footer from './Footer';
 import Register from '../register';
 import ForgotPassword from '../ForgotPassword';
 
-
 import { initialize } from '../../actions/creators';
 import Login from '../login';
 import InternalLoader from '../loaders/InternalLoader';

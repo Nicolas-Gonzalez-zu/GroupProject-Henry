@@ -1,13 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import ServiceCard from './ServiceCard';
 
-const fakeServices = [
-  { name: 'balance anual', price: 2000 },
-  { name: 'facturación', price: 1200 },
-  { name: 'consulta', price: 1000 },
-];
 const ShoppingCart = () => {
   const items = useSelector((state) => state.shopReducer.shop);
   const total = items.reduce((acc, b) => acc + parseInt(b.price, 10), 0);

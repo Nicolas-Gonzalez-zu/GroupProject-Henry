@@ -7,7 +7,6 @@ import * as action from '../../../actions/creators';
 
 export default function Services() {
   const services = useSelector((state) => state.serviceReducer.services);
-  const items = useSelector((state) => state.shopReducer.shop);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
 
@@ -31,7 +30,7 @@ export default function Services() {
         toast: true,
         position,
         showConfirmButton: false,
-        timer: 2000,
+        timer: 1000,
       }).then(() => {
         if (authAlert.type === 'success') {
           action.setAlert(dispatch);
