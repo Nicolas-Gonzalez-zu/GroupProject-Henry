@@ -1,24 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import * as action from '../../../actions/creators';
 
 export default function Services() {
   const services = useSelector((state) => state.serviceReducer.services);
+  const items = useSelector((state) => state.shopReducer.shop);
+  const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
+
+  const agregarShop = (id, name, description, price) => {
+    const data = {
+      id,
+      name,
+      description,
+      price,
+    };
+    action.addShop(data, dispatch);
+  };
+
   useEffect(() => {
+    if (authAlert.fire) {
+      const position = authAlert.type === 'success' ? 'center' : 'top-end';
+
+      Swal.fire({
+        title: authAlert.message,
+        icon: authAlert.type,
+        toast: true,
+        position,
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        if (authAlert.type === 'success') {
+          action.setAlert(dispatch);
+        } else {
+          action.setAlert(dispatch);
+        }
+      });
+    }
     action.getServices(dispatch);
-  }, [dispatch]);
+  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   return (
     <>
       <div className="card-header bg-teal">
         <div className="d-flex justify-content-between row">
           <h3>Services</h3>
-          <Button>
-            <i className="fas fa-shopping-cart" />
-            <span className="badge badge-warning navbar-badge">3</span>
-          </Button>
         </div>
       </div>
       <div className="card-body pb-0">
@@ -69,9 +98,14 @@ export default function Services() {
                   </div>
                   <div className="card-footer">
                     <div className="text-right">
-                      <a href="#" className="btn btn-sm bg-teal">
+                      <Button
+                        className="btn btn-sm bg-teal border-0"
+                        onClick={() => {
+                          agregarShop(x.id, x.name, x.description, x.price);
+                        }}
+                      >
                         <i className="fas fa-shopping-cart" /> Add to Cart
-                      </a>
+                      </Button>
                     </div>
                   </div>
                 </div>
