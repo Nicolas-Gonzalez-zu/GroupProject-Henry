@@ -397,3 +397,25 @@ export const getFilteredReports = (data, dispatch) => {
       console.log(e);
     });
 };
+
+export const getServices = (dispatch) => {
+  serverPetition
+    .get('fo/service')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_SERVICES,
+        payload: data,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+export const addShop = (data, dispatch) => {
+  dispatch({ type: 'ADD_SHOP', payload: data });
+  setAlert(dispatch, 'Added to the cart', true, 'success');
+};
+export const deleteShop = (payload, dispatch) => {
+  dispatch({ type: 'DELETE_SHOP', payload });
+};

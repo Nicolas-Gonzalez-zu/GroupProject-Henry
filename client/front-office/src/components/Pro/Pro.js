@@ -1,8 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import './Pro.css';
 import Tilt from 'react-vanilla-tilt';
 
+import * as action from '../../actions/creators';
+
 export default function Pro() {
+  const items = useSelector((state) => state.shopReducer.shop);
+  const dispatch = useDispatch();
+  const authAlert = useSelector((store) => store.authReducers.authAlert);
+  const filter = items.filter((x) => x.name === 'Plan Pro');
+
+  useEffect(() => {
+    if (authAlert.fire) {
+      const position = authAlert.type === 'success' ? 'center' : 'top-end';
+
+      Swal.fire({
+        title: authAlert.message,
+        icon: authAlert.type,
+        toast: true,
+        position,
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        if (authAlert.type === 'success') {
+          action.setAlert(dispatch);
+        } else {
+          action.setAlert(dispatch);
+        }
+      });
+    }
+  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
+
+  const agregarShop = () => {
+    if (filter.length === 0) {
+      const data = {
+        id: 1,
+        name: 'Plan Pro',
+        price: 300,
+        description: 'Upgrade to Plan Pro',
+      };
+      action.addShop(data, dispatch);
+    } else {
+      Swal.fire({
+        title: 'You already added it to the cart',
+        icon: 'error',
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+  };
   return (
     <>
       <div className="b">
@@ -99,7 +149,7 @@ export default function Pro() {
                 <li>
                   <span className="text-success">✓ </span>Limited reports
                 </li>
-                <button type="button" className="btn btn-warning mt-5">
+                <button type="button" className="btn btn-warning mt-5" onClick={agregarShop}>
                   <b> Buy Now!</b>
                 </button>
               </ul>
