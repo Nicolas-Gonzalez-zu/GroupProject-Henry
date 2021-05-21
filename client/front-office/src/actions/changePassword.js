@@ -11,6 +11,13 @@ const serverPetition = axios.create({
   baseURL: process.env.REACT_APP_BACKEND_URL || BASE_URL,
 });
 
+export function forgotPassword(email) {
+  // eslint-disable-next-line func-names
+  return function (dispatch) {
+    setAlert(dispatch, 'If the email is registered you will recive an email', true, 'success');
+  };
+}
+
 export default function changePassword(editPassword) {
   // eslint-disable-next-line func-names
   return function (dispatch) {
