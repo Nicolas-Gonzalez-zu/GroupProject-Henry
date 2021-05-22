@@ -1,4 +1,7 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-unused-vars */
 const express = require('express');
+
 const checkIfLoggedIn = require('../auth/authorizeMiddleware');
 const db = require('../../db/models');
 const bcryptUtils = require('../utils/bcryptUtils');
@@ -20,7 +23,6 @@ router.put('/', (req, res) => {
 router.put('/changePassword', (req, res) => {
   const { actualPassword, newPassword, newPassword2 } = req.body;
   const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
-  console.log(req.body);
   db.User.findAll({
     where: { id: req.user.id },
     attributes: ['password'],

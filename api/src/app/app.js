@@ -18,6 +18,8 @@ const { MONGO_URI } = process.env;
 
 const app = express();
 
+app.set('view engine', 'ejs');
+
 // logging middleware
 app.use(logger('dev'));
 
