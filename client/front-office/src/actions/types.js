@@ -31,6 +31,7 @@ const DELETE_SHOP = 'DELETE_SHOP';
 const ADD_SHOP = 'ADD_SHOP';
 const GET_INVOICE = 'GET_INVOICE';
 const GET_INVOICES = 'GET_INVOICES';
+
 export {
   DO_LOGIN,
   GET_WALLETS,
