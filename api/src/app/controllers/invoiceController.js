@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
   })
     .then((foundInvoices) => {
       const processedInvoices = foundInvoices.map((invoice) => {
-        const { id, payment_method, amount, status } = invoice.dataValues; // eslint-disable-line camelcase
+        const { id, payment_method, amount, status, createdAt } = invoice.dataValues; // eslint-disable-line camelcase
         const servicesContainer = invoice.dataValues.Services.map((service) => ({
           id: service.dataValues.id,
           name: service.dataValues.name,
@@ -29,6 +29,7 @@ router.get('/', (req, res) => {
           payment_method,
           amount,
           status,
+          createdAt,
           services: servicesContainer,
         };
       });
