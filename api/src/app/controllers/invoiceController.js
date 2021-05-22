@@ -41,7 +41,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/inv', (req, res) => {
-  let { value } = req.query;
+  const { value } = req.query;
   const name = req.user.first_name;
   const lastname = req.user.last_name;
   db.Invoice.findAll({

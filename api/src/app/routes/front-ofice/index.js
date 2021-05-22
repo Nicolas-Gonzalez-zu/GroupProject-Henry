@@ -29,8 +29,8 @@ router.use('/transfer', transferController);
 router.use('/wallet', walletController);
 router.use('/category', categoryController);
 router.use('/service', serviceController);
-router.use('/reports', reportsController);
 router.use('/invoice', invoiceController);
+router.use('/reports', reportsController);
 
 const Upload = require('../../controllers/avatarUploadsController');
 
