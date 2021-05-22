@@ -463,3 +463,19 @@ export const getInvoices = (dispatch) => {
       console.log(e);
     });
 };
+
+export const sortWalletsAZ = (dispatch) => {
+  dispatch({ type: actionType.SORT_WALLETS_AZ });
+};
+
+export const sortWalletZA = (dispatch) => {
+  dispatch({ type: actionType.SORT_WALLETS_ZA });
+};
+
+export const sortWalletBalance = (dispatch) => {
+  dispatch({ type: actionType.SORT_WALLETS_BALANCE });
+};
+
+export const sortWalletMinBalance = (dispatch) => {
+  dispatch({ type: actionType.SORT_WALLETS_MIN_BALANCE });
+};

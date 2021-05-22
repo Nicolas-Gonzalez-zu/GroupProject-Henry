@@ -1,5 +1,5 @@
 import * as actionType from '../actions/types';
-import sortWallet from '../components/wallet/sortWallet';
+import { orderWallet } from '../components/wallet/sortWallet';
 
 const initialState = {
   services: [],
@@ -8,7 +8,7 @@ const initialState = {
 const serviceReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionType.GET_SERVICES:
-      return { ...state, services: [...action.payload].sort(sortWallet) };
+      return { ...state, services: [...action.payload].sort(orderWallet) };
     default:
       return { ...state };
   }
