@@ -56,25 +56,29 @@ export default function PdfPreview() {
         )}
       </div>
       <div className="d-flex justify-content-center" style={{ paddingBottom: 10 }}>
-        <button
-          type="button"
-          className="btn btn-block btn-outline-warning"
-          style={{ width: 84 }}
-          onClick={(e) => previousPage(e)}
-        >
-          Previous
-        </button>
+        {pageNumber > 1 && (
+          <button
+            type="button"
+            className="btn btn-block btn-outline-warning"
+            style={{ width: 84 }}
+            onClick={(e) => previousPage(e)}
+          >
+            Previous
+          </button>
+        )}
         <div className="d-flex align-items-center">
           Page {pageNumber} of {num}
         </div>
-        <button
-          type="button"
-          className="btn btn-block btn-outline-warning"
-          style={{ width: 84 }}
-          onClick={(e) => nextPage(e)}
-        >
-          Next
-        </button>
+        {pageNumber < num && (
+          <button
+            type="button"
+            className="btn btn-block btn-outline-warning"
+            style={{ width: 84 }}
+            onClick={(e) => nextPage(e)}
+          >
+            Next
+          </button>
+        )}
       </div>
     </div>
   );
