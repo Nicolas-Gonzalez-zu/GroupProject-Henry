@@ -1,5 +1,9 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable consistent-return */
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const path = require('path');
 const bcryptUtils = require('../utils/bcryptUtils');
 
 const db = require('../../db/models');
@@ -74,7 +78,8 @@ router.get('/logout', (req, res) => {
 
 router.post('/mail-exists', (req, res) => {
   const { email, type } = req.body;
-  const regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+  const regex =
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
   const validEmail = regex.test(email);
   console.log(email, type, validEmail);
   if (type && validEmail) {
@@ -96,4 +101,70 @@ router.post('/mail-exists', (req, res) => {
   }
   return res.status(400).json({ error: 'Invalid data' });
 });
+
+router.post('/forgotPassword', (req, res) => {
+  const { email } = req.body;
+
+  console.log(req.body, 'body');
+  console.log(email, 'email');
+  db.User.findOne({ where: { email } })
+    .then((user) => {
+      if (user === null) return res.status(200).json({ message: 'request recived' });
+
+      const secret = process.env.JWT_SECRET + user.password;
+      const payload = {
+        id: user.id,
+        email: user.email,
+      };
+
+      const token = jwt.sign(payload, secret, { expiresIn: '15m' });
+      const link = `localhost:3000/resetPassword/${user.id}/${token}`;
+      console.log(link);
+
+      return res.status(200).json({ message: 'request recived' });
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message, success: false });
+    });
+});
+
+router.post('/resetPassword/:id/:token', (req, res) => {
+  const { id, token } = req.params;
+  const { password1, password2 } = req.body;
+
+  db.User.findOne({ where: { id } })
+    .then((user) => {
+      if (user === null) return res.status(200).json({ message: 'request recived' });
+      const secret = process.env.JWT_SECRET + user.password;
+      const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
+      try {
+        const payload = jwt.verify(token, secret);
+        if (
+          bcryptUtils.validatePassword(user.password, password1) &&
+          password1 === password2 &&
+          regex.test(password1)
+        ) {
+          const passEncripted = bcryptUtils.encrypt(password1, 10);
+          db.User.update({ password: passEncripted }, { where: { id: req.user.id } })
+            .then(() => {
+              res.status(200).json({ message: 'User password updated', success: true });
+            })
+            .catch((e) => {
+              res.status(500).json({ message: e.message, success: false });
+            });
+        } else {
+          return res
+            .status(400)
+            .json({ message: "Your password didn't pass validations", success: false });
+        }
+      } catch (error) {
+        console.log(error.message);
+        res.send(error.message);
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message, success: false });
+    });
+});
+
 module.exports = router;
