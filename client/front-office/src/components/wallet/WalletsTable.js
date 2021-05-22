@@ -41,28 +41,32 @@ const WalletTable = () => {
       <thead>
         <tr>
           <th>
-            <h5>
-              <b>Name</b>
-            </h5>
-            <select onChange={(e) => setOrder(e.target.value)}>
-              <option value="all" selected>
-                all
-              </option>
-              <option value="A-Z">A-Z</option>
-              <option value="Z-A">Z-A</option>
-            </select>
+            <div className="d-flex">
+              <h5 className="mr-4">
+                <b>Name</b>
+              </h5>
+              <select onChange={(e) => setOrder(e.target.value)}>
+                <option value="all" selected>
+                  all
+                </option>
+                <option value="A-Z">A-Z</option>
+                <option value="Z-A">Z-A</option>
+              </select>
+            </div>
           </th>
           <th>
-            <h5>
-              <b>Balance</b>
-            </h5>
-            <select onChange={(e) => setOrder(e.target.value)}>
-              <option value="all" selected>
-                all
-              </option>
-              <option value="+ balance">+ balance</option>
-              <option value="- balance">- balance</option>
-            </select>
+            <div className="d-flex">
+              <h5 className="mr-4">
+                <b>Balance</b>
+              </h5>
+              <select onChange={(e) => setOrder(e.target.value)}>
+                <option value="all" selected>
+                  all
+                </option>
+                <option value="+ balance">+ balance</option>
+                <option value="- balance">- balance</option>
+              </select>
+            </div>
           </th>
           <th>Status</th>
         </tr>
