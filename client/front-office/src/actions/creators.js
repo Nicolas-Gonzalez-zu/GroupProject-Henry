@@ -449,3 +449,17 @@ export const getInvoice = (data, dispatch) => {
       console.log(e);
     });
 };
+
+export const getInvoices = (dispatch) => {
+  serverPetition
+    .get('fo/invoice')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_INVOICES,
+        payload: data,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
