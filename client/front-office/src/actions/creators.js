@@ -423,3 +423,43 @@ export const deleteShop = (payload, dispatch) => {
 export const removeFromShop = (payload, dispatch) => {
   dispatch({ type: 'REMOVE_FROM_SHOP', payload });
 };
+
+export const getInvoice = (data, dispatch) => {
+  serverPetition
+    .get(`fo/invoice/inv?value=${data}`, { responseType: 'blob' })
+    .then((response) => {
+      const file = new Blob([response.data], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(file);
+      const date = new Date();
+      const linkSource = fileURL;
+      const downloadLink = document.createElement('a');
+      const fileName = `Invoice_${date.toString().slice(4, 24).replace(/ /g, '_')}.pdf`;
+      downloadLink.href = linkSource;
+      downloadLink.download = fileName;
+      downloadLink.click();
+      return file;
+    })
+    .then((fileURL) => {
+      dispatch({
+        type: actionType.GET_INVOICE,
+        payload: fileURL,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+export const getInvoices = (dispatch) => {
+  serverPetition
+    .get('fo/invoice')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_INVOICES,
+        payload: data,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};

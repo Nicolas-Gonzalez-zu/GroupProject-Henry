@@ -20,36 +20,44 @@ const Income = () => {
             <h3 className="">Movements - Income</h3>
             <IncomeAddModal showModal={showModal} showModalHandler={showModalHandler} />
           </div>
-          <div className="card-body table-responsive p-0">
-            <table className="table table-hover text-nowrap">
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th>Amount</th>
-                  <th>Generation Date</th>
-                  <th>To</th>
-                </tr>
-              </thead>
-              <tbody>
+          <div className="card-body mt-3">
+            <div className="dataTables_wrapper dt-bootstrap4">
+              <table className="table table-bordered table-hover dataTable dtr-inline">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Generation Date</th>
+                    <th>To</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+
                 {incomesFiltered &&
-                  incomesFiltered.slice(0, 10).map((m) => (
-                    <tr key={m.id}>
-                      <td>{m.description}</td>
-                      <td className="text-success">$ +{m.amount}</td>
-                      <td>{m.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
-                      <td>{m.wallet.name}</td>
-                      <td>
-                        <IncomeModalEdit
-                          description={m.description}
-                          name={m.wallet.name}
-                          id={m.id}
-                          date={m.generation_date}
-                        />
-                      </td>
-                    </tr>
+                  incomesFiltered.slice(0, 7).map((m) => (
+                    <tbody>
+                      <tr key={m.id}>
+                        <td>{m.id}</td>
+                        <td>{m.description}</td>
+                        <td className="text-success">$ +{m.amount}</td>
+                        <td>{m.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
+                        <td>{m.wallet.name}</td>
+                        <div className="d-flex justify-content-center">
+                          <td className="border-0">
+                            <IncomeModalEdit
+                              description={m.description}
+                              name={m.wallet.name}
+                              id={m.id}
+                              date={m.generation_date}
+                            />
+                          </td>
+                        </div>
+                      </tr>
+                    </tbody>
                   ))}
-              </tbody>
-            </table>
+              </table>
+            </div>
           </div>
         </div>
       </div>
