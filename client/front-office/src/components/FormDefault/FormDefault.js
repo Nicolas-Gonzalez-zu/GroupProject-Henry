@@ -2,11 +2,12 @@ import React from 'react';
 
 const FormDefault = ({ values, errors, handleChange, inputType, selectFrom }) => (
   <div>
+    {console.log(values)}
+    {console.log(errors)}
     {Object.entries(values) &&
       Object.entries(values).map(([key, value], i) => (
         <div className="d-flex flex-column m-3">
           {console.log(key, value)}
-          <label className="align-self-center">{key}</label>
           <label className="align-self-center">{key.charAt(0).toUpperCase() + key.slice(1)}</label>
           {inputType[i] === 'select' ? (
             <select

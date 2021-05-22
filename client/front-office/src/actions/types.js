@@ -30,7 +30,6 @@ const GET_SERVICES = 'GET_SERVICES';
 const DELETE_SHOP = 'DELETE_SHOP';
 const ADD_SHOP = 'ADD_SHOP';
 
-
 export {
   DO_LOGIN,
   GET_WALLETS,
