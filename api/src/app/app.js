@@ -47,6 +47,7 @@ app.use(passport.session({}));
 app.use((req, res, next) => {
   // const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000'];
   const { origin } = req.headers;
+  console.log('Origin: ', origin);
   // if (allowedOrigins.includes(origin)) {
   res.setHeader('Access-Control-Allow-Origin', origin);
   // }
