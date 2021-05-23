@@ -7,7 +7,7 @@ import * as actionType from './types';
 dotenv.config();
 const BASE_URL = 'http://localhost:3001/api/';
 
-const serverPetition = axios.create({
+export const serverPetition = axios.create({
   withCredentials: true,
   baseURL: process.env.REACT_APP_BACKEND_URL || BASE_URL,
   headers: {
@@ -413,7 +413,8 @@ export const getServices = (dispatch) => {
 };
 
 export const addShop = (data, dispatch) => {
-  dispatch({ type: 'ADD_SHOP', payload: data });
+  const obj = { ...data, price: Number(data.price) };
+  dispatch({ type: 'ADD_SHOP', payload: obj });
   setAlert(dispatch, 'Added to the cart', true, 'success');
 };
 export const deleteShop = (payload, dispatch) => {
@@ -478,4 +479,16 @@ export const sortWalletBalance = (dispatch) => {
 
 export const sortWalletMinBalance = (dispatch) => {
   dispatch({ type: actionType.SORT_WALLETS_MIN_BALANCE });
+};
+
+export const paymentMP = (item) => {
+  serverPetition
+    .post('fo/mp', item)
+    .then((order) => {
+      console.log(order, 'soy el order');
+      return order;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
