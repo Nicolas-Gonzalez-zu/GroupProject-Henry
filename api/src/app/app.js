@@ -46,10 +46,10 @@ app.use(passport.session({}));
 
 app.use((req, res, next) => {
   // const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000'];
-  const { origin } = req.headers;
-  console.log('Origin: ', origin);
+  const { host } = req.headers;
+  console.log('Origin: ', host);
   // if (allowedOrigins.includes(origin)) {
-  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Origin', host);
   // }
   res.header('Access-Control-Allow-Methods', 'GET, OPTIONS, PUT, POST, DELETE');
   res.header(
