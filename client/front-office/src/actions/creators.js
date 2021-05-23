@@ -7,7 +7,7 @@ import * as actionType from './types';
 dotenv.config();
 const BASE_URL = 'http://localhost:3001/api/';
 
-const serverPetition = axios.create({
+export const serverPetition = axios.create({
   withCredentials: true,
   baseURL: process.env.REACT_APP_BACKEND_URL || BASE_URL,
   headers: {
