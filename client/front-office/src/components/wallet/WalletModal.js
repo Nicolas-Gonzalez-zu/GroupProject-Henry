@@ -71,7 +71,7 @@ const WalletModal = () => {
   return (
     <div>
       {walletsAvailable.length < 10 ? (
-        <Button onClick={setModalHandler} className="btn-success">
+        <Button onClick={setModalHandler} className="btn-warning">
           Add Wallet
         </Button>
       ) : (

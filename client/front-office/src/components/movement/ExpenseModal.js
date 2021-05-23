@@ -97,7 +97,7 @@ export default function ExpenseModal() {
 
   return (
     <>
-      <Button onClick={showModal} className="btn btn-success col-2 mr-2 ">
+      <Button onClick={showModal} className="btn btn-warning col-2 mr-2 ">
         Create
       </Button>
       <Modal show={modal} dialogClassName="modal-90w">

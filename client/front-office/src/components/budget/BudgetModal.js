@@ -67,7 +67,7 @@ const BudgetModal = () => {
   });
   return (
     <div>
-      <Button onClick={setModalHandler} className="btn-success">
+      <Button onClick={setModalHandler} className="btn-warning">
         Add Budget
       </Button>
       <Modal show={showModal}>

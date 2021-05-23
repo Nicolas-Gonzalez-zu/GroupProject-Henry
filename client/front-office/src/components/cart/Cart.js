@@ -6,10 +6,12 @@ import * as action from '../../actions/creators';
 import ModalCart from './ModalCart';
 
 const FORM_ID = 'payment-form';
+
 const Cart = () => {
   const items = useSelector((state) => state.shopReducer.shop);
   const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
   const dispatch = useDispatch();
+
 
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [preferenceId, setPreferenceId] = useState(null);
@@ -26,7 +28,6 @@ const Cart = () => {
       .catch((err) => {
         console.log(err);
       });
-  };
 
   // useEffect(() => {
   //   const miUuid = uuid();
@@ -60,12 +61,17 @@ const Cart = () => {
   const subtotal = items.reduce((acc, b) => acc + parseInt(b.price, 10), 0);
 
   const discount = user.plan.name === 'Pro' ? (subtotal * 20) / 100 : 0;
-
+  const today = new Date();
+  const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
+  console.log(date, 'date');
   return (
     <div className="invoice p-3 mb-3">
       <div className="row">
         <div className="col-6">
           <h4>
+            {console.log(items, 'SOY EL ITEMS MIRAME')}
+            {console.log(paymentMethod)}
+            {console.log(user.user)}
             <i className="fas fa-file-invoice-dollar mr-2" />
             E-conomy invoice
           </h4>
@@ -101,6 +107,7 @@ const Cart = () => {
                 <th>Product</th>
                 <th>Description</th>
                 <th>Subtotal</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -111,9 +118,15 @@ const Cart = () => {
                     <td>{i.name}</td>
                     <td>{i.description}</td>
                     <td>$ {i.price}</td>
-                    <button type="button" onClick={() => removeFromShop(i.id)}>
-                      <i className="fas fa-trash" />
-                    </button>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => removeFromShop(i.id)}
+                        className="btn mt-0 bg-dark"
+                      >
+                        <i className="fas fa-trash" />
+                      </button>
+                    </td>
                   </tr>
                 ))}
             </tbody>
@@ -135,7 +148,7 @@ const Cart = () => {
         </div>
 
         <div className="col-8">
-          <p className="lead">Amount Due 2/22/2014</p>
+          <p className="lead">Amount Due {date}</p>
 
           <div className="table-responsive">
             <table className="table">

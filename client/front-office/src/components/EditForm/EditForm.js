@@ -23,7 +23,8 @@ const EditForm = () => {
   });
   const BASE_URL = 'http://localhost:3001/api/';
   const [validatingMail, setvalidatingMail] = useState(false);
-  const regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+  const regex =
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
   const serverPetition = axios.create({
     withCredentials: true,
     baseURL: BASE_URL,
@@ -46,6 +47,7 @@ const EditForm = () => {
         setEditProfile({ ...editProfile, userInfo: null });
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authAlert, dispatch]);
 
   const onChange = (e) => {

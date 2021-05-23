@@ -67,7 +67,7 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
 
   return (
     <div className="d-flex">
-      <Button onClick={showModalEditHandler}>
+      <Button onClick={showModalEditHandler} className="bg-dark">
         <i className="fas fa-edit" />
       </Button>
       <Modal show={showModalEdit}>
