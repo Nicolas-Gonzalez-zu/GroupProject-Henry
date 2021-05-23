@@ -95,7 +95,7 @@ const WalletTable = () => {
                       <WalletModalEdit id={w.id} name={w.name} balance={w.balance} />
                       <button
                         type="button"
-                        className="btn btn-danger ml-2"
+                        className="btn bg-gradient-danger ml-2"
                         onClick={() => {
                           setHandler(w.id, w.status);
                         }}
@@ -106,7 +106,7 @@ const WalletTable = () => {
                   ) : (
                     <button
                       type="button"
-                      className="btn btn-success"
+                      className="btn bg-gradient-success"
                       onClick={() => {
                         setHandler(w.id, w.status);
                       }}

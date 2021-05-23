@@ -14,9 +14,9 @@ const Income = () => {
   return (
     <div className="row">
       <div className="col-12">
-        <div className="card card-info">
+        <div className="card card-dark">
           {incomesFiltered.length === 0 && <InternalLoader />}
-          <div className="d-flex bg-info justify-content-between w-100 p-2 rounded-top">
+          <div className="d-flex bg-dark justify-content-between w-100 p-2 rounded-top">
             <h3 className="">Movements - Income</h3>
             <IncomeAddModal showModal={showModal} showModalHandler={showModalHandler} />
           </div>

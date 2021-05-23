@@ -28,8 +28,8 @@ const ModalCart = ({ showModal, setShowModal, submitPayment, paymentMethod, setP
     }
   };
   return (
-    <div>
-      <Button className="btn btn-success" onClick={setModalHandler}>
+    <div className="p-2">
+      <Button className="btn btn-warning " onClick={setModalHandler}>
         Submit payment
       </Button>
       <Modal show={showModal}>
