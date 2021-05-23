@@ -47,6 +47,7 @@ const EditForm = () => {
         setEditProfile({ ...editProfile, userInfo: null });
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authAlert, dispatch]);
 
   const onChange = (e) => {
