@@ -56,7 +56,7 @@ const ContentWrapper = () => {
             <Route exact path="/profile">
               <Profile />
             </Route>
-      
+
             <Route exact path="/edit">
               <EditForm />
             </Route>
