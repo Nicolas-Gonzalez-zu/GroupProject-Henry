@@ -83,8 +83,8 @@ export default function Transfer() {
   return (
     <>
       {transfer.length === 0 && <InternalLoader />}
-      <div className="card-header bg-warning">
-        <h3 className=" p-2">Movements - Transfer</h3>
+      <div className="card-header bg-dark">
+        <h3>Movements - Transfer</h3>
       </div>
       <div className="card-body">
         <form onSubmit={formik.handleSubmit}>
@@ -176,7 +176,7 @@ export default function Transfer() {
               ) : null}{' '}
             </div>
 
-            <button className="btn btn-success ml-3" type="submit">
+            <button className="btn btn-warning ml-3" type="submit">
               Transfer
             </button>
           </div>

@@ -44,7 +44,7 @@ export default function Services() {
 
   return (
     <>
-      <div className="card-header bg-teal">
+      <div className="card-header bg-dark">
         <div className="d-flex justify-content-between row">
           <h3>Services</h3>
         </div>
@@ -98,7 +98,7 @@ export default function Services() {
                   <div className="card-footer">
                     <div className="text-right">
                       <Button
-                        className="btn btn-sm bg-teal border-0"
+                        className="btn btn-sm bg-dark border-0"
                         onClick={() => {
                           agregarShop(x.id, x.name, x.description, x.price);
                         }}

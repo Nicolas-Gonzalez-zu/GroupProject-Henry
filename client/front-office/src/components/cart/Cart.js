@@ -82,7 +82,9 @@ const Cart = () => {
   const subtotal = items.reduce((acc, b) => acc + parseInt(b.price, 10), 0);
 
   const discount = user.plan.name === 'Pro' ? (subtotal * 20) / 100 : 0;
-
+  const today = new Date();
+  const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
+  console.log(date, 'date');
   return (
     <div className="invoice p-3 mb-3">
       <div className="row">
@@ -123,6 +125,7 @@ const Cart = () => {
                 <th>Product</th>
                 <th>Description</th>
                 <th>Subtotal</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -133,9 +136,15 @@ const Cart = () => {
                     <td>{i.name}</td>
                     <td>{i.description}</td>
                     <td>$ {i.price}</td>
-                    <button type="button" onClick={() => removeFromShop(i.id)}>
-                      <i className="fas fa-trash" />
-                    </button>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => removeFromShop(i.id)}
+                        className="btn mt-0 bg-dark"
+                      >
+                        <i className="fas fa-trash" />
+                      </button>
+                    </td>
                   </tr>
                 ))}
             </tbody>
@@ -162,7 +171,7 @@ const Cart = () => {
         </div>
 
         <div className="col-8">
-          <p className="lead">Amount Due 2/22/2014</p>
+          <p className="lead">Amount Due {date}</p>
 
           <div className="table-responsive">
             <table className="table">
@@ -197,14 +206,13 @@ const Cart = () => {
           </div>
         </div>
       </div>
-      <div className="row no-print">
-        <div className="col-12">
-          <ModalCart
-            showModal={showModal}
-            setShowModal={setShowModal}
-            submitPayment={submitPayment}
-          />
-        </div>
+
+      <div className="d-flex flex-row-reverse">
+        <ModalCart
+          showModal={showModal}
+          setShowModal={setShowModal}
+          submitPayment={submitPayment}
+        />
       </div>
     </div>
   );

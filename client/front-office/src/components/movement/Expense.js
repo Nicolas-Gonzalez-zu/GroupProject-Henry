@@ -20,7 +20,7 @@ export default function Expense() {
     <>
       {filterMovement.length === 0 && <InternalLoader />}
       <div className="card">
-        <div className="bg-warning d-flex justify-content-between w-100 p-3 rounded-top">
+        <div className="bg-dark d-flex justify-content-between w-100 p-2 rounded-top">
           <h3>Movements - Expense</h3>
           <ExpenseModal />
         </div>

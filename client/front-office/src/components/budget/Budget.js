@@ -120,8 +120,8 @@ function Budget() {
     <div className="mx-3 mt-3">
       <div className="d-flex flex-column justify-content-around">
         <div className="align-self-center" style={{ width: '100%' }}>
-          <div className="card card-dark card-outline">
-            <div className="card-header bg-dark d-flex justify-content-between">
+          <div className="card">
+            <div className="card-header bg-dark d-flex justify-content-between ">
               <h3>Budgets Info</h3>
             </div>
             {!loading && <InternalLoader />}
@@ -203,7 +203,7 @@ function Budget() {
                                     
                                 <button
                                   type="button"
-                                  className="btn btn-danger"
+                                  className="btn bg-gradient-danger"
                                   onClick={() => changeStatus(x.id, x.status)}
                                 >
                                   <i className="far fa-trash-alt" />
@@ -212,7 +212,7 @@ function Budget() {
                             ) : (
                               <button
                                 type="button"
-                                className="btn btn-success"
+                                className="btn bg-gradient-success"
                                 onClick={() => changeStatus(x.id, x.status)}
                               >
                                 <i className="fas fa-check" />
