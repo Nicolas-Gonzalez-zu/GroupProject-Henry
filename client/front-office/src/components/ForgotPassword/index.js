@@ -15,11 +15,12 @@ const ForgotPassword = () => {
   const dispatch = useDispatch();
 
   const history = useHistory();
-  const regex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{3,})$/i;
+  const regex =
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{3,})$/i;
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(forgotPassword(email.value));
+    dispatch(forgotPassword({ email: email.value }));
   };
 
   const handleChange = (e) => {
@@ -45,6 +46,7 @@ const ForgotPassword = () => {
         setAlert(dispatch);
         setEmail({ valid: 'none', value: '' });
         setFormReady(false);
+        history.goBack();
       });
     }
   }, [authAlert, dispatch]);
