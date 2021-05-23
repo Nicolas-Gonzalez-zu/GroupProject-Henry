@@ -16,6 +16,7 @@ const categoryController = require('../../controllers/categoryController');
 const serviceController = require('../../controllers/serviceController');
 const invoiceController = require('../../controllers/invoiceController');
 const reportsController = require('../../controllers/reportsController');
+const mercadoPago = require('../mp');
 
 router.get('/', (req, res) => {
   res.status(statusCode.UNAUTHORIZED).json({ message: errorCode.UNAUTHORIZED_OPERATION });
@@ -31,6 +32,7 @@ router.use('/category', categoryController);
 router.use('/service', serviceController);
 router.use('/invoice', invoiceController);
 router.use('/reports', reportsController);
+router.use('/mp', mercadoPago);
 
 const Upload = require('../../controllers/avatarUploadsController');
 

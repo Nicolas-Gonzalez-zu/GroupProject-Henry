@@ -51,7 +51,7 @@ const WalletModalEdit = ({ name, balance, id }) => {
 
   return (
     <div>
-      <Button onClick={showModalEditHandler} className="btn btn-info">
+      <Button onClick={showModalEditHandler} className="btn btn-dark">
         <i className="fas fa-edit	" />
       </Button>
       <Modal show={showModalEdit}>

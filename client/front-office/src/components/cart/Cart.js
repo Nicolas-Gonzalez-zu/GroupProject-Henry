@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
+import { v4 as uuid } from 'uuid';
 import * as action from '../../actions/creators';
 import ModalCart from './ModalCart';
+
+const FORM_ID = 'payment-form';
 
 const Cart = () => {
   const items = useSelector((state) => state.shopReducer.shop);
@@ -10,6 +13,8 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [preferenceId, setPreferenceId] = useState('');
 
   const toastMixin = Swal.mixin({
     toast: true,
@@ -18,6 +23,17 @@ const Cart = () => {
     timer: 2500,
     timerProgressBar: true,
   });
+  useEffect(() => {
+    if (preferenceId) {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js';
+      script.setAttribute('data-preference-id', preferenceId);
+      console.log(preferenceId);
+      const form = document.getElementById(FORM_ID);
+      form.appendChild(script);
+    }
+  }, [preferenceId]);
 
   const submitPayment = (e) => {
     e.preventDefault();
@@ -31,18 +47,18 @@ const Cart = () => {
         .then((response) => {
           console.log(response, 'soy el response');
           if (response.isConfirmed) {
-            localStorage.clear();
-            toastMixin
-              .fire({
-                title: 'Compra realizada con exito',
-                icon: 'success',
+            console.log('entre');
+            const miUuid = uuid();
+
+            const obj = { services: items, user: user.user, orderId: miUuid };
+
+            action.serverPetition
+              .post('http://localhost:3001/api/fo/mp', obj)
+              .then((order) => {
+                console.log(order, 'HOLA SOY L ORDER');
+                setPreferenceId(order.data.body.id);
               })
-              .then(() => {
-                window.location.reload();
-              })
-              .catch((err) => {
-                console.log(err);
-              });
+              .catch((err) => console.log(err));
           } else {
             toastMixin
               .fire({
@@ -82,12 +98,17 @@ const Cart = () => {
   const subtotal = items.reduce((acc, b) => acc + parseInt(b.price, 10), 0);
 
   const discount = user.plan.name === 'Pro' ? (subtotal * 20) / 100 : 0;
-
+  const today = new Date();
+  const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
+  console.log(date, 'date');
   return (
     <div className="invoice p-3 mb-3">
       <div className="row">
         <div className="col-6">
           <h4>
+            {console.log(items, 'SOY EL ITEMS MIRAME')}
+            {console.log(paymentMethod)}
+            {console.log(user.user)}
             <i className="fas fa-file-invoice-dollar mr-2" />
             E-conomy invoice
           </h4>
@@ -123,6 +144,7 @@ const Cart = () => {
                 <th>Product</th>
                 <th>Description</th>
                 <th>Subtotal</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -133,9 +155,15 @@ const Cart = () => {
                     <td>{i.name}</td>
                     <td>{i.description}</td>
                     <td>$ {i.price}</td>
-                    <button type="button" onClick={() => removeFromShop(i.id)}>
-                      <i className="fas fa-trash" />
-                    </button>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => removeFromShop(i.id)}
+                        className="btn mt-0 bg-dark"
+                      >
+                        <i className="fas fa-trash" />
+                      </button>
+                    </td>
                   </tr>
                 ))}
             </tbody>
@@ -152,17 +180,17 @@ const Cart = () => {
               height="100"
               width="100"
             />
-            <img
+            {/* <img
               src="https://cdn.worldvectorlogo.com/logos/paypal-2.svg"
               alt="Paypal"
               height="100"
               width="100"
-            />
+            /> */}
           </div>
         </div>
 
         <div className="col-8">
-          <p className="lead">Amount Due 2/22/2014</p>
+          <p className="lead">Amount Due {date}</p>
 
           <div className="table-responsive">
             <table className="table">
@@ -198,12 +226,18 @@ const Cart = () => {
         </div>
       </div>
       <div className="row no-print">
-        <div className="col-12">
-          <ModalCart
-            showModal={showModal}
-            setShowModal={setShowModal}
-            submitPayment={submitPayment}
-          />
+        <div className="d-flex flex-row-reverse">
+          {items.length && preferenceId ? (
+            <form id={FORM_ID} method="POST" />
+          ) : (
+            <ModalCart
+              showModal={showModal}
+              setShowModal={setShowModal}
+              submitPayment={submitPayment}
+              paymentMethod={paymentMethod}
+              setPaymentMethod={setPaymentMethod}
+            />
+          )}
         </div>
       </div>
     </div>

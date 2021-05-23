@@ -17,6 +17,7 @@ import Reports from '../reports/Reports';
 import PdfPreview from '../pdfPreview/PdfPreview';
 import Pro from '../Pro/Pro';
 import Cart from '../cart/Cart';
+import Dashboard from '../dashboard/Dashboard';
 
 const ContentWrapper = () => {
   const history = useHistory();
@@ -43,13 +44,19 @@ const ContentWrapper = () => {
                 />
               </div>
             </Route>
+
+            <Route exact path="/">
+              <Dashboard />
+            </Route>
+
             <Route exact path="/pro">
               <Pro />
             </Route>
+
             <Route exact path="/profile">
               <Profile />
             </Route>
-
+      
             <Route exact path="/edit">
               <EditForm />
             </Route>
