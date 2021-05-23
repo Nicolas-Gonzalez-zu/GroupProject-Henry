@@ -12,19 +12,38 @@ const Cart = () => {
   const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
   const dispatch = useDispatch();
 
-  const [showModal, setShowModal] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [preferenceId, setPreferenceId] = useState('');
 
-  const toastMixin = Swal.mixin({
-    toast: true,
-    position: 'top-right',
-    showConfirmButton: false,
-    timer: 2500,
-    timerProgressBar: true,
-  });
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [preferenceId, setPreferenceId] = useState(null);
+
+  const handleChange = (e) => {
+    setPaymentMethod(e.target.value);
+    const miUuid = uuid();
+    const obj = { services: items, user: user.user, orderId: miUuid };
+    action.serverPetition
+      .post('http://localhost:3001/api/fo/mp', obj)
+      .then((order) => {
+        setPreferenceId(order.data.body.id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+  // useEffect(() => {
+  //   const miUuid = uuid();
+  //   const obj = { services: items, user: user.user, orderId: miUuid };
+  //   action.serverPetition
+  //     .post('http://localhost:3001/api/fo/mp', obj)
+  //     .then((order) => {
+  //       setPreferenceId(order.data.body.id);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, [paymentMethod]);
+
   useEffect(() => {
-    if (preferenceId) {
+    if (paymentMethod) {
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = 'https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js';
@@ -34,62 +53,6 @@ const Cart = () => {
       form.appendChild(script);
     }
   }, [preferenceId]);
-
-  const submitPayment = (e) => {
-    e.preventDefault();
-    if (items.length) {
-      Swal.fire({
-        text: 'Quieres realizar la compra ? ',
-        icon: 'question',
-        showConfirmButton: true,
-        showCancelButton: true,
-      })
-        .then((response) => {
-          console.log(response, 'soy el response');
-          if (response.isConfirmed) {
-            console.log('entre');
-            const miUuid = uuid();
-
-            const obj = { services: items, user: user.user, orderId: miUuid };
-
-            action.serverPetition
-              .post('http://localhost:3001/api/fo/mp', obj)
-              .then((order) => {
-                console.log(order, 'HOLA SOY L ORDER');
-                setPreferenceId(order.data.body.id);
-              })
-              .catch((err) => console.log(err));
-          } else {
-            toastMixin
-              .fire({
-                title: 'Compra cancelada',
-                icon: 'error',
-              })
-              .then(() => {
-                setShowModal(!showModal);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      toastMixin
-        .fire({
-          title: 'Parece que tu carrito esta vacio...',
-          icon: 'warning',
-        })
-        .then(() => {
-          setShowModal(!showModal);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
 
   const removeFromShop = (id) => {
     action.removeFromShop(id, dispatch);
@@ -150,7 +113,7 @@ const Cart = () => {
             <tbody>
               {items &&
                 items.slice(0, 10).map((i) => (
-                  <tr>
+                  <tr key={i.id}>
                     <td>{i.id}</td>
                     <td>{i.name}</td>
                     <td>{i.description}</td>
@@ -173,19 +136,14 @@ const Cart = () => {
       <div className="row">
         <div className="col-4">
           <p className="lead">Payment Methods:</p>
-          <div className="d-flex justify-content-around">
+          <div className="d-flex justify-content-around align-items-center">
             <img
               src="https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/082013/untitled-1_49.png?itok=S3wtZ8fs"
               alt="American Express"
-              height="100"
-              width="100"
+              height="70"
+              width="70"
             />
-            {/* <img
-              src="https://cdn.worldvectorlogo.com/logos/paypal-2.svg"
-              alt="Paypal"
-              height="100"
-              width="100"
-            /> */}
+            <input type="radio" onChange={handleChange} value="mercado pago" />
           </div>
         </div>
 
@@ -226,19 +184,7 @@ const Cart = () => {
         </div>
       </div>
       <div className="row no-print">
-        <div className="d-flex flex-row-reverse">
-          {items.length && preferenceId ? (
-            <form id={FORM_ID} method="POST" />
-          ) : (
-            <ModalCart
-              showModal={showModal}
-              setShowModal={setShowModal}
-              submitPayment={submitPayment}
-              paymentMethod={paymentMethod}
-              setPaymentMethod={setPaymentMethod}
-            />
-          )}
-        </div>
+        <div className="col-12">{preferenceId ? <form id={FORM_ID} method="POST" /> : ''}</div>
       </div>
     </div>
   );
