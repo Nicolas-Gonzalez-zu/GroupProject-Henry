@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
+import { v4 as uuid } from 'uuid';
 import * as action from '../../actions/creators';
 import ModalCart from './ModalCart';
+
+const FORM_ID = 'payment-form';
 
 const Cart = () => {
   const items = useSelector((state) => state.shopReducer.shop);
@@ -10,6 +13,8 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [preferenceId, setPreferenceId] = useState('');
 
   const toastMixin = Swal.mixin({
     toast: true,
@@ -18,6 +23,17 @@ const Cart = () => {
     timer: 2500,
     timerProgressBar: true,
   });
+  useEffect(() => {
+    if (preferenceId) {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js';
+      script.setAttribute('data-preference-id', preferenceId);
+      console.log(preferenceId);
+      const form = document.getElementById(FORM_ID);
+      form.appendChild(script);
+    }
+  }, [preferenceId]);
 
   const submitPayment = (e) => {
     e.preventDefault();
@@ -31,18 +47,18 @@ const Cart = () => {
         .then((response) => {
           console.log(response, 'soy el response');
           if (response.isConfirmed) {
-            localStorage.clear();
-            toastMixin
-              .fire({
-                title: 'Compra realizada con exito',
-                icon: 'success',
+            console.log('entre');
+            const miUuid = uuid();
+
+            const obj = { services: items, user: user.user, orderId: miUuid };
+
+            action.serverPetition
+              .post('http://localhost:3001/api/fo/mp', obj)
+              .then((order) => {
+                console.log(order, 'HOLA SOY L ORDER');
+                setPreferenceId(order.data.body.id);
               })
-              .then(() => {
-                window.location.reload();
-              })
-              .catch((err) => {
-                console.log(err);
-              });
+              .catch((err) => console.log(err));
           } else {
             toastMixin
               .fire({
@@ -90,6 +106,9 @@ const Cart = () => {
       <div className="row">
         <div className="col-6">
           <h4>
+            {console.log(items, 'SOY EL ITEMS MIRAME')}
+            {console.log(paymentMethod)}
+            {console.log(user.user)}
             <i className="fas fa-file-invoice-dollar mr-2" />
             E-conomy invoice
           </h4>
@@ -161,12 +180,12 @@ const Cart = () => {
               height="100"
               width="100"
             />
-            <img
+            {/* <img
               src="https://cdn.worldvectorlogo.com/logos/paypal-2.svg"
               alt="Paypal"
               height="100"
               width="100"
-            />
+            /> */}
           </div>
         </div>
 
@@ -206,13 +225,20 @@ const Cart = () => {
           </div>
         </div>
       </div>
-
-      <div className="d-flex flex-row-reverse">
-        <ModalCart
-          showModal={showModal}
-          setShowModal={setShowModal}
-          submitPayment={submitPayment}
-        />
+      <div className="row no-print">
+        <div className="d-flex flex-row-reverse">
+          {items.length && preferenceId ? (
+            <form id={FORM_ID} method="POST" />
+          ) : (
+            <ModalCart
+              showModal={showModal}
+              setShowModal={setShowModal}
+              submitPayment={submitPayment}
+              paymentMethod={paymentMethod}
+              setPaymentMethod={setPaymentMethod}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
