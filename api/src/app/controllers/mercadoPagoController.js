@@ -43,4 +43,9 @@ server.post('/mp_prod', async (req, res) => {
   res.status(200).send('received');
 });
 
+server.get('/mp_prod', async (req, res) => {
+  console.log(req.body);
+  res.status(200).send('received');
+});
+
 module.exports = server;
