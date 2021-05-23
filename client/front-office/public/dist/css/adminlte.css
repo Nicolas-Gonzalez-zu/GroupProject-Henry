@@ -52412,4 +52412,9 @@ a.text-muted:hover {
 .dark-mode .dark-mode.accent-gray-dark .page-item .page-link:hover, .dark-mode .dark-mode.accent-gray-dark .page-item .page-link:focus {
   color: #3f474e;
 }
+
+.congrats .congrats--recover {
+  overflow-y: scroll !important;
+}
+
 /*# sourceMappingURL=adminlte.css.map */
