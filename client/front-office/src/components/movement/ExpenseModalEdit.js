@@ -62,7 +62,7 @@ export default function ExpenseModalEdit({ id, description, date }) {
 
   return (
     <>
-      <Button onClick={setEditOn}>
+      <Button onClick={setEditOn} className="bg-dark">
         <i className="fas fa-edit	" />
       </Button>
       <Modal show={edit}>

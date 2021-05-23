@@ -89,7 +89,7 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
   });
   return (
     <div className="d-flex">
-      <Button className="btn btn-success mr-3" onClick={showModalHandler}>
+      <Button className="btn btn-warning mr-3" onClick={showModalHandler}>
         Add Income
       </Button>
       <Modal show={showModal}>
