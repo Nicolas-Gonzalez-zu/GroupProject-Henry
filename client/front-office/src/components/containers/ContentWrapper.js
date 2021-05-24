@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import tawkTo from 'tawkto-react';
 import ContentHeader from './ContentHeader';
 import Profile from '../profile/Profile';
 import Budget from '../budget/Budget';
@@ -23,8 +24,11 @@ const ContentWrapper = () => {
   const history = useHistory();
   const loggedIn = useSelector((store) => store.authReducers.sessionData.loggedIn);
   const dispatch = useDispatch();
+  const tawkToPropertyId = '578cd20d3daf03937c74defc';
+  const tawkToKey = 'default';
 
   useEffect(() => {
+    tawkTo(tawkToPropertyId, tawkToKey);
     if (!loggedIn) {
       history.push('/login');
     }
