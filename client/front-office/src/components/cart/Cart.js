@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import * as action from '../../actions/creators';
-import ModalCart from './ModalCart';
 
 const FORM_ID = 'payment-form';
 
@@ -11,8 +9,6 @@ const Cart = () => {
   const items = useSelector((state) => state.shopReducer.shop);
   const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
   const dispatch = useDispatch();
-
-
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [preferenceId, setPreferenceId] = useState(null);
 
@@ -28,20 +24,7 @@ const Cart = () => {
       .catch((err) => {
         console.log(err);
       });
-
-  // useEffect(() => {
-  //   const miUuid = uuid();
-  //   const obj = { services: items, user: user.user, orderId: miUuid };
-  //   action.serverPetition
-  //     .post('http://localhost:3001/api/fo/mp', obj)
-  //     .then((order) => {
-  //       setPreferenceId(order.data.body.id);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, [paymentMethod]);
-
+  };
   useEffect(() => {
     if (paymentMethod) {
       const script = document.createElement('script');
@@ -52,7 +35,7 @@ const Cart = () => {
       const form = document.getElementById(FORM_ID);
       form.appendChild(script);
     }
-  }, [preferenceId]);
+  }, [paymentMethod, preferenceId]);
 
   const removeFromShop = (id) => {
     action.removeFromShop(id, dispatch);
@@ -69,9 +52,6 @@ const Cart = () => {
       <div className="row">
         <div className="col-6">
           <h4>
-            {console.log(items, 'SOY EL ITEMS MIRAME')}
-            {console.log(paymentMethod)}
-            {console.log(user.user)}
             <i className="fas fa-file-invoice-dollar mr-2" />
             E-conomy invoice
           </h4>

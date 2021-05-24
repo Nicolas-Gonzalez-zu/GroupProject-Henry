@@ -22,8 +22,8 @@ import Dashboard from '../dashboard/Dashboard';
 const ContentWrapper = () => {
   const history = useHistory();
   const loggedIn = useSelector((store) => store.authReducers.sessionData.loggedIn);
-
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (!loggedIn) {
       history.push('/login');
