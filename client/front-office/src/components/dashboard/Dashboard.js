@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Bar } from 'react-chartjs-2';
 import * as action from '../../actions/creators';
@@ -82,9 +82,7 @@ export default function Dashboard() {
       ],
     },
   };
-  console.log(filterwallets, 'wallets');
-  console.log(filterbudgets, 'budgets');
-  console.log(movements, 'movements');
+
   return (
     <>
       <div className="a">

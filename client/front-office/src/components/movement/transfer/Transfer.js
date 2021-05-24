@@ -32,7 +32,7 @@ export default function Transfer() {
       });
     }
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
-  console.log(wallets, 'wallet');
+
   useEffect(() => {
     action.getWallet(dispatch);
     action.getTransfer(dispatch);
