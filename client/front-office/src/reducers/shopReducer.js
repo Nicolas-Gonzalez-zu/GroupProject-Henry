@@ -1,6 +1,3 @@
-import * as actionType from '../actions/types';
-// import sortWallet from '../components/wallet/sortWallet';
-
 const initialState = {
   shop: [],
 };

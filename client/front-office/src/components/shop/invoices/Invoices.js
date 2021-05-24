@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router';
 import * as action from '../../../actions/creators';
 
 export default function Invoices() {
