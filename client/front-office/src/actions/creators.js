@@ -11,7 +11,7 @@ export const serverPetition = axios.create({
   withCredentials: true,
   baseURL: process.env.REACT_APP_BACKEND_URL || BASE_URL,
   headers: {
-    'Access-Control-Allow-Origin': 'localhost:3001',
+    'Access-Control-Allow-Origin': 'http://localhost:3001',
   },
 });
 
@@ -236,12 +236,18 @@ export const setAlert = (dispatch, message = null, fire = false, type = null) =>
 };
 
 export const setError = (e, dispatch) => {
-  console.log(e);
   if (e.response.data.error) {
     console.log(e.response);
     setAlert(dispatch, e.response.data.error, true, 'error');
-  } else {
-    setAlert(dispatch, e.message, true, 'error');
+    if (e.response) {
+      if (e.response.data.error) {
+        setAlert(dispatch, e.response.data.error, true, 'error');
+      } else {
+        setAlert(dispatch, e.message, true, 'error');
+      }
+    } else {
+      setAlert(dispatch, e.message, true, 'error');
+    }
   }
 };
 

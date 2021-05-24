@@ -26,7 +26,7 @@ const Cart = () => {
       });
   };
   useEffect(() => {
-    if (paymentMethod) {
+    if (paymentMethod && preferenceId) {
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = 'https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js';
