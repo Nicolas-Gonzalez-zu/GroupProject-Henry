@@ -19,6 +19,10 @@ export default function Invoices() {
   }, [dispatch]);
 
   function getInvoice(e) {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 3000);
     action.getInvoice(e, dispatch);
   }
 

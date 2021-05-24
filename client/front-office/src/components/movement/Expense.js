@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
@@ -7,18 +7,27 @@ import ExpenseModal from './ExpenseModal';
 import ExpenseModalEdit from './ExpenseModalEdit';
 
 export default function Expense() {
+  const [loading, setLoading] = useState(true);
   const movements = useSelector((state) => state.movementReducer.movements);
   const filterMovement = movements.filter((x) => x.type === 'OUTGO');
 
   const dispatch = useDispatch();
 
+  const reset = () => {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 1500);
+  };
+
   useEffect(() => {
     action.getMovements(dispatch);
+    reset();
   }, [dispatch]);
 
   return (
     <>
-      {filterMovement.length === 0 && <InternalLoader />}
+      {!loading && <InternalLoader />}
       <div className="card">
         <div className="bg-dark d-flex justify-content-between w-100 p-2 rounded-top">
           <h3>Movements - Expense</h3>
