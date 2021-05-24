@@ -7,15 +7,20 @@ import imgDefault from '../../assets/img/profile-default.png';
 
 const Profile = () => {
   const userData = useSelector((store) => store.authReducers.sessionData.loggedUser);
-  const sessionData = useSelector((store) => store.authReducers.sessionData);
-  const img = userData.user ? userData.profile : imgDefault;
-  useEffect(() => {
-    console.log(sessionData.timestamp);
-  }, [sessionData]);
+
+  const onError = (e) => {
+    e.target.src = imgDefault;
+  };
+
   return (
     <div className="card-body box-profile">
       <div className="text-center">
-        <img className="profile-user-img img-fluid img-circle" src={img} alt="User profile" />
+        <img
+          className="profile-user-img img-fluid img-circle"
+          src={userData.profile}
+          onError={onError}
+          alt="User profile"
+        />
       </div>
 
       <h3 className="profile-username text-center">

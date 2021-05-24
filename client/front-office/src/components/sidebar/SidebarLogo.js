@@ -1,10 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const SideBarLogo = () => (
-  <a href="/index3.html" className="brand-link">
+  <Link to="/" className="brand-link">
     <i className="fas fa-cat brand-image img-circle fa-2x" style={{ opacity: '.8' }} />
     <span className="brand-text font-weight-light">Finance APP</span>
-  </a>
+  </Link>
 );
-
 export default SideBarLogo;
