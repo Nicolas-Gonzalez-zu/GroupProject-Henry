@@ -9,12 +9,49 @@ const BASE_URL = 'http://localhost:3001/api/';
 const serverPetition = axios.create({
   withCredentials: true,
   baseURL: process.env.REACT_APP_BACKEND_URL || BASE_URL,
+  headers: {
+    'Access-Control-Allow-Origin': process.env.REACT_APP_BACKEND_URL || 'localhost:3001',
+  },
 });
+
+export function resetPassword(passwords) {
+  return function (dispatch) {
+    serverPetition
+      .post(`/auth/resetPassword/${passwords.id}/${passwords.token}`, passwords, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(({ data }) => {
+        if (data.success) {
+          getMe(dispatch);
+          setAlert(dispatch, 'We change your password', true, 'success');
+        }
+      })
+      .catch((err) => console.log(err.message));
+    dispatch({ type: actionType.FORGOT_USER_PASSWORD });
+  };
+}
 
 export function forgotPassword(email) {
   // eslint-disable-next-line func-names
+
   return function (dispatch) {
-    setAlert(dispatch, 'If the email is registered you will recive an email', true, 'success');
+    serverPetition
+      .post('/auth/forgotPassword', email, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(({ data }) => {
+        if (data.message === 'request recived') {
+          console.log('aca');
+          getMe(dispatch);
+          setAlert(dispatch, 'Request sended', true, 'success');
+        }
+      })
+      .catch((err) => console.log(err.message));
+    dispatch({ type: actionType.FORGOT_USER_PASSWORD });
   };
 }
 

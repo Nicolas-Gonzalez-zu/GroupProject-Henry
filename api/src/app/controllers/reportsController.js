@@ -1,6 +1,6 @@
 const express = require('express');
 const { Op } = require('sequelize');
-//const app = express();
+// const app = express();
 const pdf = require('html-pdf');
 const pug = require('pug');
 const path = require('path');
@@ -102,7 +102,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/filter', (req, res) => {
-  let { filter, value } = req.query;
+  const { filter, value } = req.query;
   const name = req.user.first_name;
   const lastname = req.user.last_name;
   const date = new Date();

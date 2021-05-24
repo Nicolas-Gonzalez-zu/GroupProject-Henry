@@ -9,6 +9,7 @@ import ContentWrapper from './ContentWrapper';
 import Footer from './Footer';
 import Register from '../register';
 import ForgotPassword from '../ForgotPassword';
+import ResetPassword from '../resetPassword';
 
 import { initialize } from '../../actions/creators';
 import Login from '../login';
@@ -33,6 +34,11 @@ function App() {
             <Register />
           </div>
         </Route>
+        <Route
+          exact
+          path="/resetPassword/:id/:token"
+          render={({ match }) => <ResetPassword id={match.params.id} token={match.params.token} />}
+        />
         <Route exact path="/forgot">
           <div className="register-page">
             <div className="register-box">

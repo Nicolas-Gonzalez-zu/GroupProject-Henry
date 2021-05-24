@@ -120,14 +120,14 @@ function Budget() {
     <div className="mx-3 mt-3">
       <div className="d-flex flex-column justify-content-around">
         <div className="align-self-center" style={{ width: '100%' }}>
-          <div className="card card-info">
-            <div className="card-header d-flex justify-content-between">
+          <div className="card">
+            <div className="card-header bg-dark d-flex justify-content-between ">
               <h3>Budgets Info</h3>
             </div>
             {!loading && <InternalLoader />}
             <div className="d-flex justify-content-around">
               <div className="col-5 col-lg-3 mt-5">
-                <div className="small-box bg-purple mt-4 ">
+                <div className="small-box bg-warning mt-4 ">
                   <div className="inner">
                     <h4>Total Amount</h4>
                     <h5 className="font-weight-bold">$ {total}.00</h5>
@@ -142,7 +142,7 @@ function Budget() {
               </div>
             </div>
 
-            <div className="card-header bg-info d-flex justify-content-between">
+            <div className="card-header bg-dark d-flex justify-content-between">
               <h2 className="card-title align-self-center mr-auto ">Budgets Details</h2>
               {budgets.length < 10 ? (
                 <BudgetModal />
@@ -203,7 +203,7 @@ function Budget() {
                                     
                                 <button
                                   type="button"
-                                  className="btn btn-danger"
+                                  className="btn bg-gradient-danger"
                                   onClick={() => changeStatus(x.id, x.status)}
                                 >
                                   <i className="far fa-trash-alt" />
@@ -212,7 +212,7 @@ function Budget() {
                             ) : (
                               <button
                                 type="button"
-                                className="btn btn-success"
+                                className="btn bg-gradient-success"
                                 onClick={() => changeStatus(x.id, x.status)}
                               >
                                 <i className="fas fa-check" />
