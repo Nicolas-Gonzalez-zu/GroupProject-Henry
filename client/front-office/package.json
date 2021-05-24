@@ -27,6 +27,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "sweetalert2": "^10.16.7",
+    "tawkto-react": "^2.0.3",
     "uuid": "^8.3.2",
     "vanilla-tilt": "^1.7.0",
     "web-vitals": "^1.1.1",
