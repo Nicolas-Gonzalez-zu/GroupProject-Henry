@@ -22,7 +22,7 @@ export default function Invoices() {
     action.getInvoice(e, dispatch);
   }
 
-  const pageCount = Math.ceil(invoices.length / invoicePerPage);
+  const pageCount = Math.ceil(invoices?.length / invoicePerPage);
 
   const reset = () => {
     setLoading(false);
@@ -34,7 +34,7 @@ export default function Invoices() {
     setPageNumber(selected);
   };
 
-  const displayinvoice = invoices.slice(pagesVisited, pagesVisited + invoicePerPage).map((i) => (
+  const displayinvoice = invoices?.slice(pagesVisited, pagesVisited + invoicePerPage).map((i) => (
     <div className="card card-dark card-outline">
       <a className="d-block w-100" data-toggle="collapse" href={`#h${i.id}`}>
         <div className="card-header">

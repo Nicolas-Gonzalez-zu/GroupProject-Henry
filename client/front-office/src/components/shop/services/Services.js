@@ -42,6 +42,11 @@ export default function Services() {
   };
 
   useEffect(() => {
+    action.getServices(dispatch);
+    reset();
+  }, []);
+
+  useEffect(() => {
     if (authAlert.fire) {
       const position = authAlert.type === 'success' ? 'center' : 'top-end';
 
@@ -60,18 +65,16 @@ export default function Services() {
         }
       });
     }
-    action.getServices(dispatch);
-    reset();
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   return (
     <>
-      {!loading && <InternalLoader />}
       <div className="card-header bg-dark">
         <div className="d-flex justify-content-between row">
           <h3>Services</h3>
         </div>
       </div>
+      {!loading && <InternalLoader />}
       <div className="card-body pb-0">
         <div className="row">
           {services &&
