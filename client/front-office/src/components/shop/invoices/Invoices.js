@@ -1,32 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactPaginate from 'react-paginate';
+import InternalLoader from '../../loaders/InternalLoader';
 import * as action from '../../../actions/creators';
 import './Invoices.css';
 
 export default function Invoices() {
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const invoices = useSelector((state) => state.invoiceReducer.invoices);
-  const [invoice, seTinvoice] = useState(invoices.slice(0, 100));
   const [pageNumber, setPageNumber] = useState(0);
   const invoicePerPage = 10;
   const pagesVisited = pageNumber * invoicePerPage;
 
   useEffect(() => {
     action.getInvoices(dispatch);
+    reset();
   }, [dispatch]);
 
   function getInvoice(e) {
     action.getInvoice(e, dispatch);
   }
 
-  const pageCount = Math.ceil(invoice.length / invoicePerPage);
+  const pageCount = Math.ceil(invoices.length / invoicePerPage);
 
+  const reset = () => {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 1500);
+  };
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
 
-  const displayinvoice = invoice.slice(pagesVisited, pagesVisited + invoicePerPage).map((i) => (
+  const displayinvoice = invoices.slice(pagesVisited, pagesVisited + invoicePerPage).map((i) => (
     <div className="card card-dark card-outline">
       <a className="d-block w-100" data-toggle="collapse" href={`#h${i.id}`}>
         <div className="card-header">
@@ -87,22 +95,25 @@ export default function Invoices() {
   ));
 
   return (
-    <div className="container-fluid d-flex justify-content-center p-3 mt-5">
-      <div className="col-12" id="accordion">
-        {invoices && displayinvoice}
+    <>
+      {!loading && <InternalLoader />}
+      <div className="container-fluid d-flex justify-content-center p-3 mt-5">
+        <div className="col-12" id="accordion">
+          {invoices && displayinvoice}
 
-        <ReactPaginate
-          previousLabel="Previous"
-          nextLabel="Next"
-          pageCount={pageCount}
-          onPageChange={changePage}
-          containerClassName="paginationBttns"
-          previousLinkClassName="previousBttn"
-          nextLinkClassName="nextBttn"
-          disabledClassName="paginationDisabled"
-          activeClassName="paginationActive"
-        />
+          <ReactPaginate
+            previousLabel="Previous"
+            nextLabel="Next"
+            pageCount={pageCount}
+            onPageChange={changePage}
+            containerClassName="paginationBttns"
+            previousLinkClassName="previousBttn"
+            nextLinkClassName="nextBttn"
+            disabledClassName="paginationDisabled"
+            activeClassName="paginationActive"
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import InternalLoader from '../../loaders/InternalLoader';
 import * as action from '../../../actions/creators';
 
 export default function Services() {
+  const [loading, setLoading] = useState(true);
   const items = useSelector((state) => state.shopReducer.shop);
   const services = useSelector((state) => state.serviceReducer.services);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
@@ -32,6 +34,13 @@ export default function Services() {
     }
   };
 
+  const reset = () => {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 1000);
+  };
+
   useEffect(() => {
     if (authAlert.fire) {
       const position = authAlert.type === 'success' ? 'center' : 'top-end';
@@ -52,10 +61,12 @@ export default function Services() {
       });
     }
     action.getServices(dispatch);
+    reset();
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   return (
     <>
+      {!loading && <InternalLoader />}
       <div className="card-header bg-dark">
         <div className="d-flex justify-content-between row">
           <h3>Services</h3>
