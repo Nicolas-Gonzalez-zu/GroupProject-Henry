@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import IncomeModalEdit from './IncomeModalEdit';
 import IncomeAddModal from './IncomeAddModal';
 import InternalLoader from '../../loaders/InternalLoader';
+import * as action from '../../../actions/creators';
 
 const Income = () => {
+  const [loading, setLoading] = useState(true);
   const incomes = useSelector((state) => state.movementReducer.movements);
   const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
   const showModalHandler = () => {
     setShowModal(!showModal);
   };
+
+  const reset = () => {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 1500);
+  };
+
+  useEffect(() => {
+    action.getIncomes(dispatch);
+    reset();
+  }, [dispatch]);
   const incomesFiltered = incomes.filter((i) => i.type === 'INCOME');
   return (
     <div className="row">
       <div className="col-12">
         <div className="card card-dark">
-          {incomesFiltered.length === 0 && <InternalLoader />}
+          {!loading && <InternalLoader />}
           <div className="d-flex bg-dark justify-content-between w-100 p-2 rounded-top">
             <h3 className="">Movements - Income</h3>
             <IncomeAddModal showModal={showModal} showModalHandler={showModalHandler} />

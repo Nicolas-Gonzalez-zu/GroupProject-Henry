@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,10 +7,18 @@ import * as action from '../../../actions/creators';
 import InternalLoader from '../../loaders/InternalLoader';
 
 export default function Transfer() {
+  const [loading, setLoading] = useState(true);
   const transfer = useSelector((state) => state.transferReducer.transfers);
   const wallets = useSelector((state) => state.walletReducer.wallets);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
+
+  const reset = () => {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 1500);
+  };
 
   useEffect(() => {
     if (authAlert.fire) {
@@ -36,6 +44,7 @@ export default function Transfer() {
   useEffect(() => {
     action.getWallet(dispatch);
     action.getTransfer(dispatch);
+    reset();
   }, [dispatch]);
   const validate = (values) => {
     const errors = {};
@@ -82,7 +91,7 @@ export default function Transfer() {
   const filterwallets = wallets.filter((x) => x.status === true);
   return (
     <>
-      {transfer.length === 0 && <InternalLoader />}
+      {!loading && <InternalLoader />}
       <div className="card-header bg-dark">
         <h3>Movements - Transfer</h3>
       </div>

@@ -3,7 +3,6 @@ import { useFormik } from 'formik';
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import './modalcss.css';
 import * as action from '../../actions/creators';
 
 export default function ExpenseModal() {
@@ -107,7 +106,7 @@ export default function ExpenseModal() {
         <Modal.Body>
           <form onSubmit={formik.handleSubmit}>
             <div className="d-flex">
-              <div className="pr-3">
+              <div className="pr-3 col-7">
                 <b>Amount</b>
                 <input
                   autoComplete="off"
@@ -203,7 +202,7 @@ export default function ExpenseModal() {
                   <b className="text-danger">{formik.errors.budget_id}</b>
                 ) : null}
 
-                <Button type="submit" className="btn btn-success mt-5 ml-5 col-5">
+                <Button type="submit" className="btn btn-success mt-5 ml-3 col-5">
                   Create
                 </Button>
                 <Button onClick={showModal} className="btn btn-danger mt-5 ml-2">
