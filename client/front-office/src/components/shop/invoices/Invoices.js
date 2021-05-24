@@ -87,7 +87,7 @@ export default function Invoices() {
   ));
 
   return (
-    <div classNameName="container-fluid d-flex justify-content-center p-3 mt-5">
+    <div className="container-fluid d-flex justify-content-center p-3 mt-5">
       <div className="col-12" id="accordion">
         {invoices && displayinvoice}
 

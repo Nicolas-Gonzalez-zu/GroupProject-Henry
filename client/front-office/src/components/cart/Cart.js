@@ -13,25 +13,37 @@ const Cart = () => {
   const [preferenceId, setPreferenceId] = useState(null);
 
   const handleChange = (e) => {
-    setPaymentMethod(e.target.value);
-    const miUuid = uuid();
-    const obj = { services: items, user: user.user, orderId: miUuid };
-    action.serverPetition
-      .post('http://localhost:3001/api/fo/mp', obj)
-      .then((order) => {
-        setPreferenceId(order.data.body.id);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // eslint-disable-next-line no-restricted-globals
+    const confirmed = confirm('Do you really want to confirm purchase');
+
+    if (confirmed) {
+      setPaymentMethod(e.target.value);
+      const miUuid = uuid();
+      const obj = {
+        services: items,
+        user: user.user,
+        orderId: miUuid,
+        payment_method: e.target.value,
+      };
+      action.serverPetition
+        .post('http://localhost:3001/api/fo/mp', obj)
+        .then((order) => {
+          setPreferenceId(order.data.body.id);
+        })
+        .catch((err) => {
+          e.target.checked = false;
+          console.log(err);
+        });
+    } else {
+      e.target.checked = false;
+    }
   };
   useEffect(() => {
-    if (paymentMethod) {
+    if (paymentMethod && preferenceId) {
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = 'https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js';
       script.setAttribute('data-preference-id', preferenceId);
-      console.log(preferenceId);
       const form = document.getElementById(FORM_ID);
       form.appendChild(script);
     }
@@ -46,7 +58,6 @@ const Cart = () => {
   const discount = user.plan.name === 'Pro' ? (subtotal * 20) / 100 : 0;
   const today = new Date();
   const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
-  console.log(date, 'date');
   return (
     <div className="invoice p-3 mb-3">
       <div className="row">
