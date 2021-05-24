@@ -1,5 +1,5 @@
 const passport = require('passport');
-const { User } = require('../../db/models');
+const db = require('../../db/models');
 
 const LocalStrategy = require('./strategies/local');
 
@@ -8,11 +8,27 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
-  User.findByPk(user.id)
+  db.Customer.findOne({
+    where: { user_id: user.id },
+    include: [
+      { model: db.User, as: 'user' },
+      { model: db.Plan, as: 'plan' },
+    ],
+  })
     .then((LoggedUser) => {
-      done(null, LoggedUser);
+      const usr = {
+        id: LoggedUser.user_id,
+        first_name: LoggedUser.user.first_name,
+        last_name: LoggedUser.user.last_name,
+        phone: LoggedUser.user.phone,
+        email: LoggedUser.user.email,
+        plan: LoggedUser.plan,
+      };
+      done(null, usr);
     })
-    .catch((e) => done(null, false, e));
+    .catch((e) => {
+      done(null, false, e);
+    });
 });
 
 passport.use(LocalStrategy);
