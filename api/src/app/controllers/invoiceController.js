@@ -106,4 +106,32 @@ router.post('/add', (req, res) => {
     });
 });
 
+router.get('/:idInvoice', (req, res) => {
+  const { idInvoice } = req.params;
+  db.Invoice.findOne({
+    where: { id: idInvoice },
+    include: { model: db.Service },
+  })
+    .then((foundInvoices) => {
+      const { id, payment_method, amount, status, createdAt } = foundInvoices; // eslint-disable-line camelcase
+      const servicesContainer = foundInvoices.Services.map((service) => ({
+        id: service.dataValues.id,
+        name: service.dataValues.name,
+        price: service.dataValues.price,
+      }));
+
+      res.status(statusCode.OK).json({
+        id,
+        payment_method,
+        amount,
+        status,
+        createdAt,
+        services: servicesContainer,
+      });
+    })
+    .catch((e) => {
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: e.message });
+    });
+});
+
 module.exports = router;
