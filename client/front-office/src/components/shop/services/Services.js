@@ -1,23 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import * as action from '../../../actions/creators';
 
 export default function Services() {
+  const items = useSelector((state) => state.shopReducer.shop);
   const services = useSelector((state) => state.serviceReducer.services);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
 
   const agregarShop = (id, name, description, price) => {
-    const data = {
-      id,
-      name,
-      description,
-      price,
-    };
-    action.addShop(data, dispatch);
+    const filter = items.filter((x) => x.id === id);
+    if (filter.length === 0) {
+      const data = {
+        id,
+        name,
+        description,
+        price,
+      };
+      action.addShop(data, dispatch);
+    } else {
+      Swal.fire({
+        title: 'You already added it to the cart',
+        icon: 'error',
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
   };
 
   useEffect(() => {

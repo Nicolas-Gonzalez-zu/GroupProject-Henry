@@ -69,6 +69,7 @@ router.get('/me', checkIfLoggedIn, (req, res) => {
       res.status(200).json(user);
     })
     .catch((e) => {
+      console.log(e.message);
       res.status(500).json({ error: e.message });
     });
 });
