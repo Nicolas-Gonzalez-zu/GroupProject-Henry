@@ -19,6 +19,7 @@ import PdfPreview from '../pdfPreview/PdfPreview';
 import Pro from '../Pro/Pro';
 import Cart from '../cart/Cart';
 import Dashboard from '../dashboard/Dashboard';
+import InvoiceId from '../InvoiceId/InvoiceId';
 
 const ContentWrapper = () => {
   const history = useHistory();
@@ -90,6 +91,8 @@ const ContentWrapper = () => {
             <Route exact path="/preview">
               <PdfPreview />
             </Route>
+
+            <Route exact path="/invoice/:idInvoice" component={InvoiceId} />
 
             <Route exact path="/cart">
               <Cart />

@@ -236,14 +236,18 @@ export const setAlert = (dispatch, message = null, fire = false, type = null) =>
 };
 
 export const setError = (e, dispatch) => {
-  if (e.response) {
-    if (e.response.data.error) {
-      setAlert(dispatch, e.response.data.error, true, 'error');
+  if (e.response.data.error) {
+    console.log(e.response);
+    setAlert(dispatch, e.response.data.error, true, 'error');
+    if (e.response) {
+      if (e.response.data.error) {
+        setAlert(dispatch, e.response.data.error, true, 'error');
+      } else {
+        setAlert(dispatch, e.message, true, 'error');
+      }
     } else {
       setAlert(dispatch, e.message, true, 'error');
     }
-  } else {
-    setAlert(dispatch, e.message, true, 'error');
   }
 };
 
@@ -437,6 +441,7 @@ export const getInvoice = (data, dispatch) => {
       const date = new Date();
       const linkSource = fileURL;
       const downloadLink = document.createElement('a');
+      downloadLink.target = '_blank';
       const fileName = `Invoice_${date.toString().slice(4, 24).replace(/ /g, '_')}.pdf`;
       downloadLink.href = linkSource;
       downloadLink.download = fileName;
@@ -484,12 +489,28 @@ export const sortWalletMinBalance = (dispatch) => {
   dispatch({ type: actionType.SORT_WALLETS_MIN_BALANCE });
 };
 
-export const paymentMP = (item) => {
+// export const paymentMP = (item) => {
+//   serverPetition
+//     .post('fo/mp', item)
+//     .then((order) => {
+//       console.log(order, 'soy el order');
+//       return order;
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
+
+export const getInvoiceById = (id, dispatch) => {
+  console.log(id, 'soy el id en la acc');
   serverPetition
-    .post('fo/mp', item)
-    .then((order) => {
-      console.log(order, 'soy el order');
-      return order;
+    .get(`fo/invoice/${id}`)
+    .then(({ data }) => {
+      console.log(data, 'soy la data en action');
+      dispatch({
+        type: actionType.GET_INVOICE_ID,
+        payload: data,
+      });
     })
     .catch((err) => {
       console.log(err);
