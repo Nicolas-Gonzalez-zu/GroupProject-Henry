@@ -6,6 +6,8 @@ const passport = require('passport');
 const path = require('path');
 const bcryptUtils = require('../utils/bcryptUtils');
 
+const sendEmail = require('../helpers/mailgun');
+
 const db = require('../../db/models');
 
 const router = express.Router();
@@ -118,7 +120,15 @@ router.post('/forgotPassword', (req, res) => {
       };
 
       const token = jwt.sign(payload, secret, { expiresIn: '15m' });
-      const link = `localhost:3000/resetPassword/${user.id}/${token}`;
+      const link = `http://localhost:3000/resetPassword/${user.id}/${token}`;
+
+      sendEmail(
+        user.email,
+        'no-reply@test.com',
+        'Forgot password',
+        'reset_password_template',
+        link,
+      );
       console.log(link);
 
       return res.status(200).json({ message: 'request recived' });
@@ -137,15 +147,12 @@ router.post('/resetPassword/:id/:token', (req, res) => {
       if (user === null) return res.status(200).json({ message: 'request recived' });
       const secret = process.env.JWT_SECRET + user.password;
       const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm;
+
       try {
         const payload = jwt.verify(token, secret);
-        if (
-          bcryptUtils.validatePassword(user.password, password1) &&
-          password1 === password2 &&
-          regex.test(password1)
-        ) {
+        if (password1 === password2 && regex.test(password1)) {
           const passEncripted = bcryptUtils.encrypt(password1, 10);
-          db.User.update({ password: passEncripted }, { where: { id: req.user.id } })
+          db.User.update({ password: passEncripted }, { where: { id } })
             .then(() => {
               res.status(200).json({ message: 'User password updated', success: true });
             })

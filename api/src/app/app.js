@@ -8,7 +8,7 @@ const passport = require('./auth/setup');
 
 const corsOptions = {
   credentials: true,
-  origin: process.env.ALLOWED_ORIGIN || 'http://localhost:3000',
+  origin: true, // ['http://localhost:3001'],
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
@@ -23,6 +23,11 @@ app.set('view engine', 'ejs');
 // logging middleware
 app.use(logger('dev'));
 
+app.use((req, res, next) => {
+  console.log(req.headers);
+  next();
+});
+
 // bodyparse middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -33,7 +38,7 @@ app.use(
   session({
     secret: 'very secret key',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     httpOnly: true,
     store: MongoStore.create({ mongoUrl: MONGO_URI }),
     sameSite: true,

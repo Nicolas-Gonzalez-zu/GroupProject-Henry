@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ContentHeader from './ContentHeader';
 import Profile from '../profile/Profile';
@@ -22,8 +22,8 @@ import Dashboard from '../dashboard/Dashboard';
 const ContentWrapper = () => {
   const history = useHistory();
   const loggedIn = useSelector((store) => store.authReducers.sessionData.loggedIn);
-
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (!loggedIn) {
       history.push('/login');
@@ -32,62 +32,76 @@ const ContentWrapper = () => {
 
   return (
     <div className="content-wrapper">
-      <ContentHeader />
       <section className="content">
         <div className="card">
-          <Route exact path="/">
-            <Dashboard />
-          </Route>
-          <Route exact path="/pro">
-            <Pro />
-          </Route>
-          <Route exact path="/profile">
-            <Profile />
-          </Route>
+          <Switch>
+            <Route exact path="/">
+              <div className="container-fluid d-flex justify-content-center p-3 mt-5">
+                <img
+                  alt=""
+                  className="col-5"
+                  src="https://www.ccisua.org/wp-content/uploads/2017/05/fa-work-in-progress-computer.png"
+                />
+              </div>
+            </Route>
 
-          <Route exact path="/edit">
-            <EditForm />
-          </Route>
+            <Route exact path="/">
+              <Dashboard />
+            </Route>
 
-          <Route exact path="/changePassword">
-            <ChangePassword />
-          </Route>
+            <Route exact path="/pro">
+              <Pro />
+            </Route>
 
-          <Route exact path="/wallet">
-            <Wallet />
-          </Route>
+            <Route exact path="/profile">
+              <Profile />
+            </Route>
 
-          <Route exact path="/budget">
-            <Budget />
-          </Route>
+            <Route exact path="/edit">
+              <EditForm />
+            </Route>
 
-          <Route exact path="/income" component={Income} />
-          <Route exact path="/expense" component={Expense} />
-          <Route exact path="/transfer" component={Transfer} />
+            <Route exact path="/changePassword">
+              <ChangePassword />
+            </Route>
 
-          <Route exact path="/reports">
-            <Reports />
-          </Route>
+            <Route exact path="/wallet">
+              <Wallet />
+            </Route>
 
-          <Route exact path="/invoices">
-            <Invoices />
-          </Route>
+            <Route exact path="/budget">
+              <Budget />
+            </Route>
 
-          <Route exact path="/services">
-            <Services />
-          </Route>
+            <Route exact path="/income" component={Income} />
+            <Route exact path="/expense" component={Expense} />
+            <Route exact path="/transfer" component={Transfer} />
 
-          <Route exact path="/orders">
-            <Orders />
-          </Route>
+            <Route exact path="/reports">
+              <Reports />
+            </Route>
 
-          <Route exact path="/preview">
-            <PdfPreview />
-          </Route>
+            <Route exact path="/invoices">
+              <Invoices />
+            </Route>
 
-          <Route exact path="/cart">
-            <Cart />
-          </Route>
+            <Route exact path="/services">
+              <Services />
+            </Route>
+
+            <Route exact path="/orders">
+              <Orders />
+            </Route>
+
+            <Route exact path="/preview">
+              <PdfPreview />
+            </Route>
+
+            <Route exact path="/cart">
+              <Cart />
+            </Route>
+            <ContentHeader />
+          </Switch>
         </div>
       </section>
     </div>
