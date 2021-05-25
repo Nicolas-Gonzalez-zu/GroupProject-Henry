@@ -120,7 +120,7 @@ export default function Expense() {
                             <div
                               className="progress-bar bg-purple"
                               style={{
-                                width: `${(30 / x.wallet.balance) * 100}%`,
+                                width: `${(x.wallet.balance / x.budget.amount) * 100}%`,
                               }}
                             />
                           </div>
