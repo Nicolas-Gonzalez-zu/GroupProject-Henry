@@ -11,6 +11,7 @@ export default function ExpenseModal() {
   const wallets = useSelector((state) => state.walletReducer.wallets);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
+  const [alerto, setalerto] = useState('');
 
   useEffect(() => {
     if (authAlert.fire) {
@@ -31,7 +32,7 @@ export default function ExpenseModal() {
 
   const validate = (values) => {
     const errors = {};
-
+    const sugg = filterbudgets.filter((f) => f.id == values.budget_id);
     if (!values.amount) {
       errors.amount = 'Required';
     } else if (isNaN(values.amount)) {
@@ -39,6 +40,12 @@ export default function ExpenseModal() {
     } else if (values.amount > wallets.balance) {
       errors.amount = 'Amount Cant be ';
     }
+    if (Number(sugg[0]?.amount) < values.amount) {
+      setalerto('Your Amount is higher than your budget');
+    } else {
+      setalerto('');
+    }
+
     if (!values.description) {
       errors.description = 'Description Required';
     } else if (values.description.length < 2) {
@@ -201,7 +208,6 @@ export default function ExpenseModal() {
                 {formik.errors.budget_id ? (
                   <b className="text-danger">{formik.errors.budget_id}</b>
                 ) : null}
-
                 <Button type="submit" className="btn btn-success mt-5 ml-3 col-5">
                   Create
                 </Button>
@@ -212,6 +218,9 @@ export default function ExpenseModal() {
             </div>
           </form>
         </Modal.Body>
+        <Modal.Footer>
+          {alerto.length === 0 ? '' : <p className="text-warning">{alerto}!</p>}
+        </Modal.Footer>
       </Modal>
     </>
   );
