@@ -35,4 +35,24 @@ router.get('/', (req, res) => {
     });
 });
 
+router.post('/add', (req, res) => {
+  const service = {
+    name: req.body.name,
+    price: req.body.price,
+    description: req.body.description,
+    img_url: req.body.img_url,
+  };
+
+  db.Service.create(service)
+    .then((createdService) => {
+      req.body.categories.forEach((category) => {
+        createdService.addCategory(category);
+      });
+      res.status(statusCode.CREATED).json(createdService);
+    })
+    .catch((error) => {
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    });
+});
+
 module.exports = router;
