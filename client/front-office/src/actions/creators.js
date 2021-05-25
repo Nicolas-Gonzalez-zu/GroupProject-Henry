@@ -516,3 +516,16 @@ export const getInvoiceById = (id, dispatch) => {
       console.log(err);
     });
 };
+
+export const sortBudgetAz = (dispatch) => {
+  dispatch({ type: actionType.SORT_BUDGETS_AZ });
+};
+export const sortBudgetZa = (dispatch) => {
+  dispatch({ type: actionType.SORT_BUDGETS_ZA });
+};
+export const sortBudgetAmount = (dispatch) => {
+  dispatch({ type: actionType.SORT_BUDGETS_AMOUNT });
+};
+export const sortBudgetMinAmount = (dispatch) => {
+  dispatch({ type: actionType.SORT_BUDGETS_MIN_AMOUNT });
+};
