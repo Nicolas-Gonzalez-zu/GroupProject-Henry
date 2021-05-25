@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
 import InternalLoader from '../loaders/InternalLoader';
+import PdfPreview from '../pdfPreview/PdfPreview';
 
 export default function Reports() {
   const [loading, setLoading] = useState(true);
@@ -116,65 +117,69 @@ export default function Reports() {
 
   return (
     <div>
-      {reports && <Redirect to={{ pathname: '/preview', state: { reports } }} />}
       <div>
-        <div className="bg-warning d-flex justify-content-between w-100 p-3 rounded-top">
+        <div className="bg-dark d-flex justify-content-between p-3 rounded-top">
           <h5>Download your movements reports </h5>
         </div>
-        <div className="d-flex w-100 justify-content-center p-4">
-          <button
-            type="button"
-            className="btn btn-block btn-info btn-xs w-50"
-            onClick={(e) => handleClick(e)}
-          >
-            <h5>Download all movements</h5>
+        <div className="d-flex justify-content-center p-4">
+          <button type="button" className="btn btn-warning" onClick={(e) => handleClick(e)}>
+            <b> Download all movements</b>
           </button>
-        </div>
-        <div className="d-flex justify-content-center">Or</div>
-        <div className="d-flex justify-content-center p-3">
-          <label>Filter by:</label>
-          <select name="select" onChange={(e) => handleChange(e)} defaultValue="default">
-            <option value="default" disabled>
-              None
-            </option>
-            <option value="type">Type</option>
-            <option value="date">Date</option>
-            <option value="wallet">Wallet</option>
-          </select>
-        </div>
-        {filter !== 'default' && (
-          <div className="d-flex justify-content-center p-3">
-            <label>This {filter}:</label>
+
+          <div className="d-flex card-header">
+            <label>Filter by:</label>
             <select
               name="select"
-              id="myform"
-              onChange={(e) => handleSend(e)}
+              className="mr-3"
+              onChange={(e) => handleChange(e)}
               defaultValue="default"
             >
               <option value="default" disabled>
-                Select
+                None
               </option>
-              {options.length > 0 &&
-                options.map((e) => (
-                  <option key={e.value} value={e.value}>
-                    {e.name}
-                  </option>
-                ))}
+              <option value="type">Type</option>
+              <option value="date">Date</option>
+              <option value="wallet">Wallet</option>
             </select>
+            {filter !== 'default' && (
+              <>
+                <label>This {filter}:</label>
+                <select
+                  name="select"
+                  id="myform"
+                  onChange={(e) => handleSend(e)}
+                  defaultValue="default"
+                >
+                  <option value="default" disabled>
+                    Select
+                  </option>
+                  {options.length > 0 &&
+                    options.map((e) => (
+                      <option key={e.value} value={e.value}>
+                        {e.name}
+                      </option>
+                    ))}
+                </select>
+              </>
+            )}
           </div>
-        )}
-        {send.length > 0 && (
-          <div className="d-flex w-100 justify-content-center p-1">
+          {send.length > 0 ? (
+            <button type="button" className="btn btn-warning" onClick={(e) => downloadFilter(e)}>
+              <b>Download filtered by {filter}</b>
+            </button>
+          ) : (
             <button
               type="button"
-              className="btn btn-block btn-info btn-xs w-25"
+              className="btn btn-dark"
               onClick={(e) => downloadFilter(e)}
+              disabled
             >
-              <h6>Download filtered by {filter}</h6>
+              <b>Download filtered by {filter}</b>
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
+      {reports && <PdfPreview reports={reports} />}
       {!loading && <InternalLoader />}
     </div>
   );
