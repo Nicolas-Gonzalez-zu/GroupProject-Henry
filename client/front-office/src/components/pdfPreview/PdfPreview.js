@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { Redirect } from 'react-router';
-import { useLocation } from 'react-router-dom';
-
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-export default function PdfPreview() {
+export default function PdfPreview({ reports }) {
   const stateReports = useSelector((state) => state.reportReducer.reports);
   const dispatch = useDispatch();
-  const location = useLocation();
-  const { reports } = location.state;
   function handleClick() {
     action.resetReports(dispatch);
   }
@@ -22,7 +18,7 @@ export default function PdfPreview() {
   function onDocumentLoadSuccess({ numPages }) {
     setNum(numPages);
   }
-
+  console.log(reports, 'reports');
   function nextPage() {
     setPageNumber(pageNumber + 1);
   }
@@ -42,24 +38,12 @@ export default function PdfPreview() {
             </Document>
           </div>
         )}
-        {reports && (
-          <div className="d-inline">
-            <button
-              type="button"
-              style={{ width: 150 }}
-              className="btn btn-block bg-gradient-danger btn-lg"
-              onClick={(e) => handleClick(e)}
-            >
-              Download another report
-            </button>
-          </div>
-        )}
       </div>
       <div className="d-flex justify-content-center" style={{ paddingBottom: 10 }}>
         {pageNumber > 1 && (
           <button
             type="button"
-            className="btn btn-block btn-outline-warning"
+            className="btn btn-block btn-dark mr-2"
             style={{ width: 84 }}
             onClick={(e) => previousPage(e)}
           >
@@ -72,13 +56,18 @@ export default function PdfPreview() {
         {pageNumber < num && (
           <button
             type="button"
-            className="btn btn-block btn-outline-warning"
+            className="btn btn-block btn-dark ml-2"
             style={{ width: 84 }}
             onClick={(e) => nextPage(e)}
           >
             Next
           </button>
         )}
+      </div>{' '}
+      <div className="d-flex justify-content-center mb-3">
+        <button type="button" className="btn btn-danger " onClick={() => handleClick()}>
+          Clear PDF Preview
+        </button>
       </div>
     </div>
   );
