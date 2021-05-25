@@ -419,9 +419,8 @@ export const getServices = (dispatch) => {
     });
 };
 
-export const addShop = (data, dispatch) => {
-  const obj = { ...data, price: Number(data.price) };
-  dispatch({ type: 'ADD_SHOP', payload: obj });
+export const addShop = (payload, dispatch) => {
+  dispatch({ type: 'ADD_SHOP', payload });
   setAlert(dispatch, 'Added to the cart', true, 'success');
 };
 export const deleteShop = (payload, dispatch) => {

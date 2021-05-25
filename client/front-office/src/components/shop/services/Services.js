@@ -12,6 +12,10 @@ export default function Services() {
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
 
+  const filterservices = services.filter(
+    (f) => f.name !== 'Pro-Account' && f.name !== 'Pro Account' && f.name !== 'Pro-Accounts',
+  );
+  console.log(items);
   const agregarShop = (id, name, description, price) => {
     const data = {
       id,
@@ -65,8 +69,8 @@ export default function Services() {
       {!loading && <InternalLoader />}
       <div className="card-body pb-0">
         <div className="row">
-          {services &&
-            services.map((x) => {
+          {filterservices &&
+            filterservices.map((x) => {
               const filter = items.filter((i) => i.id === x.id);
               return (
                 <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">

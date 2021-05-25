@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuid } from 'uuid';
+import { Modal } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import './Pro.css';
 import Tilt from 'react-vanilla-tilt';
@@ -7,52 +9,86 @@ import Tilt from 'react-vanilla-tilt';
 import * as action from '../../actions/creators';
 
 export default function Pro() {
+  const services = useSelector((state) => state.serviceReducer.services);
   const items = useSelector((state) => state.shopReducer.shop);
+  const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
   const dispatch = useDispatch();
   const authAlert = useSelector((store) => store.authReducers.authAlert);
-  const filter = items.filter((x) => x.name === 'Plan Pro');
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [preferenceId, setPreferenceId] = useState(null);
+  const [state, setstate] = useState(false);
+  const [btns, setbtns] = useState(false);
+  const FORM_ID = 'payment-form';
+
+  // console.log(services, 'servi');
+  const showmodal = () => {
+    setstate(!state);
+    setbtns(false);
+  };
 
   useEffect(() => {
-    if (authAlert.fire) {
-      const position = authAlert.type === 'success' ? 'center' : 'top-end';
+    action.getServices(dispatch);
+  }, [dispatch]);
 
-      Swal.fire({
-        title: authAlert.message,
-        icon: authAlert.type,
-        toast: true,
-        position,
-        showConfirmButton: false,
-        timer: 2000,
-      }).then(() => {
-        if (authAlert.type === 'success') {
-          action.setAlert(dispatch);
-        } else {
-          action.setAlert(dispatch);
-        }
-      });
-    }
-  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
-
-  const agregarShop = () => {
-    if (filter.length === 0) {
+  const addcarrito = (e) => {
+    const filtrado = services.filter((f) => f.name === 'Pro-Accounts');
+    console.log(filtrado, 'fil');
+    const pro = filtrado.map((s) => {
+      console.log(s.price, 'dentrodelmap');
       const data = {
-        id: 1,
-        name: 'Plan Pro',
-        price: 300,
-        description: 'Upgrade to Plan Pro',
+        id: s.id,
+        name: s.name,
+        description: s.description,
+        price: Number(s.price),
       };
-      action.addShop(data, dispatch);
-    } else {
-      Swal.fire({
-        title: 'You already added it to the cart',
-        icon: 'error',
-        toast: true,
-        position: 'center',
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    }
+      return data;
+    });
+
+    // eslint-disable-next-line no-restricted-globals
+    Swal.fire({
+      title: 'Do you really want to confirm purchase?',
+      icon: 'question',
+      toast: true,
+      position: 'center',
+      showConfirmButton: true,
+      showCancelButton: true,
+    }).then((res) => {
+      if (res.isConfirmed) {
+        setbtns(true);
+        setPaymentMethod('mercado pago');
+        const miUuid = uuid();
+        const obj = {
+          services: pro,
+          user: user.user,
+          orderId: miUuid,
+          payment_method: 'mercado pago',
+        };
+        action.serverPetition
+          .post('http://localhost:3001/api/fo/mp', obj)
+          .then((order) => {
+            setPreferenceId(order.data.body.id);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
   };
+
+  useEffect(() => {
+    if (paymentMethod && preferenceId) {
+      const btn = document.getElementsByClassName('mercadopago-button');
+      if (btn.length <= 0) {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js';
+        script.setAttribute('data-preference-id', preferenceId);
+        const form = document.getElementById(FORM_ID);
+        form.appendChild(script);
+      }
+    }
+  }, [paymentMethod, preferenceId]);
+
   return (
     <>
       <div className="b">
@@ -149,13 +185,84 @@ export default function Pro() {
                 <li>
                   <span className="text-success">✓ </span>Limited reports
                 </li>
-                <button type="button" className="btn btn-warning mt-5" onClick={agregarShop}>
+                <button type="button" className="btn btn-warning mt-5" onClick={showmodal}>
                   <b> Buy Now!</b>
                 </button>
               </ul>
             </div>
           </Tilt>
         </div>
+        <Modal show={state}>
+          <Modal.Header>
+            <b>Select your Payment Methods</b>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="d-flex justify-content-around">
+              {btns ? (
+                <>
+                  <button
+                    type="button"
+                    className="btn  btn-outline-dark"
+                    onClick={addcarrito}
+                    disabled
+                  >
+                    <img
+                      src="https://help.turitop.com/hc/article_attachments/360013282039/isologoVertical.png"
+                      alt="American Express"
+                      height="70"
+                      width="70"
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    className="btn  btn-outline-dark"
+                    onClick={addcarrito}
+                    disabled
+                  >
+                    <img
+                      src="https://i.ibb.co/Wvs4LWh/paypal.png"
+                      alt="American Express"
+                      height="70"
+                      width="70"
+                    />
+                  </button>
+                </>
+              ) : (
+                <>
+                  {' '}
+                  <button type="button" className="btn  btn-outline-dark" onClick={addcarrito}>
+                    <img
+                      src="https://help.turitop.com/hc/article_attachments/360013282039/isologoVertical.png"
+                      alt="American Express"
+                      height="70"
+                      width="70"
+                    />
+                  </button>
+                  <button type="button" className="btn  btn-outline-dark" onClick={addcarrito}>
+                    <img
+                      src="https://i.ibb.co/Wvs4LWh/paypal.png"
+                      alt="American Express"
+                      height="70"
+                      width="70"
+                    />
+                  </button>
+                </>
+              )}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="d-flex flex-start">
+              <div className="row no-print">
+                <div className="col-12">
+                  {preferenceId ? <form id={FORM_ID} method="POST" /> : ''}
+                </div>
+              </div>
+            </div>
+            <button type="button" className="btn btn-danger" onClick={showmodal}>
+              Cancel
+            </button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </>
   );
