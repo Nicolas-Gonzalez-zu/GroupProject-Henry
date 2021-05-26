@@ -9,6 +9,7 @@ import BudgetModal from './BudgetModal';
 
 function Budget() {
   const [loading, setLoading] = useState(true);
+  const [sort, setOrder] = useState('');
 
   const budgets = useSelector((state) => state.budgetReducer.budgets);
   const dispatch = useDispatch();
@@ -16,6 +17,24 @@ function Budget() {
     action.getBudget(dispatch);
     reset();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (sort === 'A-Z') {
+      action.sortBudgetAz(dispatch);
+    }
+    if (sort === 'Z-A') {
+      action.sortBudgetZa(dispatch);
+    }
+    if (sort === '+ amount') {
+      action.sortBudgetAmount(dispatch);
+    }
+    if (sort === '- amount') {
+      action.sortBudgetMinAmount(dispatch);
+    }
+    if (sort === 'all') {
+      action.getBudget(dispatch);
+    }
+  }, [sort, dispatch]);
 
   const filterLabels = budgets.filter((x) => x.status === true);
   const data = {
@@ -76,45 +95,45 @@ function Budget() {
     }, 1000);
   };
 
-  const orderName = () => {
-    budgets.sort((a, b) => {
-      const aa = a.name.toLowerCase();
-      const bb = b.name.toLowerCase();
+  // const orderName = () => {
+  //   budgets.sort((a, b) => {
+  //     const aa = a.name.toLowerCase();
+  //     const bb = b.name.toLowerCase();
 
-      if (aa < bb) {
-        return -1;
-      }
-      if (aa > bb) {
-        return 1;
-      }
-      return 0;
-    });
-    reset();
-  };
-  const orderAmount = () => {
-    budgets.sort((a, b) => {
-      const aa = a.amount;
-      const bb = b.amount;
+  //     if (aa < bb) {
+  //       return -1;
+  //     }
+  //     if (aa > bb) {
+  //       return 1;
+  //     }
+  //     return 0;
+  //   });
+  //   reset();
+  // };
+  // const orderAmount = () => {
+  //   budgets.sort((a, b) => {
+  //     const aa = a.amount;
+  //     const bb = b.amount;
 
-      if (aa < bb) {
-        return -1;
-      }
-      if (aa > bb) {
-        return 1;
-      }
-      return 0;
-    });
-    reset();
-  };
+  //     if (aa < bb) {
+  //       return -1;
+  //     }
+  //     if (aa > bb) {
+  //       return 1;
+  //     }
+  //     return 0;
+  //   });
+  //   reset();
+  // };
 
-  const orderStatus = () => {
-    budgets.sort((a, b) => {
-      if (a.status && !b.status) return -1;
-      if (b.status && !a.status) return 1;
-      return 0;
-    });
-    reset();
-  };
+  // const orderStatus = () => {
+  //   budgets.sort((a, b) => {
+  //     if (a.status && !b.status) return -1;
+  //     if (b.status && !a.status) return 1;
+  //     return 0;
+  //   });
+  //   reset();
+  // };
 
   return (
     <div className="mx-3 mt-3">
@@ -156,20 +175,30 @@ function Budget() {
               <thead>
                 <tr>
                   <th scope="col">
-                    <button type="button" className="btn btn-light" onClick={() => orderName()}>
-                      <b>Budget Name</b>
-                    </button>
+                    <div className="d-flex">
+                      <b className="mr-3">Budget Name</b>
+                      <select onChange={(e) => setOrder(e.target.value)}>
+                        <option value="all" selected>
+                          all
+                        </option>
+                        <option value="A-Z">A-Z</option>
+                        <option value="Z-A">Z-A</option>
+                      </select>
+                    </div>
                   </th>
 
                   <th scope="col">
-                    <button type="button" className="btn btn-light" onClick={() => orderAmount()}>
-                      <b>Ammount</b>
-                    </button>
+                    <div className="d-flex">
+                      <b className="mr-3">Ammount</b>
+                      <select onChange={(e) => setOrder(e.target.value)}>
+                        <option value="all">all</option>
+                        <option value="+ amount">+ Amount</option>
+                        <option value="- amount">- Amount</option>
+                      </select>
+                    </div>
                   </th>
                   <th scope="col">
-                    <button type="button" className="btn btn-light" onClick={() => orderStatus()}>
-                      <b>Status</b>
-                    </button>
+                    <b>Status</b>
                   </th>
                   <th scope="col">Actions</th>
                 </tr>

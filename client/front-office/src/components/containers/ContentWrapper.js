@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import tawkTo from 'tawkto-react';
 import ContentHeader from './ContentHeader';
 import Profile from '../profile/Profile';
 import Budget from '../budget/Budget';
@@ -20,13 +21,17 @@ import Cart from '../cart/Cart';
 import Dashboard from '../dashboard/Dashboard';
 import FAQ from '../FAQ/faq';
 import Contact from '../Contact/Contact';
+import InvoiceId from '../InvoiceId/InvoiceId';
 
 const ContentWrapper = () => {
   const history = useHistory();
   const loggedIn = useSelector((store) => store.authReducers.sessionData.loggedIn);
   const dispatch = useDispatch();
+  const tawkToPropertyId = '578cd20d3daf03937c74defc';
+  const tawkToKey = 'default';
 
   useEffect(() => {
+    tawkTo(tawkToPropertyId, tawkToKey);
     if (!loggedIn) {
       history.push('/login');
     }
@@ -88,6 +93,8 @@ const ContentWrapper = () => {
             <Route exact path="/preview">
               <PdfPreview />
             </Route>
+
+            <Route exact path="/invoice/:idInvoice" component={InvoiceId} />
 
             <Route exact path="/cart">
               <Cart />

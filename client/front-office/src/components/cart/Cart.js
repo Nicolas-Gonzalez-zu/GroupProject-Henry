@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
+import Swal from 'sweetalert2';
 import * as action from '../../actions/creators';
 
 const FORM_ID = 'payment-form';
@@ -14,29 +15,40 @@ const Cart = () => {
 
   const handleChange = (e) => {
     // eslint-disable-next-line no-restricted-globals
-    const confirmed = confirm('Do you really want to confirm purchase');
-
-    if (confirmed) {
-      setPaymentMethod(e.target.value);
-      const miUuid = uuid();
-      const obj = {
-        services: items,
-        user: user.user,
-        orderId: miUuid,
-        payment_method: e.target.value,
-      };
-      action.serverPetition
-        .post('http://localhost:3001/api/fo/mp', obj)
-        .then((order) => {
-          setPreferenceId(order.data.body.id);
-        })
-        .catch((err) => {
+    // const confirmed = confirm('Do you really want to confirm purchase');
+    Swal.fire({
+      title: 'Do you really want to confirm purchase?',
+      icon: 'question',
+      position: 'center',
+      showConfirmButton: true,
+      showCancelButton: true,
+    })
+      .then((response) => {
+        if (response.isConfirmed) {
+          setPaymentMethod(e.target.value);
+          const miUuid = uuid();
+          const obj = {
+            services: items,
+            user: user.user,
+            orderId: miUuid,
+            payment_method: e.target.value,
+          };
+          action.serverPetition
+            .post('http://localhost:3001/api/fo/mp', obj)
+            .then((order) => {
+              setPreferenceId(order.data.body.id);
+            })
+            .catch((err) => {
+              e.target.checked = false;
+              console.log(err);
+            });
+        } else {
           e.target.checked = false;
-          console.log(err);
-        });
-    } else {
-      e.target.checked = false;
-    }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   useEffect(() => {
     if (paymentMethod && preferenceId) {

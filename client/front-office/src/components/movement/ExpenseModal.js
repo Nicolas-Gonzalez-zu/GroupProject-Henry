@@ -3,7 +3,6 @@ import { useFormik } from 'formik';
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import './modalcss.css';
 import * as action from '../../actions/creators';
 
 export default function ExpenseModal() {
@@ -12,6 +11,7 @@ export default function ExpenseModal() {
   const wallets = useSelector((state) => state.walletReducer.wallets);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
+  const [alerto, setalerto] = useState('');
 
   useEffect(() => {
     if (authAlert.fire) {
@@ -32,7 +32,7 @@ export default function ExpenseModal() {
 
   const validate = (values) => {
     const errors = {};
-
+    const sugg = filterbudgets.filter((f) => f.id == values.budget_id);
     if (!values.amount) {
       errors.amount = 'Required';
     } else if (isNaN(values.amount)) {
@@ -40,6 +40,12 @@ export default function ExpenseModal() {
     } else if (values.amount > wallets.balance) {
       errors.amount = 'Amount Cant be ';
     }
+    if (Number(sugg[0]?.amount) < values.amount) {
+      setalerto('Your Amount is higher than your budget');
+    } else {
+      setalerto('');
+    }
+
     if (!values.description) {
       errors.description = 'Description Required';
     } else if (values.description.length < 2) {
@@ -107,7 +113,7 @@ export default function ExpenseModal() {
         <Modal.Body>
           <form onSubmit={formik.handleSubmit}>
             <div className="d-flex">
-              <div className="pr-3">
+              <div className="pr-3 col-7">
                 <b>Amount</b>
                 <input
                   autoComplete="off"
@@ -202,8 +208,7 @@ export default function ExpenseModal() {
                 {formik.errors.budget_id ? (
                   <b className="text-danger">{formik.errors.budget_id}</b>
                 ) : null}
-
-                <Button type="submit" className="btn btn-success mt-5 ml-5 col-5">
+                <Button type="submit" className="btn btn-success mt-5 ml-3 col-5">
                   Create
                 </Button>
                 <Button onClick={showModal} className="btn btn-danger mt-5 ml-2">
@@ -213,6 +218,9 @@ export default function ExpenseModal() {
             </div>
           </form>
         </Modal.Body>
+        <Modal.Footer>
+          {alerto.length === 0 ? '' : <p className="text-warning">{alerto}!</p>}
+        </Modal.Footer>
       </Modal>
     </>
   );

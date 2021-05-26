@@ -7,6 +7,7 @@ mercadopago.configure({
 
 server.post('/', async (req, res) => {
   const { services, user, orderId } = req.body;
+  console.log(services, user, orderId, 'soy el uuid', 'datos que entran al mp');
 
   const items =
     services &&

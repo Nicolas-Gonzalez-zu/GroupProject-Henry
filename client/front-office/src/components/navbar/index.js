@@ -8,7 +8,6 @@ import SupportItem from './SupportItem';
 import * as action from '../../actions/creators';
 
 const NavBar = (props) => {
-  console.log(props);
   const dispatch = useDispatch();
   const logout = (e) => {
     e.preventDefault();
