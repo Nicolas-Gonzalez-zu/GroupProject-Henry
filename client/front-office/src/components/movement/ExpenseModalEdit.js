@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import FormDefault from '../FormDefault/FormDefault';
 import * as action from '../../actions/creators';
 
 export default function ExpenseModalEdit({ id, description, date }) {
@@ -39,20 +40,28 @@ export default function ExpenseModalEdit({ id, description, date }) {
     if (!values.date) {
       errors.date = 'Date Required';
     }
+    if (!values.time) {
+      errors.time = 'Time Required';
+    }
 
     return errors;
   };
 
   const formik = useFormik({
     initialValues: {
-      movement_id: id,
       description: '',
       date: '',
+      time: '',
     },
     validate,
     onSubmit: (values) => {
+      const newValues = {
+        ...values,
+        generation_date: `${values.date}T${values.time}:00.000Z`,
+        movement_id: id,
+      };
       setTimeout(() => setEdit(false), 1000);
-      action.editMovement(values, dispatch);
+      action.editMovement(newValues, dispatch);
     },
   });
 
@@ -68,52 +77,17 @@ export default function ExpenseModalEdit({ id, description, date }) {
       <Modal show={edit}>
         <Modal.Header>
           <h3>
-            Movement to Edit ~ ID: <b className="text-info">{id}</b>
+            Movement to Edit ~ ID: <b className="text-olive">{id}</b>
           </h3>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={formik.handleSubmit} className="text-center">
-            <label>Description</label>
-            <p>
-              Description before: <span className="text-danger">{description}</span>
-            </p>
-            <div className="d-block">
-              <div className="d-flex justify-content-md-center">
-                <input
-                  autoComplete="off"
-                  className={
-                    formik.errors.description
-                      ? 'form-control is-invalid col-7 '
-                      : 'form-control col-7'
-                  }
-                  name="description"
-                  id="description"
-                  onChange={formik.handleChange}
-                  value={formik.values.description}
-                />
-              </div>
-
-              {formik.errors.description ? (
-                <b className="text-danger">{formik.errors.description}</b>
-              ) : null}
-            </div>
-            <p>
-              Date before:
-              <span className="text-danger">{date.replace('T', ' ~ ').replace('.000Z', ' ')}</span>
-            </p>
-            <div className="d-block">
-              <div className="d-flex justify-content-md-center">
-                <input
-                  className="form-control col-7"
-                  type="datetime-local"
-                  name="date"
-                  id="date"
-                  onChange={formik.handleChange}
-                  value={formik.values.date}
-                />
-              </div>
-              {formik.errors.date ? <b className="text-danger">{formik.errors.date}</b> : null}
-            </div>
+            <FormDefault
+              values={formik.values}
+              errors={formik.errors}
+              handleChange={formik.handleChange}
+              inputType={['text', 'date', 'time']}
+            />
             <Button type="submit" className="btn btn-success mt-4 col-4 ml-1">
               Edit Movement
             </Button>

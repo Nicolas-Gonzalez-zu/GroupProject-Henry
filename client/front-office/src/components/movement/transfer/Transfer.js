@@ -55,8 +55,8 @@ export default function Transfer() {
       errors.amount = 'Amount Must be a Number';
     }
 
-    if (!values.generation_date) {
-      errors.generation_date = 'Date Required';
+    if (!values.generation_date || !values.generation_time) {
+      errors.generation_date = 'Date and Time Required';
     }
     if (!values.origin_wallet_id) {
       errors.origin_wallet_id = 'Origin wallet is Required';
@@ -72,12 +72,17 @@ export default function Transfer() {
     initialValues: {
       amount: '',
       generation_date: '',
+      generation_time: '',
       origin_wallet_id: '',
       destination_wallet_id: '',
     },
     validate,
     onSubmit: (values) => {
-      const newValues = { ...values, amount: Number(values.amount, 10) };
+      const newValues = {
+        ...values,
+        amount: Number(values.amount, 10),
+        generation_date: `${values.generation_date}T${values.generation_time}:00.000Z`,
+      };
       action.addTransfer(newValues, dispatch);
       formik.resetForm({
         amount: '',
@@ -173,21 +178,40 @@ export default function Transfer() {
                       ? 'form-control is-invalid col-12'
                       : 'form-control col-12'
                   }
-                  type="datetime-local"
+                  type="date"
                   name="generation_date"
                   id="generation_date"
                   onChange={formik.handleChange}
                   value={formik.values.generation_date}
                 />
               </div>
-              {formik.errors.generation_date ? (
-                <b className="text-danger">{formik.errors.generation_date}</b>
-              ) : null}{' '}
+            </div>
+            <h3 className="mr-1"> Time </h3>
+            <div className="col-2 d-row ml-1 mr-2">
+              <div className="d-flex">
+                <input
+                  type="time"
+                  className={
+                    formik.errors.generation_date
+                      ? 'form-control is-invalid col-12'
+                      : 'form-control col-12'
+                  }
+                  name="generation_time"
+                  id="generation_time"
+                  onChange={formik.handleChange}
+                  value={formik.values.generation_time}
+                />
+              </div>
             </div>
 
             <button className="btn btn-warning ml-3" type="submit">
               Transfer
             </button>
+          </div>
+          <div className="d-flex justify-content-center">
+            {formik.errors.generation_date ? (
+              <b className="text-danger ">{formik.errors.generation_date}</b>
+            ) : null}
           </div>
         </form>
       </div>

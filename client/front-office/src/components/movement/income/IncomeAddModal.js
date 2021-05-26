@@ -40,18 +40,21 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
     if (!/^[0-9]*$/gm.test(values.amount)) {
       errors.amount = 'The amount must be a number';
     } else if (!values.amount) {
-      errors.amount = 'the amount is required';
+      errors.amount = 'The amount is required';
     }
-    if (values.wallet_id === '-') {
-      errors.wallet_id = 'the wallet is required';
+    if (values.wallet === '-') {
+      errors.wallet = 'The wallet is required';
     }
-    if (!values.generation_date) {
-      errors.generation_date = 'the generation date is required';
+    if (!values.date) {
+      errors.date = 'The date is required';
+    }
+    if (!values.time) {
+      errors.time = 'The time is required';
     }
     if (!values.description) {
-      errors.description = 'the description is required';
+      errors.description = 'The description is required';
     } else if (values.description.length < 5) {
-      errors.description = 'the description must contain at least 5 letters';
+      errors.description = 'The description must contain at least 5 letters';
     }
     return errors;
   };
@@ -63,7 +66,8 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
       wallet: '',
       description: '',
       amount: '',
-      generation_date: '',
+      date: '',
+      time: '',
     },
     validate,
     onSubmit: (values) => {
@@ -73,16 +77,18 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
         wallet_id: values.wallet,
         amount: Number(values.amount, 10),
         type: 'INCOME',
+        generation_date: `${values.date}T${values.time}:00.000Z`,
       };
       console.log(newValues, 'soy new values');
       action.addIncome(newValues, dispatch);
       setTimeout(() => {
         showModalHandler();
         formik.resetForm({
+          wallet: '',
+          description: '',
           amount: '',
           generation_date: '',
-          description: '',
-          wallet_id: '',
+          generation_time: '',
         });
       }, 1500);
     },
@@ -93,9 +99,9 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
         Add Income
       </Button>
       <Modal show={showModal}>
-        <Modal.Header className="d-flex bg-info justify-content-between w-100 p-2 rounded-top">
+        <Modal.Header className="d-flex justify-content-between w-100 p-2 rounded-top">
           <div>
-            <h4>Add your Income</h4>
+            <h3>Add your Income</h3>
           </div>
         </Modal.Header>
         <Modal.Body>
@@ -107,7 +113,7 @@ const IncomeAddModal = ({ showModal, showModalHandler }) => {
               values={formik.values}
               errors={formik.errors}
               handleChange={formik.handleChange}
-              inputType={['select', 'text', 'text', 'datetime-local']}
+              inputType={['select', 'text', 'text', 'date', 'time']}
               selectFrom={[walletsAvailable]}
             />
             <div className="d-flex justify-content-center mt-3">
