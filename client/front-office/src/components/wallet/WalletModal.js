@@ -44,22 +44,17 @@ const WalletModal = () => {
     } else if (!/^[a-zA-Z\s]+$/g.test(values.name)) {
       errors.name = 'This field only accept letters!';
     }
-    if (!values.balance) {
-      errors.balance = 'The balance is required!';
-    } else if (!/^[0-9]*$/gm.test(values.balance)) {
-      errors.balance = 'This field only accept numbers!';
-    }
+
     return errors;
   };
 
   const formik = useFormik({
     initialValues: {
       name: '',
-      balance: '',
     },
     validate,
     onSubmit: (values) => {
-      const newWallet = { ...values, balance: Number(values.balance, 10) };
+      const newWallet = { ...values, balance: 0 };
       action.addWallet(newWallet, dispatch);
       setTimeout(() => {
         setModalHandler();

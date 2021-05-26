@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import * as action from '../../../actions/creators';
 import InternalLoader from '../../loaders/InternalLoader';
+import Emptypage from '../../FormDefault/Emptypage';
 
 export default function Transfer() {
   const [loading, setLoading] = useState(true);
@@ -225,68 +226,72 @@ export default function Transfer() {
 
           <div className="row">
             <div className="col-sm-12">
-              <table
-                id="example2"
-                className="table table-bordered table-hover dataTable dtr-inline"
-                role="grid"
-                aria-describedby="example2_info"
-              >
-                <thead>
-                  <tr role="row">
-                    <th
-                      className="sorting"
-                      aria-controls="example2"
-                      aria-label="Rendering engine: activate to sort column ascending"
-                    >
-                      <b>ID</b>
-                    </th>
-                    <th
-                      className="sorting sorting_desc"
-                      aria-controls="example2"
-                      aria-label="Browser: activate to sort column ascending"
-                      aria-sort="descending"
-                    >
-                      Amount
-                    </th>
-                    <th
-                      className="sorting sorting_desc"
-                      aria-controls="example2"
-                      aria-label="Browser: acti12ate to sort column ascending"
-                      aria-sort="descending"
-                    >
-                      Origin wallet
-                    </th>
-                    <th
-                      className="sorting"
-                      aria-controls="example2"
-                      aria-label="Platform(s): activate to sort column ascending"
-                    >
-                      Destination Wallet
-                    </th>
-                    <th
-                      className="sorting"
-                      aria-controls="example2"
-                      aria-label="Engine version: activate to sort column ascending"
-                    >
-                      Date
-                    </th>
-                  </tr>
-                </thead>
-                {transfer &&
-                  transfer.slice(0, 7).map((x) => (
-                    <>
-                      <tbody>
-                        <tr className="odd">
-                          <td className="dtr-control">{x.id}</td>
-                          <td className="sorting_1 text-info">$ {x.amount}</td>
-                          <td> {x.origin_wallet.name}</td>
-                          <td> {x.destination_wallet.name}</td>
-                          <td> {x.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
-                        </tr>
-                      </tbody>
-                    </>
-                  ))}
-              </table>
+              {transfer.length === 0 ? (
+                <Emptypage name="Transfers" />
+              ) : (
+                <table
+                  id="example2"
+                  className="table table-bordered table-hover dataTable dtr-inline"
+                  role="grid"
+                  aria-describedby="example2_info"
+                >
+                  <thead>
+                    <tr role="row">
+                      <th
+                        className="sorting"
+                        aria-controls="example2"
+                        aria-label="Rendering engine: activate to sort column ascending"
+                      >
+                        <b>ID</b>
+                      </th>
+                      <th
+                        className="sorting sorting_desc"
+                        aria-controls="example2"
+                        aria-label="Browser: activate to sort column ascending"
+                        aria-sort="descending"
+                      >
+                        Amount
+                      </th>
+                      <th
+                        className="sorting sorting_desc"
+                        aria-controls="example2"
+                        aria-label="Browser: acti12ate to sort column ascending"
+                        aria-sort="descending"
+                      >
+                        Origin wallet
+                      </th>
+                      <th
+                        className="sorting"
+                        aria-controls="example2"
+                        aria-label="Platform(s): activate to sort column ascending"
+                      >
+                        Destination Wallet
+                      </th>
+                      <th
+                        className="sorting"
+                        aria-controls="example2"
+                        aria-label="Engine version: activate to sort column ascending"
+                      >
+                        Date
+                      </th>
+                    </tr>
+                  </thead>
+                  {transfer &&
+                    transfer.slice(0, 7).map((x) => (
+                      <>
+                        <tbody>
+                          <tr className="odd">
+                            <td className="dtr-control">{x.id}</td>
+                            <td className="sorting_1 text-info">$ {x.amount}</td>
+                            <td> {x.origin_wallet.name}</td>
+                            <td> {x.destination_wallet.name}</td>
+                            <td> {x.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
+                          </tr>
+                        </tbody>
+                      </>
+                    ))}
+                </table>
+              )}
             </div>
           </div>
         </div>

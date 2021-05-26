@@ -110,10 +110,10 @@ export default function Pro() {
               <hr className="mt-0 bg-dark" />
               <ul className="text-center list-unstyled">
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>Limited Wallets
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>Limited Budgets
                 </li>
                 <li>
                   <span className="text-success">✓ </span>Limited reports

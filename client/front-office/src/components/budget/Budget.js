@@ -6,6 +6,7 @@ import * as action from '../../actions/creators';
 import BudgetsEdit from './budgetEdit';
 import InternalLoader from '../loaders/InternalLoader';
 import BudgetModal from './BudgetModal';
+import Emptypage from '../FormDefault/Emptypage';
 
 function Budget() {
   const [loading, setLoading] = useState(true);
@@ -171,89 +172,93 @@ function Budget() {
                 </Button>
               )}
             </div>
-            <table className="table table-bordered ">
-              <thead>
-                <tr>
-                  <th scope="col">
-                    <div className="d-flex">
-                      <b className="mr-3">Budget Name</b>
-                      <select onChange={(e) => setOrder(e.target.value)}>
-                        <option value="all" selected>
-                          all
-                        </option>
-                        <option value="A-Z">A-Z</option>
-                        <option value="Z-A">Z-A</option>
-                      </select>
-                    </div>
-                  </th>
+            {budgets.length === 0 ? (
+              <Emptypage name="Budgets" />
+            ) : (
+              <table className="table table-bordered ">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <div className="d-flex">
+                        <b className="mr-3">Budget Name</b>
+                        <select onChange={(e) => setOrder(e.target.value)}>
+                          <option value="all" selected>
+                            all
+                          </option>
+                          <option value="A-Z">A-Z</option>
+                          <option value="Z-A">Z-A</option>
+                        </select>
+                      </div>
+                    </th>
 
-                  <th scope="col">
-                    <div className="d-flex">
-                      <b className="mr-3">Ammount</b>
-                      <select onChange={(e) => setOrder(e.target.value)}>
-                        <option value="all">all</option>
-                        <option value="+ amount">+ Amount</option>
-                        <option value="- amount">- Amount</option>
-                      </select>
-                    </div>
-                  </th>
-                  <th scope="col">
-                    <b>Status</b>
-                  </th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              {loading &&
-                budgets &&
-                budgets.slice(0, 10).map((x) => (
-                  <>
-                    <tbody>
-                      <tr>
-                        <th scope="row">{x.name}</th>
+                    <th scope="col">
+                      <div className="d-flex">
+                        <b className="mr-3">Ammount</b>
+                        <select onChange={(e) => setOrder(e.target.value)}>
+                          <option value="all">all</option>
+                          <option value="+ amount">+ Amount</option>
+                          <option value="- amount">- Amount</option>
+                        </select>
+                      </div>
+                    </th>
+                    <th scope="col">
+                      <b>Status</b>
+                    </th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                {loading &&
+                  budgets &&
+                  budgets.slice(0, 10).map((x) => (
+                    <>
+                      <tbody>
+                        <tr>
+                          <th scope="row">{x.name}</th>
 
-                        <td>${x.amount}</td>
-                        <td>
-                          {x.status ? (
-                            <p className="text-success">
-                              <b>Available</b>
-                            </p>
-                          ) : (
-                            <p className="text-danger">
-                              <b>Disable</b>
-                            </p>
-                          )}
-                        </td>
-                        <td>
-                          <div className="d-flex justify-content-center">
-                                
+                          <td>${x.amount}</td>
+                          <td>
                             {x.status ? (
-                              <>
-                                <BudgetsEdit id={x.id} name={x.name} amount={x.amount} />
-                                    
+                              <p className="text-success">
+                                <b>Available</b>
+                              </p>
+                            ) : (
+                              <p className="text-danger">
+                                <b>Disable</b>
+                              </p>
+                            )}
+                          </td>
+                          <td>
+                            <div className="d-flex justify-content-center">
+                                  
+                              {x.status ? (
+                                <>
+                                  <BudgetsEdit id={x.id} name={x.name} amount={x.amount} />
+                                      
+                                  <button
+                                    type="button"
+                                    className="btn bg-gradient-danger"
+                                    onClick={() => changeStatus(x.id, x.status)}
+                                  >
+                                    <i className="far fa-trash-alt" />
+                                  </button>
+                                </>
+                              ) : (
                                 <button
                                   type="button"
-                                  className="btn bg-gradient-danger"
+                                  className="btn bg-gradient-success"
                                   onClick={() => changeStatus(x.id, x.status)}
                                 >
-                                  <i className="far fa-trash-alt" />
+                                  <i className="fas fa-check" />
                                 </button>
-                              </>
-                            ) : (
-                              <button
-                                type="button"
-                                className="btn bg-gradient-success"
-                                onClick={() => changeStatus(x.id, x.status)}
-                              >
-                                <i className="fas fa-check" />
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </>
-                ))}
-            </table>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </>
+                  ))}
+              </table>
+            )}
           </div>
         </div>
       </div>
