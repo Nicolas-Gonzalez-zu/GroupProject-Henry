@@ -95,45 +95,45 @@ function Budget() {
     }, 1000);
   };
 
-  const orderName = () => {
-    budgets.sort((a, b) => {
-      const aa = a.name.toLowerCase();
-      const bb = b.name.toLowerCase();
+  // const orderName = () => {
+  //   budgets.sort((a, b) => {
+  //     const aa = a.name.toLowerCase();
+  //     const bb = b.name.toLowerCase();
 
-      if (aa < bb) {
-        return -1;
-      }
-      if (aa > bb) {
-        return 1;
-      }
-      return 0;
-    });
-    reset();
-  };
-  const orderAmount = () => {
-    budgets.sort((a, b) => {
-      const aa = a.amount;
-      const bb = b.amount;
+  //     if (aa < bb) {
+  //       return -1;
+  //     }
+  //     if (aa > bb) {
+  //       return 1;
+  //     }
+  //     return 0;
+  //   });
+  //   reset();
+  // };
+  // const orderAmount = () => {
+  //   budgets.sort((a, b) => {
+  //     const aa = a.amount;
+  //     const bb = b.amount;
 
-      if (aa < bb) {
-        return -1;
-      }
-      if (aa > bb) {
-        return 1;
-      }
-      return 0;
-    });
-    reset();
-  };
+  //     if (aa < bb) {
+  //       return -1;
+  //     }
+  //     if (aa > bb) {
+  //       return 1;
+  //     }
+  //     return 0;
+  //   });
+  //   reset();
+  // };
 
-  const orderStatus = () => {
-    budgets.sort((a, b) => {
-      if (a.status && !b.status) return -1;
-      if (b.status && !a.status) return 1;
-      return 0;
-    });
-    reset();
-  };
+  // const orderStatus = () => {
+  //   budgets.sort((a, b) => {
+  //     if (a.status && !b.status) return -1;
+  //     if (b.status && !a.status) return 1;
+  //     return 0;
+  //   });
+  //   reset();
+  // };
 
   return (
     <div className="mx-3 mt-3">

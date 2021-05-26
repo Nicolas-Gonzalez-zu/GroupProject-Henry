@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as action from '../../actions/creators';
 import WalletModalEdit from './WalletModalEdit';
-import { sortWalletName, sortWalletBalance } from './sortWallet';
 
 const WalletTable = () => {
   const [sort, setOrder] = useState('');
@@ -35,7 +34,7 @@ const WalletTable = () => {
     if (sort === 'all') {
       action.getWallet(dispatch);
     }
-  }, [sort]);
+  }, [sort, dispatch]);
   return (
     <table className="table">
       <thead>
