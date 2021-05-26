@@ -18,6 +18,8 @@ import PdfPreview from '../pdfPreview/PdfPreview';
 import Pro from '../Pro/Pro';
 import Cart from '../cart/Cart';
 import Dashboard from '../dashboard/Dashboard';
+import FAQ from '../FAQ/faq';
+import Contact from '../Contact/Contact';
 
 const ContentWrapper = () => {
   const history = useHistory();
@@ -35,16 +37,6 @@ const ContentWrapper = () => {
       <section className="content">
         <div className="card">
           <Switch>
-            <Route exact path="/">
-              <div className="container-fluid d-flex justify-content-center p-3 mt-5">
-                <img
-                  alt=""
-                  className="col-5"
-                  src="https://www.ccisua.org/wp-content/uploads/2017/05/fa-work-in-progress-computer.png"
-                />
-              </div>
-            </Route>
-
             <Route exact path="/">
               <Dashboard />
             </Route>
@@ -99,6 +91,17 @@ const ContentWrapper = () => {
 
             <Route exact path="/cart">
               <Cart />
+            </Route>
+
+            <Route path="/FAQ">
+              <div className="wrapper">
+                <FAQ />
+              </div>
+            </Route>
+            <Route path="/contact">
+              <div className="wrapper">
+                <Contact />
+              </div>
             </Route>
             <ContentHeader />
           </Switch>
