@@ -19,6 +19,8 @@ import PdfPreview from '../pdfPreview/PdfPreview';
 import Pro from '../Pro/Pro';
 import Cart from '../cart/Cart';
 import Dashboard from '../dashboard/Dashboard';
+import FAQ from '../FAQ/faq';
+import Contact from '../Contact/Contact';
 import InvoiceId from '../InvoiceId/InvoiceId';
 
 const ContentWrapper = () => {
@@ -96,6 +98,17 @@ const ContentWrapper = () => {
 
             <Route exact path="/cart">
               <Cart />
+            </Route>
+
+            <Route path="/FAQ">
+              <div className="wrapper">
+                <FAQ />
+              </div>
+            </Route>
+            <Route path="/contact">
+              <div className="wrapper">
+                <Contact />
+              </div>
             </Route>
             <ContentHeader />
           </Switch>

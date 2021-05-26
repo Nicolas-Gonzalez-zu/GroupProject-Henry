@@ -8,11 +8,11 @@ const SupportItem = () => (
     </Link>
     <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
       <div className="dropdown-divider" />
-      <Link className="dropdown-item " to="/">
+      <Link className="dropdown-item " to="/FAQ">
         FAQ
       </Link>
       <div className="dropdown-divider" />
-      <Link to="/" className="dropdown-item ">
+      <Link to="/contact" className="dropdown-item ">
         Contact us
       </Link>
     </div>
