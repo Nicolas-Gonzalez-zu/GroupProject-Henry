@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import FormDefault from '../FormDefault/FormDefault';
 import * as action from '../../actions/creators';
 
-const WalletModalEdit = ({ name, id }) => {
+const WalletModalEdit = ({ nameBefore, id }) => {
   const [showModalEdit, setShowModalEdit] = useState(false);
 
   const dispatch = useDispatch();
@@ -31,7 +30,7 @@ const WalletModalEdit = ({ name, id }) => {
     },
     validate,
     onSubmit: (values) => {
-      const walletEdited = { ...values, balance: Number(values.balance, 10), id };
+      const walletEdited = { ...values, id };
       action.editWallet(walletEdited, dispatch);
 
       setTimeout(() => {
@@ -52,18 +51,35 @@ const WalletModalEdit = ({ name, id }) => {
         <Modal.Header className="d-flex flex-column ">
           <div className="d-flex flex-column">
             <h3>
-              Edit your wallet <b className="text-info">{name}</b>{' '}
+              Edit your wallet <b className="text-info">{nameBefore}</b>{' '}
             </h3>
           </div>
         </Modal.Header>
         <Modal.Body>
           <form className="d-flex flex-column" onSubmit={formik.handleSubmit}>
-            <FormDefault
-              values={formik.values}
-              errors={formik.errors}
-              handleChange={formik.handleChange}
-              inputType={['text', 'text']}
-            />
+            <div className="d-flex flex-column m-3">
+              <label className="align-self-center">Name</label>
+              <p className="align-self-center">
+                Name before: <b className="text-danger">{nameBefore}</b>
+              </p>
+              <input
+                type="text"
+                name="name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                autoComplete="off"
+                className={
+                  formik.errors.name
+                    ? 'form-control is-invalid w-50 align-self-center'
+                    : 'form-control w-50 align-self-center'
+                }
+              />
+              {formik.errors.name ? (
+                <p className="text-danger align-self-center">{formik.errors.name}</p>
+              ) : (
+                ''
+              )}
+            </div>
             <div className="d-flex justify-content-center">
               <Button type="submit" className="btn btn-success">
                 Edit wallet
