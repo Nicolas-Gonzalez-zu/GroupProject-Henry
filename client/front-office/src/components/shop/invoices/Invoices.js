@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 import InternalLoader from '../../loaders/InternalLoader';
+import Emptypage from '../../FormDefault/Emptypage';
 import * as action from '../../../actions/creators';
 import './Invoices.css';
 
@@ -102,21 +103,25 @@ export default function Invoices() {
     <>
       {!loading && <InternalLoader />}
       <div className="container-fluid d-flex justify-content-center p-3 mt-5">
-        <div className="col-12" id="accordion">
-          {invoices && displayinvoice}
+        {invoices.length === 0 ? (
+          <Emptypage name="Invoices" />
+        ) : (
+          <div className="col-12" id="accordion">
+            {invoices && displayinvoice}
 
-          <ReactPaginate
-            previousLabel="Previous"
-            nextLabel="Next"
-            pageCount={pageCount}
-            onPageChange={changePage}
-            containerClassName="paginationBttns"
-            previousLinkClassName="previousBttn"
-            nextLinkClassName="nextBttn"
-            disabledClassName="paginationDisabled"
-            activeClassName="paginationActive"
-          />
-        </div>
+            <ReactPaginate
+              previousLabel="Previous"
+              nextLabel="Next"
+              pageCount={pageCount}
+              onPageChange={changePage}
+              containerClassName="paginationBttns"
+              previousLinkClassName="previousBttn"
+              nextLinkClassName="nextBttn"
+              disabledClassName="paginationDisabled"
+              activeClassName="paginationActive"
+            />
+          </div>
+        )}
       </div>
     </>
   );

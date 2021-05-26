@@ -79,11 +79,11 @@ const WalletTable = () => {
               <td>
                 {w.status ? (
                   <p className="text-success">
-                    <b>available</b>
+                    <b>Available</b>
                   </p>
                 ) : (
                   <p className="text-danger">
-                    <b>disable</b>
+                    <b>Disable</b>
                   </p>
                 )}
               </td>

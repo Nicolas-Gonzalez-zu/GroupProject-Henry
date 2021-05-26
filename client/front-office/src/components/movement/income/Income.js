@@ -4,6 +4,7 @@ import IncomeModalEdit from './IncomeModalEdit';
 import IncomeAddModal from './IncomeAddModal';
 import InternalLoader from '../../loaders/InternalLoader';
 import * as action from '../../../actions/creators';
+import Emptypage from '../../FormDefault/Emptypage';
 
 const Income = () => {
   const [loading, setLoading] = useState(true);
@@ -37,41 +38,45 @@ const Income = () => {
           </div>
           <div className="card-body mt-3">
             <div className="dataTables_wrapper dt-bootstrap4">
-              <table className="table table-bordered table-hover dataTable dtr-inline">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>Generation Date</th>
-                    <th>To</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
+              {incomesFiltered.length === 0 ? (
+                <Emptypage name="Incomes" />
+              ) : (
+                <table className="table table-bordered table-hover dataTable dtr-inline">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Description</th>
+                      <th>Amount</th>
+                      <th>Generation Date</th>
+                      <th>To</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
 
-                {incomesFiltered &&
-                  incomesFiltered.slice(0, 7).map((m) => (
-                    <tbody>
-                      <tr key={m.id}>
-                        <td>{m.id}</td>
-                        <td>{m.description}</td>
-                        <td className="text-success">$ +{m.amount}</td>
-                        <td>{m.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
-                        <td>{m.wallet.name}</td>
-                        <div className="d-flex justify-content-center">
-                          <td className="border-0">
-                            <IncomeModalEdit
-                              description={m.description}
-                              name={m.wallet.name}
-                              id={m.id}
-                              date={m.generation_date}
-                            />
-                          </td>
-                        </div>
-                      </tr>
-                    </tbody>
-                  ))}
-              </table>
+                  {incomesFiltered &&
+                    incomesFiltered.slice(0, 7).map((m) => (
+                      <tbody>
+                        <tr key={m.id}>
+                          <td>{m.id}</td>
+                          <td>{m.description}</td>
+                          <td className="text-success">$ +{m.amount}</td>
+                          <td>{m.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
+                          <td>{m.wallet.name}</td>
+                          <div className="d-flex justify-content-center">
+                            <td className="border-0">
+                              <IncomeModalEdit
+                                description={m.description}
+                                name={m.wallet.name}
+                                id={m.id}
+                                date={m.generation_date}
+                              />
+                            </td>
+                          </div>
+                        </tr>
+                      </tbody>
+                    ))}
+                </table>
+              )}
             </div>
           </div>
         </div>

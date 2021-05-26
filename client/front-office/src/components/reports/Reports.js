@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../actions/creators';
 import InternalLoader from '../loaders/InternalLoader';
 import PdfPreview from '../pdfPreview/PdfPreview';
+import Emptypage from '../FormDefault/Emptypage';
 
 export default function Reports() {
   const [loading, setLoading] = useState(true);
@@ -127,8 +128,9 @@ export default function Reports() {
           </button>
 
           <div className="d-flex card-header">
-            <label>Filter by:</label>
+            <label>Filter by: </label>
             <select
+              className="p-2"
               name="select"
               className="mr-3"
               onChange={(e) => handleChange(e)}
@@ -145,6 +147,7 @@ export default function Reports() {
               <>
                 <label>This {filter}:</label>
                 <select
+                  className="p-2"
                   name="select"
                   id="myform"
                   onChange={(e) => handleSend(e)}
@@ -179,7 +182,7 @@ export default function Reports() {
           )}
         </div>
       </div>
-      {reports && <PdfPreview reports={reports} />}
+      {reports ? <PdfPreview reports={reports} /> : <Emptypage name="Reports" />}
       {!loading && <InternalLoader />}
     </div>
   );
