@@ -5,6 +5,7 @@ import WalletsTable from './WalletsTable';
 import Chart from './Chart';
 import * as action from '../../actions/creators';
 import InternalLoader from '../loaders/InternalLoader';
+import Emptypage from '../FormDefault/Emptypage';
 
 const Wallet = () => {
   const [loading, setLoading] = useState(true);
@@ -69,7 +70,11 @@ const Wallet = () => {
                   </div>
                 </div>
                 <div className="card-body p-0">
-                  <WalletsTable wallets={wallets} />
+                  {wallets.length === 0 ? (
+                    <Emptypage name="Wallets" />
+                  ) : (
+                    <WalletsTable wallets={wallets} />
+                  )}
                 </div>
               </div>
             </div>
