@@ -73,7 +73,7 @@ const BudgetModal = () => {
       <Modal show={showModal}>
         <Modal.Header>
           <h3>
-            Create you new <b className="text-info">Budget</b>
+            Create you new <b className="text-olive">Budget</b>
           </h3>
         </Modal.Header>
         <Modal.Body>

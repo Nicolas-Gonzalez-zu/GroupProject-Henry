@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
+
 import * as action from '../../actions/creators';
 
 export default function ExpenseModal() {
@@ -11,6 +12,7 @@ export default function ExpenseModal() {
   const wallets = useSelector((state) => state.walletReducer.wallets);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
+
   const [alerto, setalerto] = useState('');
 
   useEffect(() => {
@@ -45,7 +47,7 @@ export default function ExpenseModal() {
     } else {
       setalerto('');
     }
-
+    console.log(values.generation_time);
     if (!values.description) {
       errors.description = 'Description Required';
     } else if (values.description.length < 2) {
@@ -53,7 +55,10 @@ export default function ExpenseModal() {
     }
 
     if (!values.generation_date) {
-      errors.generation_date = 'Date Required';
+      errors.generation_date = 'Date Required ';
+    }
+    if (!values.generation_time) {
+      errors.generation_time = 'Time Required ';
     }
     if (!values.wallet_id) {
       errors.wallet_id = 'Wallet is Required';
@@ -70,6 +75,7 @@ export default function ExpenseModal() {
       amount: null,
       type: 'OUTGO',
       generation_date: '',
+      generation_time: '',
       description: '',
       wallet_id: '',
       budget_id: '',
@@ -77,8 +83,12 @@ export default function ExpenseModal() {
     validate,
     onSubmit: (values) => {
       setTimeout(() => setModal(false), 1400);
-
-      action.addMovement(values, dispatch);
+      const newValues = {
+        ...values,
+        generation_date: `${values.generation_date}T${values.generation_time}:00.000Z`,
+      };
+      console.log(newValues, 'new');
+      action.addMovement(newValues, dispatch);
       setTimeout(
         () =>
           formik.resetForm({
@@ -153,17 +163,17 @@ export default function ExpenseModal() {
                       ? 'form-control is-invalid col-12'
                       : 'form-control col-12'
                   }
-                  type="datetime-local"
+                  type="date"
                   name="generation_date"
                   id="generation_date"
                   onChange={formik.handleChange}
                   value={formik.values.generation_date}
                 />
+
                 {formik.errors.generation_date ? (
                   <b className="text-danger">{formik.errors.generation_date}</b>
                 ) : null}
               </div>
-
               <div>
                 <b>Wallets</b>
                 <select
@@ -208,13 +218,32 @@ export default function ExpenseModal() {
                 {formik.errors.budget_id ? (
                   <b className="text-danger">{formik.errors.budget_id}</b>
                 ) : null}
-                <Button type="submit" className="btn btn-success mt-5 ml-3 col-5">
-                  Create
-                </Button>
-                <Button onClick={showModal} className="btn btn-danger mt-5 ml-2">
-                  Cancel
-                </Button>
+                <br />
+                <b className="text-center">Time</b>
+                <input
+                  type="time"
+                  className={
+                    formik.errors.generation_time
+                      ? 'form-control is-invalid col-12'
+                      : 'form-control col-12'
+                  }
+                  name="generation_time"
+                  id="generation_time"
+                  onChange={formik.handleChange}
+                  value={formik.values.generation_time}
+                />
+                {formik.errors.generation_time ? (
+                  <b className="text-danger">{formik.errors.generation_time}</b>
+                ) : null}
               </div>
+            </div>
+            <div className="d-flex flex-row-reverse">
+              <Button onClick={showModal} className="btn btn-danger mt-3 ml-2 mr-4">
+                Cancel
+              </Button>
+              <Button type="submit" className="btn btn-success mt-3 ml-3">
+                Create
+              </Button>
             </div>
           </form>
         </Modal.Body>

@@ -120,11 +120,12 @@ export default function Expense() {
                             <div
                               className="progress-bar bg-purple"
                               style={{
-                                width: `${(x.wallet.balance / x.budget.amount) * 100}%`,
+                                width: `${(x.amount / x.budget.amount) * 100}%`,
                               }}
                             />
                           </div>
                         </td>
+                        {console.log(x.generation_date, 'date nueva')}
                         <td>{x.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
                         <td className="text-center">
                           <ExpenseModalEdit

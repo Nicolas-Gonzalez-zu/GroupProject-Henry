@@ -46,21 +46,29 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
     } else if (values.description.length < 5) {
       errors.description = 'the description must contain at least 5 letters';
     }
+    if (!values.time) {
+      errors.time = 'The time is required';
+    }
     return errors;
   };
 
   const formik = useFormik({
     initialValues: {
       date: '',
+      time: '',
       description: '',
     },
     validate,
     onSubmit: (values) => {
-      const newValues = { ...values, generation_date: values.date, movement_id: id };
+      const newValues = {
+        ...values,
+        generation_date: `${values.date}T${values.time}:00.000Z`,
+        movement_id: id,
+      };
       action.editIncome(newValues, dispatch);
       setTimeout(() => {
         showModalEditHandler();
-        formik.resetForm({ description: '', date: '' });
+        formik.resetForm({ description: '', date: '', time: '' });
       }, 1500);
     },
   });
@@ -71,10 +79,10 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
         <i className="fas fa-edit" />
       </Button>
       <Modal show={showModalEdit}>
-        <Modal.Header className="d-flex flex-column bg-info justify-content-between w-100 p-2 rounded-top">
+        <Modal.Header className="d-flex flex-column justify-content-between w-100 p-2 rounded-top">
           <div>
             <h4>
-              Edit your Income for <b>{name}</b>
+              Edit your Income for <b className="text-olive">{name}</b>
             </h4>
           </div>
         </Modal.Header>
@@ -87,7 +95,7 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
               values={formik.values}
               errors={formik.errors}
               handleChange={formik.handleChange}
-              inputType={['datetime-local', 'text']}
+              inputType={['date', 'time', 'text']}
             />
             <div className="d-flex justify-content-center mt-3">
               <Button type="submit" className="btn btn-success">

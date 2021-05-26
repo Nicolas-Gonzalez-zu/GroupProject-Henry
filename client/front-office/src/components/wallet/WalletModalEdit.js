@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import FormDefault from '../FormDefault/FormDefault';
 import * as action from '../../actions/creators';
 
-const WalletModalEdit = ({ name, balance, id }) => {
+const WalletModalEdit = ({ name, id }) => {
   const [showModalEdit, setShowModalEdit] = useState(false);
 
   const dispatch = useDispatch();
@@ -21,18 +21,13 @@ const WalletModalEdit = ({ name, balance, id }) => {
     } else if (!/^[a-zA-Z\s]+$/g.test(values.name)) {
       errors.name = 'This field only accept letters!';
     }
-    if (!values.balance) {
-      errors.balance = 'The balance is required!';
-    } else if (!/^[0-9]*$/gm.test(values.balance)) {
-      errors.balance = 'This field only accept numbers!';
-    }
+
     return errors;
   };
 
   const formik = useFormik({
     initialValues: {
       name: '',
-      balance: '',
     },
     validate,
     onSubmit: (values) => {
@@ -43,7 +38,6 @@ const WalletModalEdit = ({ name, balance, id }) => {
         showModalEditHandler();
         formik.resetForm({
           name: '',
-          balance: '',
         });
       }, 1500);
     },
@@ -55,10 +49,11 @@ const WalletModalEdit = ({ name, balance, id }) => {
         <i className="fas fa-edit	" />
       </Button>
       <Modal show={showModalEdit}>
-        <Modal.Header className="d-flex flex-column bg-info">
+        <Modal.Header className="d-flex flex-column ">
           <div className="d-flex flex-column">
-            <h4>Edit your wallet </h4>
-            <h5>{name}</h5>
+            <h3>
+              Edit your wallet <b className="text-info">{name}</b>{' '}
+            </h3>
           </div>
         </Modal.Header>
         <Modal.Body>
