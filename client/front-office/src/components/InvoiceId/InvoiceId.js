@@ -7,7 +7,6 @@ const InvoiceId = ({ match }) => {
   const [loading, setLoading] = useState(true);
   const [invoicePdf, setInvoicePdf] = useState(false);
   const invoiceId = useSelector((state) => state.invoiceReducer.invoiceId);
-  const [invoice, setInvoice] = useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {
