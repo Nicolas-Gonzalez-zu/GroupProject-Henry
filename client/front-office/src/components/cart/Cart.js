@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 import Swal from 'sweetalert2';
 import * as action from '../../actions/creators';
 import imgDefault from '../../assets/img/profile-default.png';
+import Paypal from '../Paypal/Paypal';
 
 const FORM_ID = 'payment-form';
 
@@ -25,7 +26,7 @@ const Cart = () => {
       showCancelButton: true,
     })
       .then((response) => {
-        if (response.isConfirmed) {
+        if (response.isConfirmed && e.target.value === 'mercado pago') {
           setPaymentMethod(e.target.value);
           const miUuid = uuid();
           const obj = {
@@ -43,6 +44,9 @@ const Cart = () => {
               e.target.checked = false;
               console.log(err);
             });
+        }
+        if (response.isConfirmed && e.target.value === 'paypal') {
+          setPaymentMethod(e.target.value);
         } else {
           e.target.checked = false;
         }
@@ -154,7 +158,11 @@ const Cart = () => {
               height="70"
               width="70"
             />
-            <input type="radio" onChange={handleChange} value="mercado pago" />
+            <input type="radio" onChange={handleChange} name="method" value="mercado pago" />
+          </div>
+          <div className="d-flex justify-content-around align-items-center">
+            Paypal
+            <input type="radio" onChange={handleChange} name="method" value="paypal" />
           </div>
         </div>
 
@@ -211,7 +219,10 @@ const Cart = () => {
         </div>
       </div>
       <div className="row no-print">
-        <div className="col-12">{preferenceId ? <form id={FORM_ID} method="POST" /> : ''}</div>
+        <div className="col-2">
+          {preferenceId ? <form id={FORM_ID} method="POST" /> : ''}
+          {paymentMethod === 'paypal' ? <Paypal /> : ''}
+        </div>
       </div>
     </div>
   );
