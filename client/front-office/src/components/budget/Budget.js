@@ -13,6 +13,7 @@ function Budget() {
   const [sort, setOrder] = useState('');
 
   const budgets = useSelector((state) => state.budgetReducer.budgets);
+  const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
   const dispatch = useDispatch();
   useEffect(() => {
     action.getBudget(dispatch);
@@ -88,6 +89,7 @@ function Budget() {
 
   const balances = budgets.filter((w) => w.status === true);
   const total = balances.reduce((acc, b) => acc + parseInt(b.amount, 10), 0);
+  const cantBudgets = user.plan.name === 'Free' ? 5 : 10;
 
   const reset = () => {
     setLoading(false);
@@ -164,7 +166,7 @@ function Budget() {
 
             <div className="card-header bg-dark d-flex justify-content-between">
               <h2 className="card-title align-self-center mr-auto ">Budgets Details</h2>
-              {budgets.length < 10 ? (
+              {budgets.length < cantBudgets ? (
                 <BudgetModal />
               ) : (
                 <Button className="btn-warning" disabled>
@@ -209,7 +211,7 @@ function Budget() {
                 </thead>
                 {loading &&
                   budgets &&
-                  budgets.slice(0, 10).map((x) => (
+                  budgets.slice(0, cantBudgets).map((x) => (
                     <>
                       <tbody>
                         <tr>

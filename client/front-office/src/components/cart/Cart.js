@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import Swal from 'sweetalert2';
 import * as action from '../../actions/creators';
+import imgDefault from '../../assets/img/profile-default.png';
 
 const FORM_ID = 'payment-form';
 
@@ -12,6 +13,8 @@ const Cart = () => {
   const dispatch = useDispatch();
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [preferenceId, setPreferenceId] = useState(null);
+
+  const newUser = { ...user, plan: { ...user.plan, name: 'Pro' } };
 
   const handleChange = (e) => {
     // eslint-disable-next-line no-restricted-globals
@@ -65,9 +68,12 @@ const Cart = () => {
     action.removeFromShop(id, dispatch);
   };
 
+  const onError = (e) => {
+    e.target.src = imgDefault;
+  };
   const subtotal = items.reduce((acc, b) => acc + parseInt(b.price, 10), 0);
-
-  const discount = user.plan.name === 'Pro' ? (subtotal * 20) / 100 : 0;
+  console.log(user, 'a ver');
+  const discount = newUser.plan && newUser.plan.name === 'Pro' ? (subtotal * 20) / 100 : 0;
   const today = new Date();
   const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
   return (
@@ -83,20 +89,20 @@ const Cart = () => {
           <div className="d-flex flex-column  align-items-center justify-content-around">
             <img
               className=" img-circle"
-              src={user.profile}
-              alt="User profile"
+              src={newUser.profile}
+              alt="newUser profile"
               height="35"
               width="35"
+              onError={onError}
             />
-            <h6 className="mb-0">
-              {user.user.first_name} {user.user.last_name}
-            </h6>
+
+            <h6 className="mb-0">{newUser.newUser && newUser.newUser.first_name}</h6>
 
             <div>
-              <h6 className="mb-0">{user.user.email}</h6>
+              <h6 className="mb-0">{newUser.newUser && newUser.newUser.email}</h6>
             </div>
             <div>
-              <h6>Plan: {user.plan.name}</h6>
+              <h6>Plan: {newUser.plan && newUser.plan.name}</h6>
             </div>
           </div>
         </div>
@@ -161,9 +167,11 @@ const Cart = () => {
                   <td>$ {subtotal}</td>
                 </tr>
 
-                {user.plan.name === 'Pro' ? (
+                {newUser.plan && newUser.plan.name === 'Pro' ? (
                   <tr>
-                    <th>Off 20%!</th>
+                    <th>
+                      <b className="text-success">Off 20%</b>
+                    </th>
                     <td>$ {discount}</td>
                   </tr>
                 ) : (
@@ -177,10 +185,24 @@ const Cart = () => {
                     <td> $ {discount}</td>
                   </tr>
                 )}
-                <tr>
-                  <th>Total:</th>
-                  <td>$ {subtotal - discount}</td>
-                </tr>
+                {newUser.plan && newUser.plan.name === 'Pro' ? (
+                  <tr>
+                    <th>Total:</th>
+                    <td>
+                      <del>
+                        <p className="m-0 text-secondary">
+                          <small>$ {subtotal}</small>
+                        </p>
+                      </del>
+                      <h5>$ {subtotal - discount}</h5>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <th>Total:</th>
+                    <td>$ {subtotal}</td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

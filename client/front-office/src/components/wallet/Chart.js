@@ -4,6 +4,7 @@ import { Doughnut } from 'react-chartjs-2';
 
 const Chart = ({ array }) => {
   const filterLabels = array.filter((x) => x.status === true);
+  console.log(array);
   const data = {
     labels: filterLabels.slice(0, 10).map((x) => x.name.slice(0, 4)),
     datasets: [

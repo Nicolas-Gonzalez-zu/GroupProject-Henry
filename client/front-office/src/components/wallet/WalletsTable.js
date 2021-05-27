@@ -7,6 +7,8 @@ const WalletTable = () => {
   const [sort, setOrder] = useState('');
   const dispatch = useDispatch();
   const wallets = useSelector((state) => state.walletReducer.wallets);
+  const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
+
   const setHandler = (id, status) => {
     const newData = { id, status: !status };
     console.log(newData);
@@ -35,12 +37,15 @@ const WalletTable = () => {
       action.getWallet(dispatch);
     }
   }, [sort, dispatch]);
+
+  const cantWallet = user.plan.name === 'Free' ? 5 : 10;
+
   return (
-    <table className="table">
+    <table className="table-bordered ">
       <thead>
         <tr>
           <th>
-            <div className="d-flex">
+            <div className="d-flex justify-content-center">
               <h5 className="mr-4">
                 <b>Name</b>
               </h5>
@@ -54,7 +59,7 @@ const WalletTable = () => {
             </div>
           </th>
           <th>
-            <div className="d-flex">
+            <div className="d-flex justify-content-center">
               <h5 className="mr-4">
                 <b>Balance</b>
               </h5>
@@ -67,12 +72,25 @@ const WalletTable = () => {
               </select>
             </div>
           </th>
-          <th>Status</th>
+          <th>
+            <div className="d-flex justify-content-center">
+              <h5 className="mr-4">
+                <b>Status</b>
+              </h5>
+            </div>
+          </th>
+          <th>
+            <div className="d-flex justify-content-center">
+              <h5 className="mr-4">
+                <b>Actions</b>
+              </h5>
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody>
         {wallets &&
-          wallets.slice(0, 10).map((w, i) => (
+          wallets.slice(0, cantWallet).map((w, i) => (
             <tr>
               <td>{w.name}</td>
               <td>$ {w.balance}.00</td>
@@ -88,21 +106,22 @@ const WalletTable = () => {
                 )}
               </td>
               <td className="text-right py-0 align-middle justify-content-between">
-                <div className="btn-group btn-group-sm">
-                  {w.status ? (
-                    <div className="d-flex">
-                      <WalletModalEdit id={w.id} nameBefore={w.name} balance={w.balance} />
-                      <button
-                        type="button"
-                        className="btn bg-gradient-danger ml-2"
-                        onClick={() => {
-                          setHandler(w.id, w.status);
-                        }}
-                      >
-                        <i className="fas fa-trash" />
-                      </button>
-                    </div>
-                  ) : (
+                {/* <div className="btn-group btn-group-sm"> */}
+                {w.status ? (
+                  <div className="d-flex justify-content-center">
+                    <WalletModalEdit id={w.id} nameBefore={w.name} balance={w.balance} />
+                    <button
+                      type="button"
+                      className="btn bg-gradient-danger ml-2"
+                      onClick={() => {
+                        setHandler(w.id, w.status);
+                      }}
+                    >
+                      <i className="fas fa-trash" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="d-flex justify-content-center">
                     <button
                       type="button"
                       className="btn bg-gradient-success"
@@ -112,8 +131,9 @@ const WalletTable = () => {
                     >
                       <i className="fas fa-check" />
                     </button>
-                  )}
-                </div>
+                  </div>
+                )}
+                {/* </div> */}
               </td>
             </tr>
           ))}
