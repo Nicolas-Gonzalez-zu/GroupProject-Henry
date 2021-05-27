@@ -41,12 +41,12 @@ const WalletTable = () => {
   const cantWallet = user.plan.name === 'Free' ? 5 : 10;
 
   return (
-    <table className="table-bordered ">
+    <table className=" table table-bordered ">
       <thead>
         <tr>
-          <th>
+          <th scope="col">
             <div className="d-flex justify-content-center">
-              <h5 className="mr-4">
+              <h5 className="mr-3">
                 <b>Name</b>
               </h5>
               <select onChange={(e) => setOrder(e.target.value)}>
@@ -58,7 +58,7 @@ const WalletTable = () => {
               </select>
             </div>
           </th>
-          <th>
+          <th scope="col">
             <div className="d-flex justify-content-center">
               <h5 className="mr-4">
                 <b>Balance</b>
@@ -72,14 +72,14 @@ const WalletTable = () => {
               </select>
             </div>
           </th>
-          <th>
+          <th scope="col">
             <div className="d-flex justify-content-center">
               <h5 className="mr-4">
                 <b>Status</b>
               </h5>
             </div>
           </th>
-          <th>
+          <th scope="col">
             <div className="d-flex justify-content-center">
               <h5 className="mr-4">
                 <b>Actions</b>
@@ -88,9 +88,11 @@ const WalletTable = () => {
           </th>
         </tr>
       </thead>
-      <tbody>
-        {wallets &&
-          wallets.slice(0, cantWallet).map((w, i) => (
+
+      {wallets &&
+        wallets.slice(0, cantWallet).map((w, i) => (
+          <tbody>
+            {' '}
             <tr>
               <td>{w.name}</td>
               <td>$ {w.balance}.00</td>
@@ -135,9 +137,9 @@ const WalletTable = () => {
                 )}
                 {/* </div> */}
               </td>
-            </tr>
-          ))}
-      </tbody>
+            </tr>{' '}
+          </tbody>
+        ))}
     </table>
   );
 };

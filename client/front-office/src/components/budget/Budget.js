@@ -143,26 +143,32 @@ function Budget() {
       <div className="d-flex flex-column justify-content-around">
         <div className="align-self-center" style={{ width: '100%' }}>
           <div className="card">
-            <div className="card-header bg-dark d-flex justify-content-between ">
-              <h3>Budgets Info</h3>
-            </div>
             {!loading && <InternalLoader />}
-            <div className="d-flex justify-content-around">
-              <div className="col-5 col-lg-3 mt-5">
-                <div className="small-box bg-warning mt-4 ">
-                  <div className="inner">
-                    <h4>Total Amount</h4>
-                    <h5 className="font-weight-bold">$ {total}.00</h5>
+            {budgets.length === 0 ? (
+              ''
+            ) : (
+              <>
+                <div className="card-header bg-dark d-flex justify-content-between ">
+                  <h3>Budgets Info</h3>
+                </div>
+                <div className="d-flex justify-content-around">
+                  <div className="col-5 col-lg-3 mt-5">
+                    <div className="small-box bg-warning mt-4 ">
+                      <div className="inner">
+                        <h4>Total Amount</h4>
+                        <h5 className="font-weight-bold">$ {total}.00</h5>
+                      </div>
+                      <div className="icon">
+                        <i className="fas fa-money-check-alt" />
+                      </div>
+                    </div>
                   </div>
-                  <div className="icon">
-                    <i className="fas fa-money-check-alt" />
+                  <div>
+                    <Doughnut width={300} height={250} data={data} options={options} />
                   </div>
                 </div>
-              </div>
-              <div>
-                <Doughnut width={300} height={250} data={data} options={options} />
-              </div>
-            </div>
+              </>
+            )}
 
             <div className="card-header bg-dark d-flex justify-content-between">
               <h2 className="card-title align-self-center mr-auto ">Budgets Details</h2>
@@ -181,7 +187,7 @@ function Budget() {
                 <thead>
                   <tr>
                     <th scope="col">
-                      <div className="d-flex">
+                      <div className="d-flex justify-content-center">
                         <b className="mr-3">Budget Name</b>
                         <select onChange={(e) => setOrder(e.target.value)}>
                           <option value="all" selected>
@@ -192,9 +198,8 @@ function Budget() {
                         </select>
                       </div>
                     </th>
-
                     <th scope="col">
-                      <div className="d-flex">
+                      <div className="d-flex justify-content-center">
                         <b className="mr-3">Ammount</b>
                         <select onChange={(e) => setOrder(e.target.value)}>
                           <option value="all">all</option>
@@ -204,9 +209,16 @@ function Budget() {
                       </div>
                     </th>
                     <th scope="col">
-                      <b>Status</b>
+                      <div className="d-flex justify-content-center">
+                        <b>Status</b>
+                      </div>
                     </th>
-                    <th scope="col">Actions</th>
+
+                    <th scope="col">
+                      <div className="d-flex justify-content-center">
+                        <b>Actions</b>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 {loading &&
