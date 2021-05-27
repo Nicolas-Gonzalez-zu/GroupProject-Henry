@@ -108,9 +108,10 @@ export default function Services() {
                         </div>
                         <div className="col-5 text-center">
                           <img
-                            src="../../dist/img/user1-128x128.jpg"
+                            src="https://i.ibb.co/VSRq9tP/logo.png"
                             alt="user-avatar"
                             className="img-circle img-fluid"
+                            height="50"
                           />
                         </div>
                       </div>
