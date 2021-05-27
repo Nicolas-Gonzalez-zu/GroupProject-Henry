@@ -36,23 +36,31 @@ const InvoiceId = ({ match }) => {
       {!loading && InternalLoader}
       {loading && (
         <div>
-          <div className="row">
-            <div className="col-6">
-              <h4>
-                <i className="fas fa-file-invoice-dollar mr-2" />
-                E-conomy invoice
-              </h4>
-            </div>
-            <div className="col-6 d-flex justify-content-end">
-              <div className="d-flex flex-column  align-items-center justify-content-around">
-                <h6 className="mb-0">Invoice id: {invoiceId && invoiceId.id}</h6>
-
-                <div>
+          <div className="card-header bg-dark">
+            <div className="row">
+              <div className="col-6">
+                <h4>
+                  <img
+                    src="https://i.ibb.co/XS4mQ0f/logopng.png"
+                    alt="user-avatar"
+                    className="img-circle img-fluid"
+                    width="55"
+                  />
+                  <span className="brand-text font-weight-light txt">e-conomy invoice</span>
+                </h4>
+              </div>
+              <div className="col-6 d-flex justify-content-end">
+                <div className="d-flex flex-column  align-items-center justify-content-around">
                   <h6 className="mb-0">
-                    Created at:
-                    {invoiceId && invoiceId.createdAt && invoiceId.createdAt.slice(0, 10)}
-                    {console.log(invoiceId)}
+                    Invoice id: <b>{invoiceId && invoiceId.id}</b>
                   </h6>
+
+                  <div>
+                    <h6 className="mb-0">
+                      Created at:
+                      <b>{invoiceId && invoiceId.createdAt && invoiceId.createdAt.slice(0, 10)}</b>
+                    </h6>
+                  </div>
                 </div>
               </div>
             </div>

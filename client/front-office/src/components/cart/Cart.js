@@ -14,8 +14,6 @@ const Cart = () => {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [preferenceId, setPreferenceId] = useState(null);
 
-  const newUser = { ...user, plan: { ...user.plan, name: 'Pro' } };
-
   const handleChange = (e) => {
     // eslint-disable-next-line no-restricted-globals
     // const confirmed = confirm('Do you really want to confirm purchase');
@@ -73,36 +71,40 @@ const Cart = () => {
   };
   const subtotal = items.reduce((acc, b) => acc + parseInt(b.price, 10), 0);
   console.log(user, 'a ver');
-  const discount = newUser.plan && newUser.plan.name === 'Pro' ? (subtotal * 20) / 100 : 0;
+  const discount = user.plan && user.plan.name === 'Pro' ? (subtotal * 20) / 100 : 0;
   const today = new Date();
   const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
   return (
     <div className="invoice p-3 mb-3">
-      <div className="row">
-        <div className="col-6">
-          <h4>
-            <i className="fas fa-file-invoice-dollar mr-2" />
-            E-conomy invoice
-          </h4>
-        </div>
-        <div className="col-6 d-flex justify-content-end">
-          <div className="d-flex flex-column  align-items-center justify-content-around">
-            <img
-              className=" img-circle"
-              src={newUser.profile}
-              alt="newUser profile"
-              height="35"
-              width="35"
-              onError={onError}
-            />
-
-            <h6 className="mb-0">{newUser.newUser && newUser.newUser.first_name}</h6>
-
-            <div>
-              <h6 className="mb-0">{newUser.newUser && newUser.newUser.email}</h6>
-            </div>
-            <div>
-              <h6>Plan: {newUser.plan && newUser.plan.name}</h6>
+      <div className="card-header bg-dark">
+        <div className="row">
+          <div className="col-6">
+            <h4>
+              <img
+                src="https://i.ibb.co/XS4mQ0f/logopng.png"
+                alt="user-avatar"
+                className="img-circle img-fluid"
+                width="55"
+              />
+              <span className="brand-text font-weight-light txt">e-conomy invoice</span>
+            </h4>
+          </div>
+          <div className="col-6 d-flex justify-content-end ">
+            <div className="d-flex align-items-center">
+              <img
+                className=" img-circle"
+                src={user.profile}
+                alt="user profile"
+                height="30"
+                width="30"
+                onError={onError}
+              />
+              <div className="d-flex flex-column ml-2">
+                <h6 className="mb-0">
+                  {user.user && user.user.first_name} {user.user && user.user.first_name}
+                </h6>
+                <h6 className="mb-0">{user.user && user.user.email}</h6>
+              </div>
             </div>
           </div>
         </div>
@@ -167,7 +169,7 @@ const Cart = () => {
                   <td>$ {subtotal}</td>
                 </tr>
 
-                {newUser.plan && newUser.plan.name === 'Pro' ? (
+                {user.plan && user.plan.name === 'Pro' ? (
                   <tr>
                     <th>
                       <b className="text-success">Off 20%</b>
@@ -185,7 +187,7 @@ const Cart = () => {
                     <td> $ {discount}</td>
                   </tr>
                 )}
-                {newUser.plan && newUser.plan.name === 'Pro' ? (
+                {user.plan && user.plan.name === 'Pro' ? (
                   <tr>
                     <th>Total:</th>
                     <td>
