@@ -15,6 +15,7 @@ const walletController = require('../../controllers/walletController');
 const categoryController = require('../../controllers/categoryController');
 const serviceController = require('../../controllers/serviceController');
 const invoiceController = require('../../controllers/invoiceController');
+const orderController = require('../../controllers/orderController');
 const reportsController = require('../../controllers/reportsController');
 const mercadoPago = require('../../controllers/mercadoPagoController');
 
@@ -31,6 +32,7 @@ router.use('/wallet', walletController);
 router.use('/category', categoryController);
 router.use('/service', serviceController);
 router.use('/invoice', invoiceController);
+router.use('/order', orderController);
 router.use('/reports', reportsController);
 router.use('/mp', mercadoPago);
 
