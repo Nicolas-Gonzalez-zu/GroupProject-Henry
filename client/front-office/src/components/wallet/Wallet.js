@@ -5,7 +5,7 @@ import WalletsTable from './WalletsTable';
 import Chart from './Chart';
 import * as action from '../../actions/creators';
 import InternalLoader from '../loaders/InternalLoader';
-import Emptypage from '../FormDefault/Emptypage';
+import EmptyPage from '../FormDefault/Emptypage';
 
 const Wallet = () => {
   const [loading, setLoading] = useState(true);
@@ -29,9 +29,9 @@ const Wallet = () => {
   };
 
   return (
-    <div className="d-flex flex-column justify-content-around">
-      <div className="card card-dark">
-        <div className="card card-header">
+    <div className="d-flex flex-column jusitfy-content-around mx-3 mt-3">
+      <div className="card">
+        <div className="card card-header bg-dark">
           <h3>Wallet info</h3>
         </div>
         {!loading && <InternalLoader />}
@@ -52,33 +52,27 @@ const Wallet = () => {
           </div>
         </div>
         {loading && (
-          <div className="d-flex flex-column">
-            <div className="align-self-center w-100">
-              <div className="card card-dark">
-                <div className="card-header d-flex justify-content-between">
-                  <h3 className="card-title align-self-center mr-auto">Wallets</h3>
-                  <div className="card-tools d-flex ">
-                    <WalletModal />
-                    <button
-                      type="button"
-                      className="btn btn-tool"
-                      data-card-widget="collapse"
-                      title="Collapse"
-                    >
-                      <i className="fas fa-minus" />
-                    </button>
-                  </div>
-                </div>
-                <div className="card-body p-0">
-                  {wallets.length === 0 ? (
-                    <Emptypage name="Wallets" />
-                  ) : (
-                    <WalletsTable wallets={wallets} />
-                  )}
-                </div>
+          <>
+            <div className="card-header bg-dark d-flex justify-content-between">
+              <h3 className="card-title align-self-center mr-auto">Wallets</h3>
+              <div className="card-tools d-flex ">
+                <WalletModal />
+                <button
+                  type="button"
+                  className="btn btn-tool"
+                  data-card-widget="collapse"
+                  title="Collapse"
+                >
+                  <i className="fas fa-minus" />
+                </button>
               </div>
             </div>
-          </div>
+            {wallets.length === 0 ? (
+              <EmptyPage name="Wallets" />
+            ) : (
+              <WalletsTable wallets={wallets} />
+            )}
+          </>
         )}
       </div>
     </div>

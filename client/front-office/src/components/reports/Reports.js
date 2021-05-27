@@ -25,6 +25,8 @@ export default function Reports() {
     });
   }
 
+  // console.log('soy el reportsss', reports);
+
   const reset = () => {
     setLoading(false);
     setTimeout(() => {
@@ -96,6 +98,7 @@ export default function Reports() {
         } = x;
         return { name: wallet.name, value: wallet.id };
       });
+      console.log(data, 'soy data en wallets');
       const toType = removeDuplicatesBy((x) => x.name, data);
       setOptions(toType);
     }

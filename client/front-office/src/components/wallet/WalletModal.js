@@ -10,6 +10,7 @@ const WalletModal = () => {
   const [showModal, setShowModal] = useState(false);
   const authAlert = useSelector((state) => state.authReducers.authAlert);
   const wallets = useSelector((state) => state.walletReducer.wallets);
+  const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
   const dispatch = useDispatch();
   const setModalHandler = () => {
     setShowModal(!showModal);
@@ -64,9 +65,10 @@ const WalletModal = () => {
   });
 
   const walletsAvailable = wallets.filter((w) => w.status);
+  const cantWallets = user.plan.name === 'Free' ? 5 : 10;
   return (
     <div>
-      {walletsAvailable.length < 10 ? (
+      {walletsAvailable.length < cantWallets ? (
         <Button onClick={setModalHandler} className="btn-warning">
           Add Wallet
         </Button>
