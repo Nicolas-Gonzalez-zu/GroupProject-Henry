@@ -6,7 +6,7 @@ const passport = require('passport');
 const path = require('path');
 const bcryptUtils = require('../utils/bcryptUtils');
 
-const sendEmail = require('../helpers/mailgun');
+const sendEmail = require('../helpers/sendgrid');
 
 const db = require('../../db/models');
 
@@ -84,7 +84,6 @@ router.post('/mail-exists', (req, res) => {
   const regex =
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
   const validEmail = regex.test(email);
-  console.log(email, type, validEmail);
   if (type && validEmail) {
     if (type === 'customer') {
       return db.User.findOne({ where: { email } }).then((user) => {
@@ -108,8 +107,6 @@ router.post('/mail-exists', (req, res) => {
 router.post('/forgotPassword', (req, res) => {
   const { email } = req.body;
 
-  console.log(req.body, 'body');
-  console.log(email, 'email');
   db.User.findOne({ where: { email } })
     .then((user) => {
       if (user === null) return res.status(200).json({ message: 'request recived' });
@@ -123,14 +120,7 @@ router.post('/forgotPassword', (req, res) => {
       const token = jwt.sign(payload, secret, { expiresIn: '15m' });
       const link = `http://localhost:3000/resetPassword/${user.id}/${token}`;
 
-      sendEmail(
-        user.email,
-        'no-reply@test.com',
-        'Forgot password',
-        'reset_password_template',
-        link,
-      );
-      console.log(link);
+      sendEmail(user.email, 'Forgot password', link, 'd-0ab651e511cd4640a24fa879effca7fd');
 
       return res.status(200).json({ message: 'request recived' });
     })

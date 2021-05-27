@@ -8,6 +8,7 @@
     "dev": "nodemon src/app/bin/server"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.4.4",
     "async": "^3.2.0",
     "aws-sdk": "^2.903.0",
     "bcrypt": "^5.0.1",
