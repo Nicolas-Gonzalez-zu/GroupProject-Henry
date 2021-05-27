@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useEffect, useState, useRef } from 'react';
 
 export default function Paypal(props) {
+  const paypal = useRef();
   const [sdkReady, setSdkReady] = useState(false);
   const clientID =
     'ATK6DdOJdEQoswVzUM9ElU9kuS1PfKWSt6hFoyPmqiAjOVq3DU8UXUTAMd_-HfBkXvQcwGyhwLC93Iww';
-
+  const { items } = props;
+  const value = items.map((i) => Number(i.unit_amount.value)).reduce((acc, curr) => acc + curr);
   const addPaypalSdk = () => {
     const script = document.createElement('script');
     script.type = 'text/javascript';
@@ -23,57 +24,62 @@ export default function Paypal(props) {
   useEffect(() => {
     if (window !== undefined && window.paypal === undefined) {
       addPaypalSdk();
-    } else if (window !== undefined && window.paypal !== undefined && props.onButtonReady) {
-      props.onButtonReady();
+    }
+  }, []);
+  useEffect(() => {
+    if (window !== undefined && window.paypal !== undefined) {
+      window.paypal
+        .Buttons({
+          style: {
+            layout: 'vertical',
+            color: 'blue',
+            shape: 'rect',
+            label: 'pay',
+          },
+          createOrder: (data, actions) =>
+            actions.order.create({
+              purchase_units: [
+                {
+                  amount: {
+                    currency_code: 'USD',
+                    value: value.toString(),
+                    breakdown: {
+                      item_total: {
+                        currency_code: 'USD',
+                        value: value.toString(),
+                      },
+                    },
+                  },
+                  items,
+                },
+              ],
+            }),
+          onApprove: (data, actions) =>
+            actions.order
+              .capture()
+              .then((details) => {
+                console.log(details);
+                if (props.onSuccess) {
+                  return props.onSuccess(data);
+                }
+                return details;
+              })
+              .catch((err) => {
+                console.log(err);
+              }),
+        })
+        .render(paypal.current);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const createOrder = (data, actions) =>
-    actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            currency_code: 'USD',
-            value: '0.01', // props.amount
-          },
-        },
-      ],
-    });
-
-  const onApprove = (data, actions) =>
-    actions.order
-      .capture()
-      .then((details) => {
-        if (props.onSuccess) {
-          return props.onSuccess(data);
-        }
-        return details;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  }, [sdkReady]);
 
   if (!sdkReady && window.paypal === undefined) {
     return <div>Loading...</div>;
   }
 
-  const PaypalButton = window.paypal.Buttons.driver('react', {
-    React,
-    ReactDOM,
-  });
-
   return (
-    <PaypalButton
-      // {...props}
-      createOrder={(data, actions) => createOrder(data, actions)}
-      onApprove={(data, actions) => onApprove(data, actions)}
-      style={{
-        layout: 'vertical',
-        color: 'blue',
-        shape: 'rect',
-        label: 'pay',
-      }}
-    />
+    <div>
+      <div ref={paypal} />
+    </div>
   );
 }

@@ -14,6 +14,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [preferenceId, setPreferenceId] = useState(null);
+  const [toPaypal, setToPaypal] = useState({});
 
   const handleChange = (e) => {
     // eslint-disable-next-line no-restricted-globals
@@ -46,6 +47,16 @@ const Cart = () => {
             });
         }
         if (response.isConfirmed && e.target.value === 'paypal') {
+          const itemPaypal = items.map((i) => ({
+            name: i.name,
+            description: i.description,
+            unit_amount: {
+              currency_code: 'USD',
+              value: i.price,
+            },
+            quantity: '1',
+          }));
+          setToPaypal(itemPaypal);
           setPaymentMethod(e.target.value);
         } else {
           e.target.checked = false;
@@ -221,7 +232,7 @@ const Cart = () => {
       <div className="row no-print">
         <div className="col-2">
           {preferenceId ? <form id={FORM_ID} method="POST" /> : ''}
-          {paymentMethod === 'paypal' ? <Paypal /> : ''}
+          {paymentMethod === 'paypal' ? <Paypal items={toPaypal} /> : ''}
         </div>
       </div>
     </div>
