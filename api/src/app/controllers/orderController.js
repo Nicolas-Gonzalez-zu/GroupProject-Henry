@@ -88,6 +88,8 @@ router.get('/', (req, res) => {
             processedOrders[y].assigned_user = {
               id: foundUsers[x].dataValues.id,
               name: `${foundUsers[x].dataValues.first_name} ${foundUsers[x].dataValues.last_name}`,
+              phone: foundUsers[x].dataValues.phone,
+              email: foundUsers[x].dataValues.email,
             };
           }
         }
