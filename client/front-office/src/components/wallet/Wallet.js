@@ -31,26 +31,32 @@ const Wallet = () => {
   return (
     <div className="d-flex flex-column jusitfy-content-around mx-3 mt-3">
       <div className="card">
-        <div className="card card-header bg-dark">
-          <h3>Wallet info</h3>
-        </div>
         {!loading && <InternalLoader />}
-        <div className="d-flex justify-content-around ">
-          <div className="col-5 col-lg-3 mt-5">
-            <div className="small-box bg-warning mt-4 ">
-              <div className="inner">
-                <h4>Total balance</h4>
-                <h5 className="font-weight-bold">$ {total}.00</h5>
+        {wallets.length === 0 ? (
+          ''
+        ) : (
+          <>
+            <div className="card card-header bg-dark">
+              <h3>Wallet info</h3>
+            </div>
+            <div className="d-flex justify-content-around ">
+              <div className="col-5 col-lg-3 mt-5">
+                <div className="small-box bg-warning mt-4 ">
+                  <div className="inner">
+                    <h4>Total balance</h4>
+                    <h5 className="font-weight-bold">$ {total}.00</h5>
+                  </div>
+                  <div className="icon">
+                    <i className="fas fa-wallet " />
+                  </div>
+                </div>
               </div>
-              <div className="icon">
-                <i className="fas fa-wallet " />
+              <div>
+                <Chart array={wallets} />
               </div>
             </div>
-          </div>
-          <div>
-            <Chart array={wallets} />
-          </div>
-        </div>
+          </>
+        )}
         {loading && (
           <>
             <div className="card-header bg-dark d-flex justify-content-between">
