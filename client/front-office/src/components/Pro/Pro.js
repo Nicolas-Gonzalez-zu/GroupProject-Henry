@@ -110,34 +110,41 @@ export default function Pro() {
               <hr className="mt-0 bg-dark" />
               <ul className="text-center list-unstyled">
                 <li>
-                  <span className="text-success">✓ </span>Limited Wallets
+                  <span className="text-success">✓ </span>
+                  Full use of the website
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited Budgets
+                  <span className="text-success">✓ </span>
+                  Control your finances
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>
+                  Three Wallets per user
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>
+                  Three Budgets per user
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>
+                  Reports per month
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>
+                  Buy diferents Services
+                </li>
+
+                <li>
+                  <span className="text-danger">✗ </span>
+
+                  <del>Unlimeted reports</del>
+                </li>
+                <li>
+                  <span className="text-danger">✗ </span> <del>20% Discount in shop services</del>
                 </li>
                 <li>
                   <span className="text-danger">✗ </span>
-                  <del>Limited reports</del>
-                </li>
-                <li>
-                  <span className="text-danger">✗ </span>
-                  <del>Limited reports</del>
-                </li>
-                <li>
-                  <span className="text-danger">✗ </span>
-                  <del>Limited reports</del>
+                  <del>Priority when buying a service</del>
                 </li>
                 <button type="button" className="btn btn-dark mt-5">
                   Get Started
@@ -159,31 +166,40 @@ export default function Pro() {
               <hr className="mt-0 bg-warning" />
               <ul className="text-center list-unstyled">
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>
+                  Full use of the website
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>
+                  Control your finances
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>
+                  Ten Wallets per user
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>
+                  Ten Budgets per user
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>
+                  Reports per year
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>
+                  Buy diferents Services
+                </li>
+
+                <li>
+                  <span className="text-success">✓ </span>
+                  Unlimeted reports with filters
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span> 20% Discount in shop services
                 </li>
                 <li>
-                  <span className="text-success">✓ </span>Limited reports
-                </li>
-                <li>
-                  <span className="text-success">✓ </span>Limited reports
+                  <span className="text-success">✓ </span>
+                  Priority when buying a service
                 </li>
                 <button type="button" className="btn btn-warning mt-5" onClick={showmodal}>
                   <b> Buy Now!</b>

@@ -87,9 +87,9 @@ export default function Expense() {
                       <th
                         className="sorting"
                         aria-controls="example2"
-                        aria-label="CSS grade: activate to sort column ascending"
+                        aria-label="Engine version: activate to sort column ascending"
                       >
-                        Consume in Budget
+                        Budget
                       </th>
                       <th
                         className="sorting"
@@ -117,18 +117,11 @@ export default function Expense() {
                           <td>{x.description}</td>
                           <td>
                             {x.wallet.name}
-                            <br /> <span className="text-info">$ {x.wallet.balance}.00</span>
+                            <br /> <span className="text-olive">$ {x.wallet.balance}.00</span>
                           </td>
                           <td>
-                            <p className="text-center">{x.budget.name}</p>
-                            <div className="progress progress-xs">
-                              <div
-                                className="progress-bar bg-purple"
-                                style={{
-                                  width: `${(x.amount / x.budget.amount) * 100}%`,
-                                }}
-                              />
-                            </div>
+                            <span className="text-center">{x.budget.name}</span>
+                            <br /> <span className="text-info">$ {x.budget.amount}</span>
                           </td>
                           {console.log(x.generation_date, 'date nueva')}
                           <td>{x.generation_date.replace('T', ' ~ ').replace('.000Z', ' ')}</td>
