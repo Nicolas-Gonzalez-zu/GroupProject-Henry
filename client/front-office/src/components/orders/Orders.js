@@ -10,14 +10,12 @@ const Orders = () => {
     action.getOrders(dispatch);
   }, [dispatch]);
 
-  console.log(orders);
   const ordersAssigned = orders.filter((o) => o.status !== 'unassigned');
 
   const popover = (services) => (
     <Popover id="popover-basic">
       <Popover.Title as="h3">Services</Popover.Title>
       <Popover.Content>
-        {/* {orders.invoice.services && orders.invoice.services.map((s) => <p>{s.name}</p>)} */}
         {services.map((s) => (
           <p>
             <b> • {s.name}</b>
