@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import Swal from 'sweetalert2';
 
 export default function Paypal(props) {
   const paypal = useRef();
@@ -59,10 +60,11 @@ export default function Paypal(props) {
               .capture()
               .then((details) => {
                 console.log(details);
-                if (props.onSuccess) {
-                  return props.onSuccess(data);
-                }
-                return details;
+                Swal.fire(
+                  'Done!',
+                  `Transaction completed by ${details.payer.name.given_name}`,
+                  'success',
+                );
               })
               .catch((err) => {
                 console.log(err);

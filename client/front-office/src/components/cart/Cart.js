@@ -76,7 +76,7 @@ const Cart = () => {
       form.appendChild(script);
     }
     if (paymentMethod === 'paypal' && preferenceId) {
-      setPreferenceId('null');
+      setPreferenceId(null);
     }
   }, [paymentMethod, preferenceId]);
 
