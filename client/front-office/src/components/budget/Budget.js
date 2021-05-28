@@ -246,7 +246,11 @@ function Budget() {
                                   
                               {x.status ? (
                                 <>
-                                  <BudgetsEdit id={x.id} name={x.name} amount={x.amount} />
+                                  <BudgetsEdit
+                                    id={x.id}
+                                    nameBefore={x.name}
+                                    amountBefore={x.amount}
+                                  />
                                       
                                   <button
                                     type="button"

@@ -8,6 +8,7 @@ import * as action from '../../actions/creators';
 
 export default function ExpenseModalEdit({ id, description, date }) {
   const [edit, setEdit] = useState(false);
+  const [onlyDate, onlyTime] = date.replace('T', '~').replace('.000Z', '').split('~');
 
   const dispatch = useDispatch();
   const authAlert = useSelector((store) => store.authReducers.authAlert);
@@ -49,9 +50,9 @@ export default function ExpenseModalEdit({ id, description, date }) {
 
   const formik = useFormik({
     initialValues: {
-      description: '',
-      date: '',
-      time: '',
+      date: onlyDate,
+      time: onlyTime,
+      description,
     },
     validate,
     onSubmit: (values) => {
@@ -63,6 +64,7 @@ export default function ExpenseModalEdit({ id, description, date }) {
       setTimeout(() => setEdit(false), 1000);
       action.editMovement(newValues, dispatch);
     },
+    enableReinitialize: true,
   });
 
   const setEditOn = () => {
@@ -86,7 +88,7 @@ export default function ExpenseModalEdit({ id, description, date }) {
               values={formik.values}
               errors={formik.errors}
               handleChange={formik.handleChange}
-              inputType={['text', 'date', 'time']}
+              inputType={['date', 'time', 'text']}
             />
             <Button type="submit" className="btn btn-success mt-4 col-4 ml-1">
               Edit Movement

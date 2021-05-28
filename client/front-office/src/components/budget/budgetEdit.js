@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as action from '../../actions/creators';
 
-const BudgetsEdit = ({ name, amount, id }) => {
+const BudgetsEdit = ({ nameBefore, amountBefore, id }) => {
   const [showModalEdit, setShowModalEdit] = useState(false);
 
   const dispatch = useDispatch();
@@ -31,8 +31,8 @@ const BudgetsEdit = ({ name, amount, id }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      amount: '',
+      name: nameBefore,
+      amount: amountBefore,
     },
     validate,
     onSubmit: (values) => {
@@ -47,6 +47,7 @@ const BudgetsEdit = ({ name, amount, id }) => {
         });
       }, 1500);
     },
+    enableReinitialize: true,
   });
 
   return (
@@ -57,7 +58,7 @@ const BudgetsEdit = ({ name, amount, id }) => {
       <Modal show={showModalEdit}>
         <Modal.Header>
           <h3>
-            Edit your Budget : <b className="text-info">{name}</b>
+            Edit your Budget : <b className="text-info">{nameBefore}</b>
           </h3>
         </Modal.Header>
         <Modal.Body>
@@ -65,7 +66,7 @@ const BudgetsEdit = ({ name, amount, id }) => {
             <div className="d-flex flex-column justify-content-center m-3">
               <label className="align-self-center">Name</label>
               <p className="align-self-center">
-                Name before: <span className="text-danger">{name}</span>
+                Name before: <span className="text-danger">{nameBefore}</span>
               </p>
               <input
                 type="text"
@@ -89,7 +90,7 @@ const BudgetsEdit = ({ name, amount, id }) => {
             <div className="d-flex flex-column justify-content m-3">
               <label className="align-self-center">Amount</label>
               <p className="align-self-center">
-                Amount before: <span className="text-danger">${amount}</span>
+                Amount before: <span className="text-danger">${amountBefore}</span>
               </p>
               <input
                 type="text"

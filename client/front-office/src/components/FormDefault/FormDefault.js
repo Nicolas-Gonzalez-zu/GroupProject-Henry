@@ -3,7 +3,7 @@ import React from 'react';
 const FormDefault = ({ values, errors, handleChange, inputType, selectFrom }) => (
   <div>
     {console.log(values)}
-    {console.log(errors)}
+    {/* {console.log(errors)} */}
     {Object.entries(values) &&
       Object.entries(values).map(([key, value], i) => (
         <div className="d-flex flex-column m-3">

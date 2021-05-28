@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
@@ -26,7 +26,7 @@ const WalletModalEdit = ({ nameBefore, id }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name: nameBefore,
     },
     validate,
     onSubmit: (values) => {
@@ -40,7 +40,17 @@ const WalletModalEdit = ({ nameBefore, id }) => {
         });
       }, 1500);
     },
+    enableReinitialize: true,
   });
+
+  // const setFieldValueHandler = () => {
+  //   formik.setFieldValue('name', nameBefore);
+  // };
+
+  // useEffect(() => {
+  //   console.log('hola');
+  //   setFieldValueHandler();
+  // }, [showModalEdit, setFieldValueHandler]);
 
   return (
     <div>
