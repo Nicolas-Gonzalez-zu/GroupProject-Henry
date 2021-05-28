@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 import Swal from 'sweetalert2';
 import * as action from '../../actions/creators';
 import imgDefault from '../../assets/img/profile-default.png';
+import Paypal from '../Paypal/Paypal';
 
 const FORM_ID = 'payment-form';
 
@@ -13,6 +14,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [preferenceId, setPreferenceId] = useState(null);
+  const [toPaypal, setToPaypal] = useState({});
 
   const handleChange = (e) => {
     // eslint-disable-next-line no-restricted-globals
@@ -25,7 +27,7 @@ const Cart = () => {
       showCancelButton: true,
     })
       .then((response) => {
-        if (response.isConfirmed) {
+        if (response.isConfirmed && e.target.value === 'mercado pago') {
           setPaymentMethod(e.target.value);
           const miUuid = uuid();
           const obj = {
@@ -43,6 +45,18 @@ const Cart = () => {
               e.target.checked = false;
               console.log(err);
             });
+        } else if (response.isConfirmed && e.target.value === 'paypal') {
+          const itemPaypal = items.map((i) => ({
+            name: i.name,
+            description: i.description,
+            unit_amount: {
+              currency_code: 'USD',
+              value: i.price,
+            },
+            quantity: '1',
+          }));
+          setToPaypal(itemPaypal);
+          setPaymentMethod(e.target.value);
         } else {
           e.target.checked = false;
         }
@@ -52,25 +66,33 @@ const Cart = () => {
       });
   };
   useEffect(() => {
-    if (paymentMethod && preferenceId) {
+    if (paymentMethod === 'mercado pago' && preferenceId) {
       const script = document.createElement('script');
       script.type = 'text/javascript';
+      script.id = 'mpbtn';
       script.src = 'https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js';
       script.setAttribute('data-preference-id', preferenceId);
       const form = document.getElementById(FORM_ID);
       form.appendChild(script);
     }
+    if (paymentMethod === 'paypal' && preferenceId) {
+      setPreferenceId(null);
+    }
   }, [paymentMethod, preferenceId]);
 
   const removeFromShop = (id) => {
     action.removeFromShop(id, dispatch);
+    setPaymentMethod('null');
+    /* eslint-disable no-param-reassign */
+    document.querySelectorAll('[name=method]').forEach((x) => {
+      x.checked = false;
+    });
   };
 
   const onError = (e) => {
     e.target.src = imgDefault;
   };
   const subtotal = items.reduce((acc, b) => acc + parseInt(b.price, 10), 0);
-  console.log(user, 'a ver');
   const discount = user.plan && user.plan.name === 'Pro' ? (subtotal * 20) / 100 : 0;
   const today = new Date();
   const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
@@ -154,7 +176,17 @@ const Cart = () => {
               height="70"
               width="70"
             />
-            <input type="radio" onChange={handleChange} value="mercado pago" />
+            <input type="radio" onChange={handleChange} name="method" value="mercado pago" />
+          </div>
+          <div className="d-flex justify-content-around align-items-center">
+            <img
+              src="https://logodownload.org/wp-content/uploads/2014/10/paypal-logo-4.png"
+              alt="Paypal"
+              height="18"
+              width="70"
+            />
+
+            <input type="radio" onChange={handleChange} name="method" value="paypal" />
           </div>
         </div>
 
@@ -211,7 +243,10 @@ const Cart = () => {
         </div>
       </div>
       <div className="row no-print">
-        <div className="col-12">{preferenceId ? <form id={FORM_ID} method="POST" /> : ''}</div>
+        <div className="col-2">
+          {preferenceId ? <form id={FORM_ID} method="POST" /> : ''}
+          {paymentMethod === 'paypal' ? <Paypal items={toPaypal} /> : ''}
+        </div>
       </div>
     </div>
   );
