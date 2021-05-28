@@ -380,6 +380,7 @@ export const resetReports = (dispatch) => {
 };
 
 export const getFilteredReports = (data, dispatch) => {
+  console.log('soy la data en reports action', data);
   serverPetition
     .get(`fo/reports/filter?filter=${data.filt}&value=${data.value}`, { responseType: 'blob' })
     .then((response) => {
@@ -527,4 +528,18 @@ export const sortBudgetAmount = (dispatch) => {
 };
 export const sortBudgetMinAmount = (dispatch) => {
   dispatch({ type: actionType.SORT_BUDGETS_MIN_AMOUNT });
+};
+
+export const getOrders = (dispatch) => {
+  serverPetition
+    .get('fo/order')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_ORDERS,
+        payload: data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
