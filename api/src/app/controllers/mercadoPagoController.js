@@ -68,7 +68,7 @@ server.post('/', async (req, res) => {
             id: service.id,
             quantity: 1,
             //   quantity: Number(service.orderLine.quantity),
-            unit_price: service.price,
+            unit_price: Number(service.price),
           }));
 
         const preference = {

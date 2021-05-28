@@ -45,8 +45,7 @@ const Cart = () => {
               e.target.checked = false;
               console.log(err);
             });
-        }
-        if (response.isConfirmed && e.target.value === 'paypal') {
+        } else if (response.isConfirmed && e.target.value === 'paypal') {
           const itemPaypal = items.map((i) => ({
             name: i.name,
             description: i.description,
@@ -67,25 +66,33 @@ const Cart = () => {
       });
   };
   useEffect(() => {
-    if (paymentMethod && preferenceId) {
+    if (paymentMethod === 'mercado pago' && preferenceId) {
       const script = document.createElement('script');
       script.type = 'text/javascript';
+      script.id = 'mpbtn';
       script.src = 'https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js';
       script.setAttribute('data-preference-id', preferenceId);
       const form = document.getElementById(FORM_ID);
       form.appendChild(script);
     }
+    if (paymentMethod === 'paypal' && preferenceId) {
+      setPreferenceId('null');
+    }
   }, [paymentMethod, preferenceId]);
 
   const removeFromShop = (id) => {
     action.removeFromShop(id, dispatch);
+    setPaymentMethod('null');
+    /* eslint-disable no-param-reassign */
+    document.querySelectorAll('[name=method]').forEach((x) => {
+      x.checked = false;
+    });
   };
 
   const onError = (e) => {
     e.target.src = imgDefault;
   };
   const subtotal = items.reduce((acc, b) => acc + parseInt(b.price, 10), 0);
-  console.log(user, 'a ver');
   const discount = user.plan && user.plan.name === 'Pro' ? (subtotal * 20) / 100 : 0;
   const today = new Date();
   const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
@@ -172,7 +179,13 @@ const Cart = () => {
             <input type="radio" onChange={handleChange} name="method" value="mercado pago" />
           </div>
           <div className="d-flex justify-content-around align-items-center">
-            Paypal
+            <img
+              src="https://logodownload.org/wp-content/uploads/2014/10/paypal-logo-4.png"
+              alt="Paypal"
+              height="18"
+              width="70"
+            />
+
             <input type="radio" onChange={handleChange} name="method" value="paypal" />
           </div>
         </div>
