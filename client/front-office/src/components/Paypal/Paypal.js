@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Swal from 'sweetalert2';
+import { useSelector } from 'react-redux';
 
 export default function Paypal(props) {
+  const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
   const paypal = useRef();
   const [sdkReady, setSdkReady] = useState(false);
   const clientID =
@@ -41,6 +43,7 @@ export default function Paypal(props) {
             actions.order.create({
               purchase_units: [
                 {
+                  description: user.user.id.toString(),
                   amount: {
                     currency_code: 'USD',
                     value: value.toString(),

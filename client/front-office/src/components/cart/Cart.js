@@ -10,6 +10,7 @@ const FORM_ID = 'payment-form';
 
 const Cart = () => {
   const items = useSelector((state) => state.shopReducer.shop);
+  console.log(items);
   const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
   const dispatch = useDispatch();
   const [paymentMethod, setPaymentMethod] = useState(null);
@@ -54,6 +55,7 @@ const Cart = () => {
               value: i.price,
             },
             quantity: '1',
+            sku: i.id,
           }));
           setToPaypal(itemPaypal);
           setPaymentMethod(e.target.value);

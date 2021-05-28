@@ -39,7 +39,6 @@ const validate = function (body = {}) {
 };
 
 server.post('/ipn', async (req, res) => {
-  console.log('It works nowww! 🌎');
   res.sendStatus(200);
   res.end();
   const body = req.body || {};
@@ -50,8 +49,35 @@ server.post('/ipn', async (req, res) => {
       console.error('Error validating IPN message.');
       return;
     }
-    const transactionType = body.txn_type;
-    console.log(body);
+    const status = body.payment_status;
+
+    switch (status) {
+      case 'Completed':
+        db.Customer.findByPk(body.transaction_subject).then((customer) => {
+          const invoice = {
+            payment_method: 'paypal',
+            amount: body.payment_gross,
+            status: 'completed',
+            customer_id: customer.dataValues.user_id,
+          };
+          db.Invoice.create(invoice).then((createdInvoice) => {
+            let services = [];
+            for (var i in body) {
+              if (i.substring(0, 11) === 'item_number') {
+                services.push(Number(body[i]));
+              }
+            }
+            console.log(body);
+            console.log(createdInvoice);
+            console.log(services);
+            createdInvoice.addServices(services).then((services) => {
+              console.log(services);
+            });
+          });
+        });
+      default:
+        console.log('');
+    }
   } catch (e) {
     console.error(e);
   }
