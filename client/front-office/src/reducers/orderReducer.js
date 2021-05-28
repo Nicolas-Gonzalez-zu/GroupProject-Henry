@@ -7,7 +7,7 @@ const initialState = {
 const orderReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionType.GET_ORDERS:
-      return { ...state, orders: state.orders.concat(action.payload) };
+      return { ...state, orders: [...action.payload] };
     default:
       return { ...state };
   }
