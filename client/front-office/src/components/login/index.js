@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-
+import Particles from 'react-particles-js';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
+import '../../assets/particles/particles.css';
+import parti from '../../assets/particles/particlesjs-config.json';
 
 import * as action from '../../actions/creators';
 
@@ -122,7 +124,6 @@ const Login = () => {
                         required
                         autoComplete="off"
                       />
-
                       <div className="input-group-append">
                         <div className="input-group-text">
                           <span className="fas fa-envelope" />

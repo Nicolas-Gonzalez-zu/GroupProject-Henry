@@ -38,7 +38,10 @@ const WalletTable = () => {
     }
   }, [sort, dispatch]);
 
-  const cantWallet = user.plan.name === 'Free' ? 5 : 10;
+  const cantWallet = () => {
+    if (user) return user.plan.name === 'Free' ? 5 : 10;
+    return '';
+  };
 
   return (
     <table className=" table table-bordered ">

@@ -54,6 +54,7 @@ const Cart = () => {
               value: i.price,
             },
             quantity: '1',
+            sku: i.id,
           }));
           setToPaypal(itemPaypal);
           setPaymentMethod(e.target.value);
@@ -98,7 +99,7 @@ const Cart = () => {
   const date = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
   return (
     <div className="invoice p-3 mb-3">
-      <div className="card-header bg-dark">
+      <div className="card-header bg-navy">
         <div className="row">
           <div className="col-6">
             <h4>
