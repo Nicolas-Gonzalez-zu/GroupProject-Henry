@@ -24,19 +24,24 @@ const Login = () => {
   };
 
   useEffect(() => {
-    // sidebar - mini;
+    const body = document.getElementsByTagName('body');
+    body[0].classList.remove('sidebar-mini');
+    body[0].classList.add('login-page');
+    body[0].classList.add('hold-transition');
     if (authAlert.fire) {
-      Swal.fire({
-        title: authAlert.message,
-        icon: 'error',
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 4000,
-      }).then(() => {
-        action.setAlert(dispatch, '', false);
-      });
-      setIsSubmitting(false);
+      if (authAlert.message !== 'Not logged in') {
+        Swal.fire({
+          title: authAlert.message,
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 4000,
+        }).then(() => {
+          action.setAlert(dispatch, '', false);
+        });
+        setIsSubmitting(false);
+      }
     }
     if (sessionData.loggedIn) {
       setIsSubmitting(true);
@@ -52,8 +57,9 @@ const Login = () => {
       });
     }
     return () => {
-      const body = document.getElementsByTagName('body');
-      body[0].classList.remove('register-page');
+      // const body = document.getElementsByTagName('body');
+      body[0].classList.remove('login-page');
+      body[0].classList.remove('hold-transition');
       body[0].classList.add('sidebar-mini');
       action.redirect(dispatch);
       action.setAlert(dispatch);
@@ -62,8 +68,8 @@ const Login = () => {
 
   return (
     <div>
-      <div className="login-box" id="login" style={{ minHeight: 466 }}>
-        <div className="card logincard">
+      <div className="login-box">
+        <div className="card card-outline card-primary">
           <div className="card-header text-center">
             <div className="h1">
               <img

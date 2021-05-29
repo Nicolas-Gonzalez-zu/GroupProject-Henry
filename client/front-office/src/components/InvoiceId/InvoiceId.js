@@ -119,7 +119,6 @@ const InvoiceId = ({ match }) => {
                 </button>
               </div>
             </div>
-
             <div className="col-7">
               <div className="table-responsive">
                 <table className="table">

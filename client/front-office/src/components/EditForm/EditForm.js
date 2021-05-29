@@ -10,7 +10,7 @@ import * as action from '../../actions/editForm';
 
 const EditForm = () => {
   const dispatch = useDispatch();
-  const userData = useSelector((store) => store.authReducers.sessionData.loggedUser);
+  const user = useSelector((store) => store.authReducers.sessionData.loggedUser);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const [editProfile, setEditProfile] = useState({
     file: null,
@@ -83,7 +83,7 @@ const EditForm = () => {
         if (e.target.files.length > 0) {
           const file = e.target.files[0];
           const blob = file.slice(0, file.size, file.type);
-          const newFile = new File([blob], userData.user.id, { type: file.type });
+          const newFile = new File([blob], user.id, { type: file.type });
           setEditProfile({ ...editProfile, file: newFile });
         }
         break;
@@ -100,7 +100,7 @@ const EditForm = () => {
     if (editProfile.file) {
       dispatch(action.fileExtension(editProfile.file.type));
       const fd = new FormData();
-      fd.append('file', editProfile.file, userData.user.id);
+      fd.append('file', editProfile.file, user.id);
 
       dispatch(action.editUser(fd, editProfile.userInfo));
     }

@@ -1,3 +1,16 @@
+const faker = require('faker');
+const { Plan } = require('../models');
+
+const initialPlanBenefitsDetails = [
+  {
+    plan_id: 'Create movement',
+    benefit_id: 'LIMITED_MOVEMENTS_5',
+  },
+  {
+    name: 'All benefits',
+    id_code: 'ALL_BENEFITS',
+  },
+];
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     /**
