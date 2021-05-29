@@ -20,6 +20,8 @@ function App() {
   const initialized = useSelector((state) => state.authReducers.initialized);
 
   useEffect(() => {
+    const html = document.getElementsByTagName('html')[0];
+    html.style.height = '100vh';
     if (!initialized) {
       initialize(dispatch);
     }

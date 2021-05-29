@@ -120,26 +120,32 @@ const Register = () => {
     body[0].classList.add('register-page');
 
     if (authAlert.fire) {
-      const position = authAlert.type === 'success' ? 'center' : 'top-end';
-      if (authAlert.type === 'error') {
-        setIsSubmitting(false);
-      }
-      Swal.fire({
-        title: authAlert.message,
-        icon: authAlert.type,
-        toast: true,
-        position,
-        showConfirmButton: false,
-        timer: 2000,
-      }).then(() => {
-        if (authAlert.type === 'success') {
-          action.setAlert(dispatch);
-          history.push('/login');
-        } else {
-          action.setAlert(dispatch);
+      if (authAlert.message !== 'Not logged in') {
+        const position = authAlert.type === 'success' ? 'center' : 'top-end';
+        if (authAlert.type === 'error') {
+          setIsSubmitting(false);
         }
-      });
+        Swal.fire({
+          title: authAlert.message,
+          icon: authAlert.type,
+          toast: true,
+          position,
+          showConfirmButton: false,
+          timer: 2000,
+        }).then(() => {
+          if (authAlert.type === 'success') {
+            action.setAlert(dispatch);
+            history.push('/login');
+          } else {
+            action.setAlert(dispatch);
+          }
+        });
+      }
     }
+    return () => {
+      body[0].classList.remove('register-page');
+      body[0].classList.add('sidebar-mini');
+    };
   }, [
     authAlert.fire,
     authAlert.message,
@@ -165,7 +171,6 @@ const Register = () => {
         action.setError(err, dispatch);
       });
   };
-
   return (
     <div className="card card-outline card-primary mt-4">
       <div className="card-header text-center">
