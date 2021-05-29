@@ -134,7 +134,7 @@ export default function Reports() {
   return (
     <div>
       <div>
-        <div className="bg-dark d-flex justify-content-between p-3 rounded-top">
+        <div className="bg-navy d-flex justify-content-between p-3 rounded-top">
           <h5>Download your movements reports </h5>
         </div>
         <div className="d-flex justify-content-center p-4">
@@ -143,7 +143,7 @@ export default function Reports() {
           </button>
 
           <div className="d-flex card-header">
-            <label>Filter by: </label>
+            <label className="p-1">Filter by: </label>
             <select
               className="p-2"
               name="select"
@@ -168,7 +168,7 @@ export default function Reports() {
             </select>
             {filter !== 'default' && (
               <>
-                <label>This {filter}:</label>
+                <label className="p-1">This {filter}:</label>
                 <select
                   className="p-2"
                   name="select"
@@ -196,7 +196,7 @@ export default function Reports() {
           ) : (
             <button
               type="button"
-              className="btn btn-dark"
+              className="btn bg-navy"
               onClick={(e) => downloadFilter(e)}
               disabled
             >

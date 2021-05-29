@@ -98,7 +98,7 @@ export default function Transfer() {
   return (
     <>
       {!loading && <InternalLoader />}
-      <div className="card-header bg-dark">
+      <div className="card-header bg-navy">
         <h3>Movements - Transfer</h3>
       </div>
       <div className="card-body">

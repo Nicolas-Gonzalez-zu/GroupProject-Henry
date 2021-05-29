@@ -32,7 +32,7 @@ const Income = () => {
       <div className="col-12">
         <div className="card card-dark">
           {!loading && <InternalLoader />}
-          <div className="d-flex bg-dark justify-content-between w-100 p-2 rounded-top">
+          <div className="d-flex bg-navy justify-content-between w-100 p-2 rounded-top">
             <h3 className="">Movements - Income</h3>
             <IncomeAddModal showModal={showModal} showModalHandler={showModalHandler} />
           </div>

@@ -29,23 +29,14 @@ function App() {
     return (
       <Switch>
         <Route exact path="/login" component={Login} />
-        <Route exact path="/register">
-          <div className="register-box">
-            <Register />
-          </div>
-        </Route>
+        <Route exact path="/register" component={Register} />
         <Route
           exact
           path="/resetPassword/:id/:token"
           render={({ match }) => <ResetPassword id={match.params.id} token={match.params.token} />}
         />
-        <Route exact path="/forgot">
-          <div className="register-page">
-            <div className="register-box">
-              <ForgotPassword />
-            </div>
-          </div>
-        </Route>
+        <Route exact path="/forgot" component={ForgotPassword} />
+
         <Route path="/">
           <div className="wrapper">
             <NavBar />

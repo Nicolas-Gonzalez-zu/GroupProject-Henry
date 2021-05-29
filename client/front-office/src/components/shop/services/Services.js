@@ -61,7 +61,7 @@ export default function Services() {
 
   return (
     <>
-      <div className="card-header bg-dark">
+      <div className="card-header bg-navy">
         <div className="d-flex justify-content-between row">
           <h3>Services</h3>
         </div>
@@ -120,7 +120,7 @@ export default function Services() {
                       <div className="text-right">
                         {filter.length === 0 ? (
                           <Button
-                            className="btn btn-sm bg-dark border-0"
+                            className="btn btn-sm bg-navy border-0"
                             onClick={() => {
                               agregarShop(x.id, x.name, x.description, x.price);
                             }}
@@ -128,7 +128,7 @@ export default function Services() {
                             <i className="fas fa-shopping-cart" /> Add to Cart
                           </Button>
                         ) : (
-                          <Button className="btn btn-sm bg-dark border-0" disabled>
+                          <Button className="btn btn-sm bg-navy border-0" disabled>
                             You already added it to the cart
                           </Button>
                         )}

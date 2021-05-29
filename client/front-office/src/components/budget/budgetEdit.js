@@ -51,7 +51,7 @@ const BudgetsEdit = ({ name, amount, id }) => {
 
   return (
     <div>
-      <Button onClick={showModalEditHandler} className="btn btn-dark">
+      <Button onClick={showModalEditHandler} className="btn bg-navy">
         <i className="fas fa-edit	" />
       </Button>
       <Modal show={showModalEdit}>

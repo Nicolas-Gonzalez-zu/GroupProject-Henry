@@ -7,7 +7,7 @@ import imgDefault from '../../assets/img/profile-default.png';
 
 const Profile = () => {
   const userData = useSelector((store) => store.authReducers.sessionData.loggedUser);
-
+  console.log(userData, 'datauser');
   const onError = (e) => {
     e.target.src = imgDefault;
   };
