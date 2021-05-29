@@ -2,8 +2,11 @@ import dotenv from 'dotenv';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
+import Particles from 'react-particles-js';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import '../../assets/particles/particles.css';
+import parti from '../../assets/particles/particlesjs-config.json';
 import * as action from '../../actions/creators';
 
 const regex =
@@ -167,182 +170,193 @@ const Register = () => {
   };
 
   return (
-    <div className="card card-outline card-primary mt-4">
-      <div className="card-header text-center">
-        <h1 className="h1">
-          <b>Finance</b>APP
-        </h1>
-      </div>
-      <div className="card-body">
-        <p className="login-box-msg">Register a new membership</p>
+    <div>
+      <div className="login-box" id="login" style={{ minHeight: 466 }}>
+        <div className="card logincard">
+          <div className="card-header text-center">
+            <div className="h1">
+              <img
+                src="https://i.ibb.co/XS4mQ0f/logopng.png"
+                alt="user-avatar"
+                className="img-circle img-fluid mr-2"
+                width="55"
+              />
+              <b className="txt text-warning">e</b>-conomy
+            </div>
+          </div>
+          <div className="card-body">
+            <p className="login-box-msg">Register a new membership</p>
 
-        <form className="container" onSubmit={submitHandler}>
-          <div className="row row-cols-2 mb-3">
-            <div className="input-group mb-3 col">
-              <input
-                required
-                onChange={handleChange}
-                type="text"
-                className={`form-control ${formValid.first_name}`}
-                placeholder="First name"
-                name="first_name"
-                value={fields.first_name}
-              />
-              <div className="input-group-append">
-                <div className="input-group-text">
-                  <span className="fas fa-user" />
+            <form className="container" onSubmit={submitHandler}>
+              <div className="row row-cols-2 mb-3">
+                <div className="input-group mb-3 col">
+                  <input
+                    required
+                    onChange={handleChange}
+                    type="text"
+                    className={`form-control ${formValid.first_name}`}
+                    placeholder="First name"
+                    name="first_name"
+                    value={fields.first_name}
+                  />
+                  <div className="input-group-append">
+                    <div className="input-group-text">
+                      <span className="fas fa-user" />
+                    </div>
+                  </div>
+                </div>
+                <div className="input-group mb-3 col">
+                  <input
+                    required
+                    onChange={handleChange}
+                    type="text"
+                    className={`form-control ${formValid.last_name}`}
+                    placeholder="Last name"
+                    name="last_name"
+                    value={fields.last_name}
+                  />
+                  <div className="input-group-append">
+                    <div className="input-group-text">
+                      <span className="fas fa-user" />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="input-group mb-3 col">
-              <input
-                required
-                onChange={handleChange}
-                type="text"
-                className={`form-control ${formValid.last_name}`}
-                placeholder="Last name"
-                name="last_name"
-                value={fields.last_name}
-              />
-              <div className="input-group-append">
-                <div className="input-group-text">
-                  <span className="fas fa-user" />
+              <div className="row row-cols-2 mb-3">
+                <div className="input-group mb-3 col-5">
+                  <input
+                    required
+                    onChange={handleChange}
+                    type="text"
+                    className={`form-control ${formValid.phone}`}
+                    placeholder="Phone"
+                    name="phone"
+                    value={fields.phone}
+                  />
+                  <div className="input-group-append">
+                    <div className="input-group-text">
+                      <span className="fas fa-phone " />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div className="row row-cols-2 mb-3">
-            <div className="input-group mb-3 col-5">
-              <input
-                required
-                onChange={handleChange}
-                type="text"
-                className={`form-control ${formValid.phone}`}
-                placeholder="Phone"
-                name="phone"
-                value={fields.phone}
-              />
-              <div className="input-group-append">
-                <div className="input-group-text">
-                  <span className="fas fa-phone " />
+                <div className="input-group mb-3 col-7">
+                  <input
+                    required
+                    onChange={handleChange}
+                    type="email"
+                    className={`form-control ${formValid.email.value}`}
+                    placeholder="Email"
+                    name="email"
+                    value={fields.email.value}
+                    autoComplete="off"
+                    disabled={validatingMail}
+                  />
+                  <div className="input-group-append">
+                    <div className="input-group-text">
+                      <span className={`fas fa-envelope ${validatingMail ? 'fa-spin' : ''}`} />
+                    </div>
+                  </div>
                 </div>
+                <span
+                  id="exampleInputEmail1-error"
+                  className="error invalid-feedback col-12"
+                  style={{
+                    display: formValid.email.message,
+                  }}
+                >
+                  Email already taken
+                </span>
               </div>
-            </div>
-            <div className="input-group mb-3 col-7">
-              <input
-                required
-                onChange={handleChange}
-                type="email"
-                className={`form-control ${formValid.email.value}`}
-                placeholder="Email"
-                name="email"
-                value={fields.email.value}
-                autoComplete="off"
-                disabled={validatingMail}
-              />
-              <div className="input-group-append">
-                <div className="input-group-text">
-                  <span className={`fas fa-envelope ${validatingMail ? 'fa-spin' : ''}`} />
+              <div className="row row-cols-2 mb-3">
+                <div className="input-group mb-3 col">
+                  <input
+                    required
+                    onChange={handleChange}
+                    type="password"
+                    className={`form-control ${formValid.password.password}`}
+                    placeholder="Password"
+                    name="password"
+                    value={fields.password}
+                  />
+                  <div className="input-group-append">
+                    <div className="input-group-text">
+                      <span className="fas fa-lock" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <span
-              id="exampleInputEmail1-error"
-              className="error invalid-feedback col-12"
-              style={{
-                display: formValid.email.message,
-              }}
-            >
-              Email already taken
-            </span>
-          </div>
-          <div className="row row-cols-2 mb-3">
-            <div className="input-group mb-3 col">
-              <input
-                required
-                onChange={handleChange}
-                type="password"
-                className={`form-control ${formValid.password.password}`}
-                placeholder="Password"
-                name="password"
-                value={fields.password}
-              />
-              <div className="input-group-append">
-                <div className="input-group-text">
-                  <span className="fas fa-lock" />
+                <div className="input-group mb-3 col">
+                  <input
+                    required
+                    onChange={handleChange}
+                    type="password"
+                    className={`form-control ${formValid.password.confirm_password}`}
+                    placeholder="Retype password"
+                    name="confirm_password"
+                    value={fields.confirm_password}
+                  />
+                  <div className="input-group-append">
+                    <div className="input-group-text">
+                      <span className="fas fa-lock" />
+                    </div>
+                  </div>
                 </div>
+                <span
+                  id="exampleInputEmail1-error"
+                  className="error invalid-feedback col-12"
+                  style={{
+                    display: formValid.password.displayMsg,
+                  }}
+                >
+                  *password and Password confirmation does not match.
+                </span>
+                <span
+                  id="exampleInputEmail1-error"
+                  className="error invalid-feedback col-12"
+                  style={{
+                    display: formValid.password.validationDisplayMsg,
+                  }}
+                >
+                  *At least 1 number, 1 lower case, 1 upper case. Use at least 8 character in your
+                  password
+                </span>
               </div>
-            </div>
-            <div className="input-group mb-3 col">
-              <input
-                required
-                onChange={handleChange}
-                type="password"
-                className={`form-control ${formValid.password.confirm_password}`}
-                placeholder="Retype password"
-                name="confirm_password"
-                value={fields.confirm_password}
-              />
-              <div className="input-group-append">
-                <div className="input-group-text">
-                  <span className="fas fa-lock" />
-                </div>
-              </div>
-            </div>
-            <span
-              id="exampleInputEmail1-error"
-              className="error invalid-feedback col-12"
-              style={{
-                display: formValid.password.displayMsg,
-              }}
-            >
-              *password and Password confirmation does not match.
-            </span>
-            <span
-              id="exampleInputEmail1-error"
-              className="error invalid-feedback col-12"
-              style={{
-                display: formValid.password.validationDisplayMsg,
-              }}
-            >
-              *At least 1 number, 1 lower case, 1 upper case. Use at least 8 character in your
-              password
-            </span>
-          </div>
 
-          <div className="row">
-            <div className="col-8">
-              <div className="icheck-primary">
-                Wen registering I agree to the <a href="/">terms</a>
+              <div className="row">
+                <div className="col-8">
+                  <div className="icheck-primary">
+                    Wen registering I agree to the <a href="/">terms</a>
+                  </div>
+                </div>
+                <div className="col-4">
+                  <button disabled={!formReady} type="submit" className="btn btn-success btn-block">
+                    Register
+                  </button>
+                </div>
               </div>
+            </form>
+            <hr />
+            <div className="d-flex flex-row justify-content-around align-items-center mb-3">
+              <Link to="/login" className="btn btn-primary">
+                <i className="fab fa-facebook mr-2" />
+                Sign up using Facebook
+              </Link>
+              <Link to="/login" className="btn btn-danger">
+                <i className="fab fa-google-plus mr-2" />
+                Sign up using Google+
+              </Link>
             </div>
-            <div className="col-4">
-              <button disabled={!formReady} type="submit" className="btn btn-success btn-block">
-                Register
-              </button>
+            <div className="d-flex flex-row justify-content-around align-items-center mb-3">
+              <Link to="/login" className="text-center">
+                I already have a membership
+              </Link>
             </div>
           </div>
-        </form>
-        <hr />
-        <div className="d-flex flex-row justify-content-around align-items-center mb-3">
-          <Link to="/login" className="btn btn-primary">
-            <i className="fab fa-facebook mr-2" />
-            Sign up using Facebook
-          </Link>
-          <Link to="/login" className="btn btn-danger">
-            <i className="fab fa-google-plus mr-2" />
-            Sign up using Google+
-          </Link>
-        </div>
-        <div className="d-flex flex-row justify-content-around align-items-center mb-3">
-          <Link to="/login" className="text-center">
-            I already have a membership
-          </Link>
+          <div className={`overlay dark ${!isSubmitting ? 'd-none' : ''}`}>
+            <i className={`fas fa-3x fa-sync-alt fa-spin ${authAlert.fire ? 'd-none' : ''}`} />
+          </div>
         </div>
       </div>
-      <div className={`overlay dark ${!isSubmitting ? 'd-none' : ''}`}>
-        <i className={`fas fa-3x fa-sync-alt fa-spin ${authAlert.fire ? 'd-none' : ''}`} />
-      </div>
+      <Particles id="particles-js" params={parti} />
     </div>
   );
 };

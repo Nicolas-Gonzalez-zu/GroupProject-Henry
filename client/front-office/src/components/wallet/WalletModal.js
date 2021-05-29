@@ -65,7 +65,10 @@ const WalletModal = () => {
   });
 
   const walletsAvailable = wallets.filter((w) => w.status);
-  const cantWallets = user.plan.name === 'Free' ? 5 : 10;
+  const cantWallets = () => {
+    if (user) return user.plan.name === 'Free' ? 5 : 10;
+    return '';
+  };
   return (
     <div>
       {walletsAvailable.length < cantWallets ? (
