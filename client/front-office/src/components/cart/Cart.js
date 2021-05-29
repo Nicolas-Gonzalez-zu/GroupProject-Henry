@@ -54,6 +54,7 @@ const Cart = () => {
               value: i.price,
             },
             quantity: '1',
+            sku: i.id,
           }));
           setToPaypal(itemPaypal);
           setPaymentMethod(e.target.value);
