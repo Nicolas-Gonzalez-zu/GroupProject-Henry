@@ -58,7 +58,7 @@ export default function ExpenseModalEdit({ id, description, date }) {
     onSubmit: (values) => {
       const newValues = {
         ...values,
-        generation_date: `${values.date}T${values.time}:00.000Z`,
+        generation_date: new Date(`${values.date}T${values.time}:00.000Z`),
         movement_id: id,
       };
       setTimeout(() => setEdit(false), 1000);

@@ -25,9 +25,28 @@ const Orders = () => {
     </Popover>
   );
 
+  const Newpopover = (name, phone, email) => (
+    <Popover id="popover-basic">
+      <Popover.Title as="h3">{name} contact</Popover.Title>
+      <Popover.Content>
+        <p>
+          Please send me an email to {email} in the chat below or call me to {phone}
+        </p>
+        <p>
+          <b>Thank you!</b>
+        </p>
+      </Popover.Content>
+    </Popover>
+  );
   const showServices = (services) => (
     <OverlayTrigger trigger="click" placement="top" overlay={popover(services)}>
-      <Button variant="success">See services</Button>
+      <Button variant="info">See services</Button>
+    </OverlayTrigger>
+  );
+
+  const showContact = (name, phone, email) => (
+    <OverlayTrigger trigger="click" placement="right" overlay={Newpopover(name, phone, email)}>
+      <Button variant="success">Contact</Button>
     </OverlayTrigger>
   );
 
@@ -96,9 +115,11 @@ const Orders = () => {
                 </div>
                 <div className="card-footer">
                   <div className="d-flex justify-content-between">
-                    <a href="#" className="btn btn-sm bg-teal">
-                      <i className="fas fa-comments" />
-                    </a>
+                    {showContact(
+                      o.assigned_user.name,
+                      o.assigned_user.phone,
+                      o.assigned_user.email,
+                    )}
                     {showServices(o.invoice.services)}
                   </div>
                 </div>

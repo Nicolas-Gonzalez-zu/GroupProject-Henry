@@ -64,9 +64,11 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
     },
     validate,
     onSubmit: (values) => {
+      // alert(values.time);
       const newValues = {
         ...values,
-        generation_date: `${values.date}T${values.time}:00.000Z`,
+        // generation_date: `${values.date}T${values.time}:00.000Z`,
+        generation_date: new Date(`${values.date}T${values.time}:00.000Z`),
         movement_id: id,
       };
       action.editIncome(newValues, dispatch);
