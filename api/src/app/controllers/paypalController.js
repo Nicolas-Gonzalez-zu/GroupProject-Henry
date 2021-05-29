@@ -10,7 +10,9 @@ const validate = function (body = {}) {
       postreq = `${postreq}&${key}=${body[key]}`;
       return key;
     });
-
+    //Para cambiar a live usar  esta url aquí abajo: url: 'https://ipnpb.paypal.com/cgi-bin/webscr'
+    //Cambiar CLIENTID en componente Paypal por AX3FLInJLosLWk8CMAJ3pZcdgqPFn5uKExtddnqCmSh4ZLyNv3Aq4jqhMl4YHNLqHXEonS23iAQfwBHc
+    // y cambiar link IPN en cuenta ecastillejos a algo como https://finance.app.yilmer.work/api/ipn/mp_test
     const options = {
       url: 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr',
       method: 'POST',
@@ -50,33 +52,58 @@ server.post('/ipn', async (req, res) => {
       return;
     }
     const status = body.payment_status;
-
-    switch (status) {
-      case 'Completed':
-        db.Customer.findByPk(body.transaction_subject).then((customer) => {
-          const invoice = {
-            payment_method: 'paypal',
-            amount: body.payment_gross,
-            status: 'completed',
-            customer_id: customer.dataValues.user_id,
-          };
-          db.Invoice.create(invoice).then((createdInvoice) => {
-            let services = [];
-            for (var i in body) {
-              if (i.substring(0, 11) === 'item_number') {
-                services.push(Number(body[i]));
-              }
+    if (status === 'Completed') {
+      db.Customer.findByPk(body.transaction_subject).then((customer) => {
+        const invoice = {
+          payment_method: 'paypal',
+          amount: body.payment_gross,
+          status: status,
+          customer_id: customer.dataValues.user_id,
+        };
+        db.Invoice.create(invoice).then((createdInvoice) => {
+          let services = [];
+          for (var i in body) {
+            if (i.substring(0, 11) === 'item_number') {
+              services.push(Number(body[i]));
             }
-            console.log(body);
-            console.log(createdInvoice);
-            console.log(services);
-            createdInvoice.addServices(services).then((services) => {
-              console.log(services);
+          }
+          createdInvoice.addServices(services).then((createdServ) => {
+            const priority = customer.plan_id !== 1;
+            const newOrder = {
+              invoice_id: createdInvoice.dataValues.id,
+              assigned_user_id: null,
+              customer_id: customer.dataValues.user_id,
+              status: 'unassigned',
+              start_date: null,
+              end_date: null,
+              priority,
+            };
+            db.Order.create(newOrder).then(() => {
+              console.log('Order and income created');
             });
           });
         });
-      default:
-        console.log('');
+      });
+    } else {
+      db.Customer.findByPk(body.transaction_subject).then((customer) => {
+        const invoice = {
+          payment_method: 'paypal',
+          amount: body.payment_gross,
+          status: 'declined',
+          customer_id: customer.dataValues.user_id,
+        };
+        db.Invoice.create(invoice).then((createdInvoice) => {
+          let services = [];
+          for (var i in body) {
+            if (i.substring(0, 11) === 'item_number') {
+              services.push(Number(body[i]));
+            }
+          }
+          createdInvoice.addServices(services).then((createdServ) => {
+            console.log('service declined created');
+          });
+        });
+      });
     }
   } catch (e) {
     console.error(e);
