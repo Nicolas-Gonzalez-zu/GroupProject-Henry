@@ -10,6 +10,7 @@ import Footer from './Footer';
 import Register from '../register';
 import ForgotPassword from '../ForgotPassword';
 import ResetPassword from '../resetPassword';
+import About from '../about/About';
 
 import { initialize } from '../../actions/creators';
 import Login from '../login';
@@ -38,7 +39,7 @@ function App() {
           render={({ match }) => <ResetPassword id={match.params.id} token={match.params.token} />}
         />
         <Route exact path="/forgot" component={ForgotPassword} />
-
+        <Route exact path="/about" component={About} />
         <Route path="/">
           <div className="wrapper">
             <NavBar />
