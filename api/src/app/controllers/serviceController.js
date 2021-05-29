@@ -55,4 +55,52 @@ router.post('/add', (req, res) => {
     });
 });
 
+router.put('/edit', (req, res) => {
+  let savedService;
+  const { service_id, name, price, description, img_url, modifiedCategories } = req.body; // eslint-disable-line camelcase
+  const modifiedService = {};
+  if (name) modifiedService.name = name;
+  if (price) modifiedService.price = price;
+  if (description) modifiedService.description = description;
+  if (img_url) modifiedService.img_url = img_url; // eslint-disable-line camelcase
+  // eslint-disable-next-line camelcase
+  if (service_id) {
+    db.Service.update(modifiedService, {
+      where: { id: +service_id }, // eslint-disable-line camelcase
+      returning: true,
+      plain: true,
+    })
+      .then((updatedService) => {
+        if (updatedService[0] !== 0) {
+          savedService = updatedService;
+        } else {
+          savedService = [null, { message: 'Hola mundo' }];
+        }
+        return db.Service.findOne({
+          where: { id: +service_id }, // eslint-disable-line camelcase
+          include: { model: db.Category },
+        });
+      })
+      .then((foundService) => {
+        const oldCategories = modifiedCategories.oldCategories.sort((x, y) => x - y).join('');
+        const newCategories = modifiedCategories.newCategories.sort((x, y) => x - y).join('');
+
+        if (oldCategories !== newCategories) {
+          modifiedCategories.oldCategories.forEach((oldCategory) => {
+            foundService.removeCategory(oldCategory);
+          });
+          modifiedCategories.newCategories.forEach((newCategory) => {
+            foundService.addCategory(newCategory);
+          });
+        }
+        res.status(statusCode.OK).json(savedService[1]);
+      })
+      .catch(() => {
+        res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: errorCode.REJECTED_OPERATION });
+      });
+  } else {
+    res.status(statusCode.BAD_REQUEST).json({ error: errorCode.MISSING_ATTRIBUTES });
+  }
+});
+
 module.exports = router;
