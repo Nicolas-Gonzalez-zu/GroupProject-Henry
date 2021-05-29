@@ -196,6 +196,19 @@ const Login = () => {
                 Sign up
               </Link>
             </p>
+            <div className="d-flex flex-row-reverse">
+              <Link to="/about">
+                <button type="button" className="btn btn-warning">
+                  <img
+                    src="https://i.ibb.co/XS4mQ0f/logopng.png"
+                    alt="user-avatar"
+                    className="img-circle img-fluid mr-2"
+                    width="30"
+                  />{' '}
+                  <b>About Us</b>
+                </button>
+              </Link>
+            </div>
           </div>
           <div className={`overlay dark ${!isSubmitting ? 'd-none' : ''}`}>
             <i className={`fas fa-3x fa-sync-alt fa-spin ${authAlert.fire ? 'd-none' : ''}`} />
