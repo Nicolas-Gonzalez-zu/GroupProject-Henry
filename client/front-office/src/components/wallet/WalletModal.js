@@ -65,13 +65,17 @@ const WalletModal = () => {
   });
 
   const walletsAvailable = wallets.filter((w) => w.status);
-  const cantWallets = () => {
-    if (user) return user.plan.name === 'Free' ? 5 : 10;
-    return '';
+  const setCantWallet = () => {
+    if (!user) {
+      return '';
+    }
+    const cantWallets = user.plan.name === 'Free' ? 5 : 10;
+    return cantWallets;
   };
+
   return (
     <div>
-      {walletsAvailable.length < cantWallets ? (
+      {walletsAvailable.length < setCantWallet() ? (
         <Button onClick={setModalHandler} className="btn-warning">
           Add Wallet
         </Button>

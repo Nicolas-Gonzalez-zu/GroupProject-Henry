@@ -63,14 +63,12 @@ const Wallet = () => {
               <h3 className="card-title align-self-center mr-auto">Wallets</h3>
               <div className="card-tools d-flex ">
                 <WalletModal />
-                <button
+                {/* <button
                   type="button"
                   className="btn btn-tool"
                   data-card-widget="collapse"
                   title="Collapse"
-                >
-                  <i className="fas fa-minus" />
-                </button>
+                ></button> */}
               </div>
             </div>
             {wallets.length === 0 ? (
