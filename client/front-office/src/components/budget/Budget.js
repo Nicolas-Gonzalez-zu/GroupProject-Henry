@@ -89,9 +89,11 @@ function Budget() {
 
   const balances = budgets.filter((w) => w.status === true);
   const total = balances.reduce((acc, b) => acc + parseInt(b.amount, 10), 0);
-  const cantBudgets = () => {
-    if (user) return user.plan.name === 'Free' ? 5 : 10;
-    return '';
+
+  const setCantBudgets = () => {
+    if (!user) return '';
+    const cantBudgets = user.plan.name === 'Free' ? 5 : 10;
+    return cantBudgets;
   };
 
   const reset = () => {
@@ -175,7 +177,7 @@ function Budget() {
 
             <div className="card-header bg-navy d-flex justify-content-between">
               <h2 className="card-title align-self-center mr-auto ">Budgets Details</h2>
-              {budgets.length < cantBudgets ? (
+              {budgets.length < setCantBudgets() ? (
                 <BudgetModal />
               ) : (
                 <Button className="btn-warning" disabled>
@@ -226,7 +228,7 @@ function Budget() {
                 </thead>
                 {loading &&
                   budgets &&
-                  budgets.slice(0, cantBudgets).map((x) => (
+                  budgets.slice(0, setCantBudgets()).map((x) => (
                     <>
                       <tbody>
                         <tr>
