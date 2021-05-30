@@ -106,83 +106,101 @@ const EditForm = () => {
     }
     dispatch(action.editUser(null, editProfile.userInfo));
   };
+
+  const goBack = () => {
+    window.history.back();
+  };
   return (
-    <div>
-      <div className="card-header">
-        <h3 className="card-title">Change Info</h3>
+    <div className="d-flex justify-content-center b">
+      <div
+        className="card mt-2 col-4 border border-warning d-flex align-self-center"
+        style={{ height: 'auto' }}
+      >
+        <div className="card-header">
+          <div className="d-flex">
+            <div>
+              <button type="button" className="btn " onClick={goBack}>
+                <h4>
+                  <i className="fas fa-arrow-circle-left text-dark" />
+                </h4>
+              </button>
+            </div>
+            <div className=" pl-4 mt-2">
+              <h4>Change Info</h4>
+            </div>
+          </div>
+        </div>
+        <form onSubmit={submitHandler} encType="multipart/form-data">
+          <div className="card-body">
+            <label htmlFor="exampleInputEmail1">Email address</label>
+            <div className="input-group pb-3">
+              <span
+                id="exampleInputEmail1-error"
+                className="error invalid-feedback col-12"
+                style={{
+                  display: formValid.displayMsg,
+                }}
+              >
+                Email already taken
+              </span>
+              <input
+                onChange={(e) => onChange(e)}
+                name="email"
+                type="email"
+                className={`form-control ${formValid.valid} `}
+                id="exampleInputEmail1"
+                value={editProfile.userInfo ? editProfile.userInfo.email : ''}
+                placeholder="Enter email"
+              />
+              <div className="input-group-append">
+                <div className="input-group-text">
+                  <span className={`fas fa-envelope ${validatingMail ? 'fa-spin' : ''}`} />
+                </div>
+              </div>
+            </div>
+            <label htmlFor="exampleInputTel">Phone</label>
+            <div className="input-group pb-3">
+              <input
+                onChange={(e) => onChange(e)}
+                name="phone"
+                type="number"
+                className="form-control"
+                id="exampleInputTel"
+                value={editProfile.userInfo ? editProfile.userInfo.phone : ''}
+                placeholder="Enter phone"
+              />
+              <div className="input-group-append">
+                <div className="input-group-text">
+                  <span className="fas fa-phone" />
+                </div>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="exampleInputFile">Avatar photo</label>
+              <div className="input-group">
+                <div className="custom-file">
+                  <input
+                    name="selectedFile"
+                    onChange={(e) => onChange(e)}
+                    type="file"
+                    className="custom-file-input"
+                    id="exampleInputFile"
+                  />
+                  <label className="custom-file-label" htmlFor="exampleInputFile">
+                    Choose file
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="card-footer d-flex justify-content-center">
+            <button type="submit" className="btn btn-sm btn-warning">
+              <b>Save Changes</b>
+            </button>
+          </div>
+        </form>
       </div>
-      <form onSubmit={submitHandler} encType="multipart/form-data">
-        <div className="card-body">
-          <label htmlFor="exampleInputEmail1">Email address</label>
-          <div className="input-group pb-3">
-            <span
-              id="exampleInputEmail1-error"
-              className="error invalid-feedback col-12"
-              style={{
-                display: formValid.displayMsg,
-              }}
-            >
-              Email already taken
-            </span>
-            <input
-              onChange={(e) => onChange(e)}
-              name="email"
-              type="email"
-              className={`form-control ${formValid.valid} `}
-              id="exampleInputEmail1"
-              value={editProfile.userInfo ? editProfile.userInfo.email : ''}
-              placeholder="Enter email"
-            />
-            <div className="input-group-append">
-              <div className="input-group-text">
-                <span className={`fas fa-envelope ${validatingMail ? 'fa-spin' : ''}`} />
-              </div>
-            </div>
-          </div>
-          <label htmlFor="exampleInputTel">Phone</label>
-          <div className="input-group pb-3">
-            <input
-              onChange={(e) => onChange(e)}
-              name="phone"
-              type="number"
-              className="form-control"
-              id="exampleInputTel"
-              value={editProfile.userInfo ? editProfile.userInfo.phone : ''}
-              placeholder="Enter phone"
-            />
-            <div className="input-group-append">
-              <div className="input-group-text">
-                <span className="fas fa-phone" />
-              </div>
-            </div>
-          </div>
-          <Link to="/changePassword" className="btn btn-primary">
-            <b>Change Password</b>
-          </Link>
-          <div className="form-group">
-            <label htmlFor="exampleInputFile">Avatar photo</label>
-            <div className="input-group">
-              <div className="custom-file">
-                <input
-                  name="selectedFile"
-                  onChange={(e) => onChange(e)}
-                  type="file"
-                  className="custom-file-input"
-                  id="exampleInputFile"
-                />
-                <label className="custom-file-label" htmlFor="exampleInputFile">
-                  Choose file
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="card-footer">
-          <button type="submit" className="btn btn-primary">
-            Save Changes
-          </button>
-        </div>
-      </form>
     </div>
   );
 };
