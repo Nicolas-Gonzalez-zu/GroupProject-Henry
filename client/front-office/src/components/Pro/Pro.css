@@ -3,3 +3,9 @@
     no-repeat;
   background-size: cover;
 }
+
+@media (min-width: 1600px) {
+  .b {
+    height: 46rem;
+  }
+}

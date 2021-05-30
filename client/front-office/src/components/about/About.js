@@ -107,10 +107,10 @@ export default function About() {
                       <div className="card-body pt-0">
                         <div className="row">
                           <div className="col-7">
-                            <h2 className="lead text-warning">
+                            <h2 className="lead text-warning" style={{ height: '3rem' }}>
                               <b>{t.name}</b>
                             </h2>
-                            <p className="text-white text-sm">
+                            <p className="text-white text-sm" style={{ height: '4rem' }}>
                               <b>About: </b> {t.about}
                             </p>
 
