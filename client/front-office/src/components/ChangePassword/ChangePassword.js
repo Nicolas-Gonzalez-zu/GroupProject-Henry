@@ -103,79 +103,97 @@ const ChangePassword = () => {
     e.preventDefault();
     dispatch(action(editPassword));
   };
-
+  const goBack = () => {
+    window.history.back();
+  };
   return (
-    <div>
-      <div className="card-header">
-        <h3 className="card-title">Change Password</h3>
+    <div className="d-flex justify-content-center b">
+      <div
+        className="card mt-2 col-4 border border-warning d-flex align-self-center"
+        style={{ height: 'auto' }}
+      >
+        <div className="card-header">
+          <div className="d-flex">
+            <div>
+              <button type="button" className="btn " onClick={goBack}>
+                <h4>
+                  <i className="fas fa-arrow-circle-left text-dark" />
+                </h4>
+              </button>
+            </div>
+            <div className="pl-4 mt-2">
+              <h4>Change Password</h4>
+            </div>
+          </div>
+        </div>
+        <form onSubmit={submitHandler}>
+          <div className="card-body">
+            <span
+              id="exampleInputEmail1-error"
+              className="error invalid-feedback col-12"
+              style={{
+                display: formValid.displayMsg,
+              }}
+            >
+              *password and Password confirmation does not match
+            </span>
+            <span
+              id="exampleInputEmail1-error"
+              className="error invalid-feedback col-12"
+              style={{
+                display: formValid.validationDisplayMsg,
+              }}
+            >
+              *At least 1 number, 1 lower case, 1 upper case. Use at least 8 character in your
+              password
+            </span>
+            <div className="form-group">
+              <label htmlFor="exampleInputPassword1">Actual Password</label>
+              <input
+                onChange={(e) => onChange(e)}
+                value={editPassword.actualPassword}
+                name="actualPassword"
+                type="password"
+                className="form-control"
+                id="exampleInputPassword1"
+                placeholder="Actual Password"
+              />
+              <p className="forgot-password text-left">
+                <NavLink to="/forgot">Forgot password?</NavLink>
+              </p>
+            </div>
+            <div className="form-group">
+              <label htmlFor="exampleInputPassword2">New Password</label>
+              <input
+                onChange={(e) => onChange(e)}
+                value={editPassword.newPassword}
+                name="newPassword"
+                type="password"
+                className={`form-control ${formValid.valid}`}
+                id="exampleInputPassword2"
+                placeholder="New Password"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="exampleInputPassword3">Repeat New Password</label>
+              <input
+                onChange={(e) => onChange(e)}
+                value={editPassword.newPassword2}
+                name="newPassword2"
+                type="password"
+                className={`form-control ${formValid.valid}`}
+                id="exampleInputPassword3"
+                placeholder="Repeat New Password"
+              />
+            </div>
+          </div>
+          <div className="card-footer d-flex justify-content-center">
+            <button disabled={!formReady} type="submit" className="btn btn-sm btn-warning">
+              <b>Save Changes</b>
+            </button>
+          </div>
+        </form>
       </div>
-      <form onSubmit={submitHandler}>
-        <div className="card-body">
-          <span
-            id="exampleInputEmail1-error"
-            className="error invalid-feedback col-12"
-            style={{
-              display: formValid.displayMsg,
-            }}
-          >
-            *password and Password confirmation does not match
-          </span>
-          <span
-            id="exampleInputEmail1-error"
-            className="error invalid-feedback col-12"
-            style={{
-              display: formValid.validationDisplayMsg,
-            }}
-          >
-            *At least 1 number, 1 lower case, 1 upper case. Use at least 8 character in your
-            password
-          </span>
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Actual Password</label>
-            <input
-              onChange={(e) => onChange(e)}
-              value={editPassword.actualPassword}
-              name="actualPassword"
-              type="password"
-              className="form-control"
-              id="exampleInputPassword1"
-              placeholder="Actual Password"
-            />
-            <p className="forgot-password text-left">
-              <NavLink to="/forgot">Forgot password?</NavLink>
-            </p>
-          </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword2">New Password</label>
-            <input
-              onChange={(e) => onChange(e)}
-              value={editPassword.newPassword}
-              name="newPassword"
-              type="password"
-              className={`form-control ${formValid.valid}`}
-              id="exampleInputPassword2"
-              placeholder="New Password"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword3">Repeat New Password</label>
-            <input
-              onChange={(e) => onChange(e)}
-              value={editPassword.newPassword2}
-              name="newPassword2"
-              type="password"
-              className={`form-control ${formValid.valid}`}
-              id="exampleInputPassword3"
-              placeholder="Repeat New Password"
-            />
-          </div>
-        </div>
-        <div className="card-footer">
-          <button disabled={!formReady} type="submit" className="btn btn-primary">
-            Save Changes
-          </button>
-        </div>
-      </form>
     </div>
   );
 };
