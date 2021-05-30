@@ -68,8 +68,8 @@ const Login = () => {
 
   return (
     <div>
-      <div className="login-box" id="login" style={{ minHeight: 646 }}>
-        <div className="card card-outline card-primary logincard">
+      <div className="login-box" id="login" style={{ minHeight: 466 }}>
+        <div className="card login-card">
           <div className="card-header text-center">
             <div className="h1">
               <img
