@@ -72,7 +72,6 @@ const WalletModal = () => {
     const cantWallets = user.plan.name === 'Free' ? 5 : 10;
     return cantWallets;
   };
-
   return (
     <div>
       {walletsAvailable.length < setCantWallet() ? (
