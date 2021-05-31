@@ -121,4 +121,41 @@ router.post('/add', (req, res) => {
     });
 });
 
+router.put('/edit', (req, res) => {
+  const { id, assigned_user_id, status, start_date, end_date, priority } = req.body; // eslint-disable-line camelcase
+  if (id) {
+    const order = {};
+    if (assigned_user_id) order.assigned_user_id = assigned_user_id; // eslint-disable-line camelcase
+    if (status) order.status = status;
+    if (start_date) order.start_date = start_date; // eslint-disable-line camelcase
+    if (end_date) order.end_date = end_date; // eslint-disable-line camelcase
+    if (priority) order.priority = priority;
+    if (
+      order.assigned_user_id ||
+      order.status ||
+      order.start_date ||
+      order.end_date ||
+      order.priority
+    ) {
+      db.Order.update(order, {
+        where: { id },
+        returning: true,
+        plain: true,
+      })
+        .then((updatedOrder) => {
+          res.status(statusCode.OK).json(updatedOrder[1]);
+        })
+        .catch(() => {
+          res
+            .status(statusCode.INTERNAL_SERVER_ERROR)
+            .json({ error: errorCode.REJECTED_OPERATION });
+        });
+    } else {
+      res.status(statusCode.BAD_REQUEST).json({ message: errorCode.INCONSISTENT_DATA });
+    }
+  } else {
+    res.status(statusCode.BAD_REQUEST).json({ message: errorCode.MISSING_ATTRIBUTES });
+  }
+});
+
 module.exports = router;

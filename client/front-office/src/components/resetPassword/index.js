@@ -98,9 +98,15 @@ const ResetPassword = ({ id, token }) => {
       <div className="register-box">
         <div className="card card-outline card-primary mt-4">
           <div className="card-header text-center">
-            <h1 className="h1">
-              <b>Finance</b>APP
-            </h1>
+            <div className="h1">
+              <img
+                src="https://i.ibb.co/XS4mQ0f/logopng.png"
+                alt="user-avatar"
+                className="img-circle img-fluid mr-2"
+                width="55"
+              />
+              <b className="txt text-warning">e</b>-conomy
+            </div>
           </div>
           <div className="card-body">
             <p className="login-box-msg">Recover your password</p>

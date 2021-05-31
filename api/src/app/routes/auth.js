@@ -59,20 +59,21 @@ router.get('/test-auth', checkIfLoggedIn, (req, res) => {
 });
 
 router.get('/me', checkIfLoggedIn, (req, res) => {
-  db.Customer.findOne({
-    where: { user_id: req.user.id },
-    include: [
-      { model: db.User, as: 'user' },
-      { model: db.Plan, as: 'plan' },
-    ],
-  })
-    .then((user) => {
-      res.status(200).json(user);
-    })
-    .catch((e) => {
-      console.log(e.message);
-      res.status(500).json({ error: e.message });
-    });
+  res.status(200).json(req.user);
+  // db.Customer.findOne({
+  //   where: { user_id: req.user.id },
+  //   include: [
+  //     { model: db.User, as: 'user' },
+  //     { model: db.Plan, as: 'plan' },
+  //   ],
+  // })
+  //   .then((user) => {
+  //     res.status(200).json(user);
+  //   })
+  //   .catch((e) => {
+  //     console.log(e.message);
+  //     res.status(500).json({ error: e.message });
+  //   });
 });
 
 router.get('/logout', (req, res) => {
