@@ -18,6 +18,7 @@ const invoiceController = require('../../controllers/invoiceController');
 const orderController = require('../../controllers/orderController');
 const reportsController = require('../../controllers/reportsController');
 const mercadoPago = require('../../controllers/mercadoPagoController');
+const paypal = require('../../controllers/paypalController');
 
 router.get('/', (req, res) => {
   res.status(statusCode.UNAUTHORIZED).json({ message: errorCode.UNAUTHORIZED_OPERATION });
@@ -35,6 +36,7 @@ router.use('/invoice', invoiceController);
 router.use('/order', orderController);
 router.use('/reports', reportsController);
 router.use('/mp', mercadoPago);
+router.use('/paypal', paypal);
 
 const Upload = require('../../controllers/avatarUploadsController');
 

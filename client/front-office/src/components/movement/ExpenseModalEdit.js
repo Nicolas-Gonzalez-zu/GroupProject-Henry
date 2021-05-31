@@ -8,6 +8,7 @@ import * as action from '../../actions/creators';
 
 export default function ExpenseModalEdit({ id, description, date }) {
   const [edit, setEdit] = useState(false);
+  const [onlyDate, onlyTime] = date.replace('T', '~').replace('.000Z', '').split('~');
 
   const dispatch = useDispatch();
   const authAlert = useSelector((store) => store.authReducers.authAlert);
@@ -49,20 +50,21 @@ export default function ExpenseModalEdit({ id, description, date }) {
 
   const formik = useFormik({
     initialValues: {
-      description: '',
-      date: '',
-      time: '',
+      date: onlyDate,
+      time: onlyTime,
+      description,
     },
     validate,
     onSubmit: (values) => {
       const newValues = {
         ...values,
-        generation_date: `${values.date}T${values.time}:00.000Z`,
+        generation_date: new Date(`${values.date}T${values.time}:00.000Z`),
         movement_id: id,
       };
       setTimeout(() => setEdit(false), 1000);
       action.editMovement(newValues, dispatch);
     },
+    enableReinitialize: true,
   });
 
   const setEditOn = () => {
@@ -71,7 +73,7 @@ export default function ExpenseModalEdit({ id, description, date }) {
 
   return (
     <>
-      <Button onClick={setEditOn} className="bg-dark">
+      <Button onClick={setEditOn} className="bg-navy">
         <i className="fas fa-edit	" />
       </Button>
       <Modal show={edit}>
@@ -86,7 +88,7 @@ export default function ExpenseModalEdit({ id, description, date }) {
               values={formik.values}
               errors={formik.errors}
               handleChange={formik.handleChange}
-              inputType={['text', 'date', 'time']}
+              inputType={['date', 'time', 'text']}
             />
             <Button type="submit" className="btn btn-success mt-4 col-4 ml-1">
               Edit Movement

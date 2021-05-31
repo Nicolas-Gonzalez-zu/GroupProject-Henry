@@ -7,6 +7,10 @@ import FormDefault from '../../FormDefault/FormDefault';
 import * as action from '../../../actions/creators';
 
 const IncomeModalEdit = ({ name, id, description, date }) => {
+  const [onlyDate, Onlytime] = date.replace('T', '~').replace('.000Z', '').split('~');
+  // console.log(onlyDate, 'soy el date');
+  // console.log(Onlytime, 'dsdsas');
+  // console.log(date);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const authAlert = useSelector((state) => state.authReducers.authAlert);
   const dispatch = useDispatch();
@@ -54,28 +58,30 @@ const IncomeModalEdit = ({ name, id, description, date }) => {
 
   const formik = useFormik({
     initialValues: {
-      date: '',
-      time: '',
-      description: '',
+      date: onlyDate,
+      time: Onlytime,
+      description,
     },
     validate,
     onSubmit: (values) => {
+      // alert(values.time);
       const newValues = {
         ...values,
-        generation_date: `${values.date}T${values.time}:00.000Z`,
+        // generation_date: `${values.date}T${values.time}:00.000Z`,
+        generation_date: new Date(`${values.date}T${values.time}:00.000Z`),
         movement_id: id,
       };
       action.editIncome(newValues, dispatch);
       setTimeout(() => {
         showModalEditHandler();
-        formik.resetForm({ description: '', date: '', time: '' });
       }, 1500);
     },
+    enableReinitialize: true,
   });
 
   return (
     <div className="d-flex">
-      <Button onClick={showModalEditHandler} className="bg-dark">
+      <Button onClick={showModalEditHandler} className="bg-navy">
         <i className="fas fa-edit" />
       </Button>
       <Modal show={showModalEdit}>

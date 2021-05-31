@@ -14,6 +14,12 @@ export default function Reports() {
   const [send, setSend] = useState([]);
   const movements = useSelector((state) => state.movementReducer.movements);
   const reports = useSelector((state) => state.reportReducer.reports);
+  const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
+
+  // variables para hacer el filtrado
+  const today = new Date();
+  const month = today.getMonth() + 1;
+  const realMonth = month < 10 ? '0'.concat(month) : month;
 
   function removeDuplicatesBy(keyFn, array) {
     const mySet = new Set();
@@ -98,7 +104,6 @@ export default function Reports() {
         } = x;
         return { name: wallet.name, value: wallet.id };
       });
-      console.log(data, 'soy data en wallets');
       const toType = removeDuplicatesBy((x) => x.name, data);
       setOptions(toType);
     }
@@ -109,7 +114,12 @@ export default function Reports() {
         } = x;
         return { name: generation_date.slice(0, 10), value: generation_date };
       });
-      const toType = removeDuplicatesBy((x) => x.name, data);
+      // aca podriamos hacer el filter en data donde si el usuario es free deje solo las fechas del mes actual
+      const newData =
+        user.plan.name === 'Free' ? data.filter((d) => d.name.slice(5, 7) === realMonth) : data;
+      console.log(newData, 'soy el nuevo objeto');
+      const toType = removeDuplicatesBy((x) => x.name, newData);
+
       setOptions(toType);
     }
   }
@@ -119,10 +129,12 @@ export default function Reports() {
     reset();
   }
 
+  // console.log(realMonth);
+
   return (
     <div>
       <div>
-        <div className="bg-dark d-flex justify-content-between p-3 rounded-top">
+        <div className="bg-navy d-flex justify-content-between p-3 rounded-top">
           <h5>Download your movements reports </h5>
         </div>
         <div className="d-flex justify-content-center p-4">
@@ -131,7 +143,7 @@ export default function Reports() {
           </button>
 
           <div className="d-flex card-header">
-            <label>Filter by: </label>
+            <label className="p-1">Filter by: </label>
             <select
               className="p-2"
               name="select"
@@ -142,13 +154,21 @@ export default function Reports() {
               <option value="default" disabled>
                 None
               </option>
-              <option value="type">Type</option>
-              <option value="date">Date</option>
-              <option value="wallet">Wallet</option>
+              {user.plan && user.plan.name === 'Free' ? (
+                <>
+                  <option value="date">Date</option>
+                </>
+              ) : (
+                <>
+                  <option value="type">Type</option>
+                  <option value="date">Date</option>
+                  <option value="wallet">Wallet</option>
+                </>
+              )}
             </select>
             {filter !== 'default' && (
               <>
-                <label>This {filter}:</label>
+                <label className="p-1">This {filter}:</label>
                 <select
                   className="p-2"
                   name="select"
@@ -176,7 +196,7 @@ export default function Reports() {
           ) : (
             <button
               type="button"
-              className="btn btn-dark"
+              className="btn bg-navy"
               onClick={(e) => downloadFilter(e)}
               disabled
             >

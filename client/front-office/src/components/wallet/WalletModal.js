@@ -35,7 +35,7 @@ const WalletModal = () => {
         }
       });
     }
-    action.getWallet(dispatch);
+    // action.getWallet(dispatch);
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const validate = (values) => {
@@ -65,10 +65,16 @@ const WalletModal = () => {
   });
 
   const walletsAvailable = wallets.filter((w) => w.status);
-  const cantWallets = user.plan.name === 'Free' ? 5 : 10;
+  const setCantWallet = () => {
+    if (!user) {
+      return '';
+    }
+    const cantWallets = user.plan.name === 'Free' ? 5 : 10;
+    return cantWallets;
+  };
   return (
     <div>
-      {walletsAvailable.length < cantWallets ? (
+      {walletsAvailable.length < setCantWallet() ? (
         <Button onClick={setModalHandler} className="btn-warning">
           Add Wallet
         </Button>

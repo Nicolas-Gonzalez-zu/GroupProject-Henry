@@ -89,7 +89,12 @@ function Budget() {
 
   const balances = budgets.filter((w) => w.status === true);
   const total = balances.reduce((acc, b) => acc + parseInt(b.amount, 10), 0);
-  const cantBudgets = user.plan.name === 'Free' ? 5 : 10;
+
+  const setCantBudgets = () => {
+    if (!user) return '';
+    const cantBudgets = user.plan.name === 'Free' ? 5 : 10;
+    return cantBudgets;
+  };
 
   const reset = () => {
     setLoading(false);
@@ -148,7 +153,7 @@ function Budget() {
               ''
             ) : (
               <>
-                <div className="card-header bg-dark d-flex justify-content-between ">
+                <div className="card-header bg-navy d-flex justify-content-between ">
                   <h3>Budgets Info</h3>
                 </div>
                 <div className="d-flex justify-content-around">
@@ -170,9 +175,9 @@ function Budget() {
               </>
             )}
 
-            <div className="card-header bg-dark d-flex justify-content-between">
+            <div className="card-header bg-navy d-flex justify-content-between">
               <h2 className="card-title align-self-center mr-auto ">Budgets Details</h2>
-              {budgets.length < cantBudgets ? (
+              {budgets.length < setCantBudgets() ? (
                 <BudgetModal />
               ) : (
                 <Button className="btn-warning" disabled>
@@ -223,7 +228,7 @@ function Budget() {
                 </thead>
                 {loading &&
                   budgets &&
-                  budgets.slice(0, cantBudgets).map((x) => (
+                  budgets.slice(0, setCantBudgets()).map((x) => (
                     <>
                       <tbody>
                         <tr>
@@ -246,7 +251,11 @@ function Budget() {
                                   
                               {x.status ? (
                                 <>
-                                  <BudgetsEdit id={x.id} name={x.name} amount={x.amount} />
+                                  <BudgetsEdit
+                                    id={x.id}
+                                    nameBefore={x.name}
+                                    amountBefore={x.amount}
+                                  />
                                       
                                   <button
                                     type="button"

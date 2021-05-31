@@ -36,7 +36,7 @@ const Wallet = () => {
           ''
         ) : (
           <>
-            <div className="card card-header bg-dark">
+            <div className="card card-header bg-navy">
               <h3>Wallet info</h3>
             </div>
             <div className="d-flex justify-content-around ">
@@ -59,18 +59,16 @@ const Wallet = () => {
         )}
         {loading && (
           <>
-            <div className="card-header bg-dark d-flex justify-content-between">
+            <div className="card-header bg-navy d-flex justify-content-between">
               <h3 className="card-title align-self-center mr-auto">Wallets</h3>
               <div className="card-tools d-flex ">
                 <WalletModal />
-                <button
+                {/* <button
                   type="button"
                   className="btn btn-tool"
                   data-card-widget="collapse"
                   title="Collapse"
-                >
-                  <i className="fas fa-minus" />
-                </button>
+                ></button> */}
               </div>
             </div>
             {wallets.length === 0 ? (

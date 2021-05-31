@@ -11,6 +11,7 @@ import Register from '../register';
 import ForgotPassword from '../ForgotPassword';
 import ResetPassword from '../resetPassword';
 import LandingPage from '../landingPage';
+import About from '../about/About';
 
 import { initialize } from '../../actions/creators';
 import Login from '../login';
@@ -21,6 +22,8 @@ function App() {
   const initialized = useSelector((state) => state.authReducers.initialized);
 
   useEffect(() => {
+    const html = document.getElementsByTagName('html')[0];
+    html.style.height = '100vh';
     if (!initialized) {
       initialize(dispatch);
     }
@@ -33,23 +36,14 @@ function App() {
           <LandingPage />
         </Route>
         <Route exact path="/login" component={Login} />
-        <Route exact path="/register">
-          <div className="register-box">
-            <Register />
-          </div>
-        </Route>
+        <Route exact path="/register" component={Register} />
         <Route
           exact
           path="/resetPassword/:id/:token"
           render={({ match }) => <ResetPassword id={match.params.id} token={match.params.token} />}
         />
-        <Route exact path="/forgot">
-          <div className="register-page">
-            <div className="register-box">
-              <ForgotPassword />
-            </div>
-          </div>
-        </Route>
+        <Route exact path="/forgot" component={ForgotPassword} />
+        <Route exact path="/about" component={About} />
         <Route path="/">
           <div className="wrapper">
             <NavBar />

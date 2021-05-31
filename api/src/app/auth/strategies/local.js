@@ -3,7 +3,7 @@ const { User } = require('../../../db/models');
 const bcryptUtils = require('../../utils/bcryptUtils');
 
 module.exports = new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-  User.findOne({ where: { email } })
+  User.findOne({ where: { email }, include: { all: true } })
     .then((user) => {
       if (!user) {
         return done(null, false, { error: 'email/password incorrect' });

@@ -11,6 +11,7 @@ import serviceReducer from './serviceReducer';
 import transferReducer from './transferReducer';
 import shopReducer from './shopReducer';
 import invoiceReducer from './invoiceReducer';
+import orderReducer from './orderReducer';
 
 const persistConfig = {
   key: 'primary',
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   reportReducer,
   serviceReducer,
   invoiceReducer,
+  orderReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

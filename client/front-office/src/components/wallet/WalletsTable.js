@@ -38,7 +38,17 @@ const WalletTable = () => {
     }
   }, [sort, dispatch]);
 
-  const cantWallet = user.plan.name === 'Free' ? 5 : 10;
+  const setCantWallet = () => {
+    if (!user) {
+      return '';
+    }
+    const cantWallet = user.plan.name === 'Free' ? 5 : 10;
+    return cantWallet;
+  };
+
+  console.log(setCantWallet());
+
+  console.log(wallets, 'console.lgo en wallets');
 
   return (
     <table className=" table table-bordered ">
@@ -90,7 +100,7 @@ const WalletTable = () => {
       </thead>
 
       {wallets &&
-        wallets.slice(0, cantWallet).map((w, i) => (
+        wallets.slice(0, 5).map((w, i) => (
           <tbody>
             {' '}
             <tr>

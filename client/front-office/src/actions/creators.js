@@ -45,6 +45,7 @@ export const getMe = (dispatch) => {
     .get('auth/me')
     .then(({ data }) => {
       if (!data.error) {
+        console.log(data);
         dispatch({
           type: actionType.DO_LOGIN,
           payload: {
@@ -52,14 +53,14 @@ export const getMe = (dispatch) => {
             loggedUser: {
               ...data,
               profile: `https://d14sc2fsougwhp.cloudfront.net/${
-                data.user.id
+                data.id
               }?ts=${Date.now().toLocaleString()}`,
             },
           },
         });
       }
     })
-    .catch((err) => console.log(err.message));
+    .catch((err) => setError(err, dispatch));
 };
 
 export const getWallet = (dispatch) => {
@@ -127,7 +128,7 @@ export const getBudget = (dispatch) => {
       });
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 export const addBudget = (newBudget, dispatch) => {
@@ -204,7 +205,7 @@ export const initialize = (dispatch) => {
             loggedUser: {
               ...data,
               profile: `https://d14sc2fsougwhp.cloudfront.net/${
-                data.user.id
+                data.id
               }?ts=${Date.now().toLocaleString()}`,
             },
           },
@@ -216,7 +217,7 @@ export const initialize = (dispatch) => {
       });
     })
     .catch((e) => {
-      console.log(e.message);
+      setError(e, dispatch);
       dispatch({
         type: actionType.INITIALIZE,
         payload: true,
@@ -236,18 +237,11 @@ export const setAlert = (dispatch, message = null, fire = false, type = null) =>
 };
 
 export const setError = (e, dispatch) => {
-  if (e.response.data.error) {
-    console.log(e.response);
+  console.log(e);
+  if (e.response) {
     setAlert(dispatch, e.response.data.error, true, 'error');
-    if (e.response) {
-      if (e.response.data.error) {
-        setAlert(dispatch, e.response.data.error, true, 'error');
-      } else {
-        setAlert(dispatch, e.message, true, 'error');
-      }
-    } else {
-      setAlert(dispatch, e.message, true, 'error');
-    }
+  } else {
+    setAlert(dispatch, 'There was an error, try again or contact admin', true, 'error');
   }
 };
 
@@ -261,7 +255,7 @@ export const getMovements = (dispatch) => {
       });
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 export const addMovement = (newMovement, dispatch) => {
@@ -296,7 +290,7 @@ export const getIncomes = (dispatch) => {
         payload: data,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => setError(err, dispatch));
 };
 export const addIncome = (income, dispatch) => {
   serverPetition
@@ -332,7 +326,7 @@ export const getTransfer = (dispatch) => {
       });
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 export const addTransfer = (newTransfer, dispatch) => {
@@ -369,7 +363,7 @@ export const getAllReports = (dispatch) => {
       });
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 
@@ -380,6 +374,7 @@ export const resetReports = (dispatch) => {
 };
 
 export const getFilteredReports = (data, dispatch) => {
+  console.log('soy la data en reports action', data);
   serverPetition
     .get(`fo/reports/filter?filter=${data.filt}&value=${data.value}`, { responseType: 'blob' })
     .then((response) => {
@@ -401,7 +396,7 @@ export const getFilteredReports = (data, dispatch) => {
       });
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 
@@ -415,7 +410,7 @@ export const getServices = (dispatch) => {
       });
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 
@@ -454,7 +449,7 @@ export const getInvoice = (data, dispatch) => {
       });
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 
@@ -468,7 +463,7 @@ export const getInvoices = (dispatch) => {
       });
     })
     .catch((e) => {
-      console.log(e);
+      setError(e, dispatch);
     });
 };
 
@@ -527,4 +522,18 @@ export const sortBudgetAmount = (dispatch) => {
 };
 export const sortBudgetMinAmount = (dispatch) => {
   dispatch({ type: actionType.SORT_BUDGETS_MIN_AMOUNT });
+};
+
+export const getOrders = (dispatch) => {
+  serverPetition
+    .get('fo/order')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_ORDERS,
+        payload: data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

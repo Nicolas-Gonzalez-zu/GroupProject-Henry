@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-
+import Particles from 'react-particles-js';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
+import '../../assets/particles/particles.css';
+import parti from '../../assets/particles/particlesjs-config.json';
 
 import * as action from '../../actions/creators';
 
@@ -22,19 +24,24 @@ const Login = () => {
   };
 
   useEffect(() => {
-    // sidebar - mini;
+    const body = document.getElementsByTagName('body');
+    body[0].classList.remove('sidebar-mini');
+    body[0].classList.add('login-page');
+    body[0].classList.add('hold-transition');
     if (authAlert.fire) {
-      Swal.fire({
-        title: authAlert.message,
-        icon: 'error',
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 4000,
-      }).then(() => {
-        action.setAlert(dispatch, '', false);
-      });
-      setIsSubmitting(false);
+      if (authAlert.message !== 'Not logged in') {
+        Swal.fire({
+          title: authAlert.message,
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 4000,
+        }).then(() => {
+          action.setAlert(dispatch, '', false);
+        });
+        setIsSubmitting(false);
+      }
     }
     if (sessionData.loggedIn) {
       setIsSubmitting(true);
@@ -50,8 +57,9 @@ const Login = () => {
       });
     }
     return () => {
-      const body = document.getElementsByTagName('body');
-      body[0].classList.remove('register-page');
+      // const body = document.getElementsByTagName('body');
+      body[0].classList.remove('login-page');
+      body[0].classList.remove('hold-transition');
       body[0].classList.add('sidebar-mini');
       action.redirect(dispatch);
       action.setAlert(dispatch);
@@ -59,12 +67,18 @@ const Login = () => {
   }, [sessionData, dispatch, history, authAlert.fire, authAlert.message]);
 
   return (
-    <div className="login-page" style={{ minHeight: 466 }}>
-      <div className="login-box">
-        <div className="card card-outline card-primary">
+    <div>
+      <div className="login-box" id="login" style={{ minHeight: 466 }}>
+        <div className="card login-card">
           <div className="card-header text-center">
             <div className="h1">
-              <b>Finance</b>App
+              <img
+                src="https://i.ibb.co/XS4mQ0f/logopng.png"
+                alt="user-avatar"
+                className="img-circle img-fluid mr-2"
+                width="55"
+              />
+              <b className="txt text-warning">e</b>-conomy
             </div>
           </div>
           <div className="card-body">
@@ -188,12 +202,26 @@ const Login = () => {
                 Sign up
               </Link>
             </p>
+            <div className="d-flex flex-row-reverse">
+              <Link to="/about">
+                <button type="button" className="btn btn-warning">
+                  <img
+                    src="https://i.ibb.co/XS4mQ0f/logopng.png"
+                    alt="user-avatar"
+                    className="img-circle img-fluid mr-2"
+                    width="30"
+                  />
+                  <b>About Us</b>
+                </button>
+              </Link>
+            </div>
           </div>
           <div className={`overlay dark ${!isSubmitting ? 'd-none' : ''}`}>
             <i className={`fas fa-3x fa-sync-alt fa-spin ${authAlert.fire ? 'd-none' : ''}`} />
           </div>
         </div>
       </div>
+      <Particles id="particles-js" params={parti} />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const SupportItem = () => (
   <li className="nav-item dropright">
-    <Link className="nav-link" data-toggle="dropdown" to="/">
+    <Link className="nav-link" data-toggle="dropdown">
       <span>Support</span>
     </Link>
     <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -12,7 +12,7 @@ const SupportItem = () => (
         FAQ
       </Link>
       <div className="dropdown-divider" />
-      <Link to="/contact" className="dropdown-item ">
+      <Link to="/about" className="dropdown-item ">
         Contact us
       </Link>
     </div>

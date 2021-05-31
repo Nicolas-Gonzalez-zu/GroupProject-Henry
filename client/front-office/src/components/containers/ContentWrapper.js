@@ -22,6 +22,9 @@ import Dashboard from '../dashboard/Dashboard';
 import FAQ from '../FAQ/faq';
 import Contact from '../Contact/Contact';
 import InvoiceId from '../InvoiceId/InvoiceId';
+import Categories from '../Backoffice/categories/categories';
+import OrdersBO from '../Backoffice/orders/Order';
+import ServicesBO from '../Backoffice/services/services';
 
 const ContentWrapper = () => {
   const history = useHistory();
@@ -30,14 +33,15 @@ const ContentWrapper = () => {
   const tawkToPropertyId = '578cd20d3daf03937c74defc';
   const tawkToKey = 'default';
 
+  if (!loggedIn) {
+    history.push('/login');
+  }
+
   useEffect(() => {
     tawkTo(tawkToPropertyId, tawkToKey);
-    if (!loggedIn) {
-      history.push('/login');
-    }
-  }, [loggedIn, dispatch, history]);
+  }, [dispatch, history]);
 
-  return (
+  return loggedIn ? (
     <div className="content-wrapper">
       <section className="content">
         <div className="card">
@@ -110,11 +114,22 @@ const ContentWrapper = () => {
                 <Contact />
               </div>
             </Route>
+            <Route exact path="/bo/categories">
+              <Categories />
+            </Route>
+            <Route exact path="/bo/orders">
+              <OrdersBO />
+            </Route>
+            <Route exact path="/bo/services">
+              <ServicesBO />
+            </Route>
             <ContentHeader />
           </Switch>
         </div>
       </section>
     </div>
+  ) : (
+    ''
   );
 };
 
