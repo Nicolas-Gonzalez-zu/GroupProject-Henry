@@ -4,7 +4,7 @@ import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import MultiSelect from 'react-multi-select-component';
 
-export default function EditService({ categories }) {
+export default function EditService({ categories, name, price, description }) {
   const [state, setstate] = useState(false);
   const [selected, setSelected] = useState([]);
 
@@ -60,7 +60,7 @@ export default function EditService({ categories }) {
     }
     if (!values.price) {
       errors.price = 'The price is required!';
-    } else if (!/^[0-9]*$/gm.test(values.price)) {
+    } else if (!/(^-?\d\d*\.\d*$)|(^-?\d\d*$)|(^-?\.\d\d*$)/gm.test(values.price)) {
       errors.price = 'This field only accept numbers!';
     }
     if (!values.description) {
@@ -76,9 +76,9 @@ export default function EditService({ categories }) {
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      price: '',
-      description: '',
+      name,
+      price,
+      description,
     },
     validate,
     onSubmit: (values) => {
@@ -87,7 +87,7 @@ export default function EditService({ categories }) {
         ...values,
         img_url: 'none',
         modifiedCategories: {
-          oldCategories: categories,
+          oldCategories: categories.map((x) => x.id),
           newCategories: cate,
         },
       };
@@ -105,6 +105,7 @@ export default function EditService({ categories }) {
         );
       }, 1500);
     },
+    enableReinitialize: true,
   });
 
   const options = newcategories.map((c) => {
@@ -161,18 +162,24 @@ export default function EditService({ categories }) {
                 <br />
               )}{' '}
               <b className="text-center">Category</b>
+              <div className="d-flex justify-content-center">
+                Categories before: 
+                {categories.map((x) => (
+                  <span className="text-info"> {x.name} -</span>
+                ))}
+              </div>
               <MultiSelect
                 options={options}
                 value={selected}
                 onChange={setSelected}
                 labelledBy="Select"
                 className="col-13"
-              />
+              />{' '}
               {formik.errors.selected ? (
                 <b className="text-danger text-center">{formik.errors.selected}</b>
               ) : (
                 <br />
-              )}{' '}
+              )}
             </div>
           </div>
           <Modal.Footer>
