@@ -235,7 +235,12 @@ export default function ServicesBO() {
                       </div>
                     </div>
                     <div className="card-footer d-flex flex-row-reverse">
-                      <EditService categories={s.categories.map((x) => x.id)} />
+                      <EditService
+                        categories={s.categories}
+                        name={s.name}
+                        price={s.price}
+                        description={s.description}
+                      />
                     </div>
                   </div>
                 </div>
