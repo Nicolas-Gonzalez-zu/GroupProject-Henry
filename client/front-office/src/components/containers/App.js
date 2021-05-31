@@ -10,6 +10,7 @@ import Footer from './Footer';
 import Register from '../register';
 import ForgotPassword from '../ForgotPassword';
 import ResetPassword from '../resetPassword';
+import LandingPage from '../landingPage';
 import About from '../about/About';
 
 import { initialize } from '../../actions/creators';
@@ -31,6 +32,9 @@ function App() {
   if (initialized) {
     return (
       <Switch>
+        <Route exact path="/landing">
+          <LandingPage />
+        </Route>
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route
