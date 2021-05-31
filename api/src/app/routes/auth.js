@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const path = require('path');
 const bcryptUtils = require('../utils/bcryptUtils');
+const facebookauth = require('../controllers/facebookauth');
 
 const sendEmail = require('../helpers/sendgrid');
 
@@ -164,5 +165,7 @@ router.post('/resetPassword/:id/:token', (req, res) => {
       res.status(500).json({ message: err.message, success: false });
     });
 });
+
+router.use('/facebook', facebookauth);
 
 module.exports = router;
