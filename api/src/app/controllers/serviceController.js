@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
   })
     .then((foundServices) => {
       const processedServices = foundServices.map((service) => {
-        const { id, name, price, description, img_url } = service.dataValues; // eslint-disable-line camelcase
+        const { id, name, price, description, img_url, status } = service.dataValues; // eslint-disable-line camelcase
         const categoriesContainer = service.dataValues.Categories.map((category) => ({
           id: category.dataValues.id,
           name: category.dataValues.name,
@@ -25,6 +25,7 @@ router.get('/', (req, res) => {
           price,
           description,
           img_url,
+          status,
           categories: categoriesContainer,
         };
       });
@@ -41,6 +42,7 @@ router.post('/add', (req, res) => {
     price: req.body.price,
     description: req.body.description,
     img_url: req.body.img_url,
+    status: req.body.status,
   };
 
   db.Service.create(service)
@@ -57,12 +59,13 @@ router.post('/add', (req, res) => {
 
 router.put('/edit', (req, res) => {
   let savedService;
-  const { service_id, name, price, description, img_url, modifiedCategories } = req.body; // eslint-disable-line camelcase
+  const { service_id, name, price, description, img_url, status, modifiedCategories } = req.body; // eslint-disable-line camelcase
   const modifiedService = {};
   if (name) modifiedService.name = name;
   if (price) modifiedService.price = price;
   if (description) modifiedService.description = description;
   if (img_url) modifiedService.img_url = img_url; // eslint-disable-line camelcase
+  if (status) modifiedService.status = status;
   // eslint-disable-next-line camelcase
   if (service_id) {
     db.Service.update(modifiedService, {
