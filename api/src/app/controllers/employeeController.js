@@ -45,7 +45,7 @@ router.get('/', (req, res) => {
       const foundRols = organizedEmployees.map((processedEmployee) =>
         db.Rol.findAll({
           where: { id: +processedEmployee.rol_id },
-          include: { model: db.Permission },
+          include: { model: db.Permission, as: 'permissions' },
         }),
       );
       return Promise.all(foundRols);
@@ -58,7 +58,7 @@ router.get('/', (req, res) => {
         for (let y = 0; y < processedRols.length; y++) {
           if (processedEmployees[x].rol_id === processedRols[y].id) {
             processedEmployees[x].rol_name = processedRols[y].name;
-            const processedPermissions = processedRols[y].Permissions.map((permission) => ({
+            const processedPermissions = processedRols[y].permissions.map((permission) => ({
               name: permission.name,
               id_code: permission.id_code,
               status: permission.status,
