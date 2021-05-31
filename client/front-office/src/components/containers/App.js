@@ -10,6 +10,7 @@ import Footer from './Footer';
 import Register from '../register';
 import ForgotPassword from '../ForgotPassword';
 import ResetPassword from '../resetPassword';
+import LandingPage from '../landingPage';
 
 import { initialize } from '../../actions/creators';
 import Login from '../login';
@@ -28,6 +29,9 @@ function App() {
   if (initialized) {
     return (
       <Switch>
+        <Route exact path="/landing">
+          <LandingPage />
+        </Route>
         <Route exact path="/login" component={Login} />
         <Route exact path="/register">
           <div className="register-box">
