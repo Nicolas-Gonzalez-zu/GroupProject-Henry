@@ -43,7 +43,7 @@ export default function Categories() {
   ];
   return (
     <div>
-      <div className="card">
+      <div className="card ">
         <div className="card-header">
           <div className="d-flex justify-content-around">
             <h3>Categories</h3>

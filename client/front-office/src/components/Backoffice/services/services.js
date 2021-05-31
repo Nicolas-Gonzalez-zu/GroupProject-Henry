@@ -1,4 +1,6 @@
 import React from 'react';
+import NewService from './newService';
+import EditService from './editService';
 
 export default function ServicesBO() {
   const services = [
@@ -191,32 +193,55 @@ export default function ServicesBO() {
       categories: [],
     },
   ];
+
   return (
     <div>
-      <div className="row">
-        {services &&
-          services.map((s) => (
-            <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column ">
-              <div className="card bg-light d-flex ">
-                <div className="card-header border-bottom-0 text-center">Service ID : {s.id}</div>
-                <div className="card-body pt-0">
-                  <div className="row">
-                    <div className="">
-                      <h2 className="lead">
-                        <b>Nicole Pearson</b>
-                      </h2>
-                      <p className="text-muted text-sm">
-                        <b>About: </b> Web Designer / UX / Graphic Artist / Coffee Lover{' '}
-                      </p>
+      <div className="card ">
+        <div className="card-header">
+          <div className="d-flex justify-content-around">
+            <h3>Service</h3>
+            <NewService />
+          </div>
+        </div>
+        <div className="card-body">
+          <div className="row">
+            {services &&
+              services.map((s) => (
+                <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column ">
+                  <div className="card bg-light d-flex ">
+                    <div className="card-header border-bottom-0">Service ID : {s.id}</div>
+                    <div className="card-body pt-0">
+                      <div className="row">
+                        <div>
+                          <h2 className="lead ">
+                            <b>{s.name}</b>
+                          </h2>
+                          <hr />
+                          <p className="text-muted ">
+                            <b>Description: </b>
+                            {s.description}
+                            <br />
+                            <b>Price: </b>$ {s.price}
+                            <br />
+                            <b>Categories: </b>
+                            {s.categories.map((c) => (
+                              <>
+                                <span>• {c.name} </span>
+                              </>
+                            ))}
+                            •
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="card-footer d-flex flex-row-reverse">
+                      <EditService categories={s.categories.map((x) => x.id)} />
                     </div>
                   </div>
                 </div>
-                <div className="card-footer d-flex flex-row-reverse">
-                  <button type="button">Edit</button>
-                </div>
-              </div>
-            </div>
-          ))}
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   );
