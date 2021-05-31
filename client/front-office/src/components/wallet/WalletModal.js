@@ -35,7 +35,7 @@ const WalletModal = () => {
         }
       });
     }
-    action.getWallet(dispatch);
+    // action.getWallet(dispatch);
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const validate = (values) => {
