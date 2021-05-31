@@ -22,6 +22,9 @@ import Dashboard from '../dashboard/Dashboard';
 import FAQ from '../FAQ/faq';
 import Contact from '../Contact/Contact';
 import InvoiceId from '../InvoiceId/InvoiceId';
+import Categories from '../Backoffice/categories/categories';
+import OrdersBO from '../Backoffice/orders/orders';
+import ServicesBO from '../Backoffice/services/services';
 
 const ContentWrapper = () => {
   const history = useHistory();
@@ -110,6 +113,15 @@ const ContentWrapper = () => {
               <div className="wrapper">
                 <Contact />
               </div>
+            </Route>
+            <Route exact path="/bo/categories">
+              <Categories />
+            </Route>
+            <Route exact path="/bo/orders">
+              <OrdersBO />
+            </Route>
+            <Route exact path="/bo/services">
+              <ServicesBO />
             </Route>
             <ContentHeader />
           </Switch>
