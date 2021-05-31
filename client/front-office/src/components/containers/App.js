@@ -10,6 +10,8 @@ import Footer from './Footer';
 import Register from '../register';
 import ForgotPassword from '../ForgotPassword';
 import ResetPassword from '../resetPassword';
+import FormFB from '../FormFacebook';
+import FormGoogle from '../FormGoogle';
 
 import { initialize } from '../../actions/creators';
 import Login from '../login';
@@ -29,6 +31,7 @@ function App() {
     return (
       <Switch>
         <Route exact path="/login" component={Login} />
+        <Route exact path="/login/google" component={FormGoogle} />
         <Route exact path="/register" component={Register} />
         <Route
           exact
