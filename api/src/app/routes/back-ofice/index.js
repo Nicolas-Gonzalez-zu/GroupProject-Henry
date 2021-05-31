@@ -6,6 +6,7 @@ const router = express.Router();
 
 const categoryController = require('../../controllers/categoryController');
 const employeeController = require('../../controllers/employeeController');
+const orderController = require('../../controllers/orderController');
 const permissionController = require('../../controllers/permissionController');
 const rolController = require('../../controllers/rolController');
 const serviceController = require('../../controllers/serviceController');
@@ -16,6 +17,7 @@ router.get('/', (req, res) => {
 
 router.use('/category', categoryController);
 router.use('/employee', employeeController);
+router.use('/order', orderController);
 router.use('/permission', permissionController);
 router.use('/rol', rolController);
 router.use('/service', serviceController);
