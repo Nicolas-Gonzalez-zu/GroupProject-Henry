@@ -36,10 +36,11 @@ const OrderModal = ({ id, users, status, myStatus, assignedUser, startDate, endD
     },
     validate,
     onSubmit: (values) => {
+      console.log(values, 'soy el values');
       alert(JSON.stringify(values));
       setTimeout(() => {
         setShowModalHandler();
-        // formik.resetForm({ user: '', status: '', startDate: '', endDate: '' });
+        formik.resetForm({ user: '', status: '', startDate: '', endDate: '' });
       }, 1500);
     },
     enableReinitialize: true,

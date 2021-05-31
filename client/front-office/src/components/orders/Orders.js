@@ -28,7 +28,7 @@ const Orders = () => {
     <Popover id="popover-basic">
       <Popover.Title as="h3">Services</Popover.Title>
       <Popover.Content>
-        {services.map((s) => (
+        {services?.map((s) => (
           <p>
             <b> • {s.name}</b>
           </p>
@@ -134,7 +134,7 @@ const Orders = () => {
                 <div className="card-footer">
                   <div className="d-flex justify-content-between">
                     {showContact(o.assigned_user.name, o.assigned_user.phone, o.assigned_user.mail)}
-                    {showServices(o.invoice.services)}
+                    {showServices(o.invoice?.services)}
                   </div>
                 </div>
               </div>
