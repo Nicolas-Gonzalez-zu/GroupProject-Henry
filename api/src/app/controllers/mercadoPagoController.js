@@ -79,13 +79,13 @@ server.post('/', async (req, res) => {
             name: `${user.first_name} ${user.last_name}`,
           },
           back_urls: {
-            success: `${process.env.SITE_URL || 'http://localhost:3000'}/invoice/${
+            success: `${process.env.SITE_URL || 'http://localhost:3000'}/client/invoice/${
               createdInvoice.id
             }`,
-            failure: `${process.env.SITE_URL || 'http://localhost:3000'}/invoice/${
+            failure: `${process.env.SITE_URL || 'http://localhost:3000'}/client/invoice/${
               createdInvoice.id
             }`,
-            pending: `${process.env.SITE_URL || 'http://localhost:3000'}/invoice/${
+            pending: `${process.env.SITE_URL || 'http://localhost:3000'}/client/invoice/${
               createdInvoice.id
             }`,
           },
