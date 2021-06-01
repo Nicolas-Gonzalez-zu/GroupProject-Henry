@@ -90,3 +90,17 @@ export const getCategory = (dispatch) => {
       console.log(e);
     });
 };
+
+export const getOrders = (dispatch) => {
+  serverPetition
+    .get('bo/order')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_ORDERS,
+        payload: data,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};

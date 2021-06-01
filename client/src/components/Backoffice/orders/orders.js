@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import OrderModal from './OrderEditModal';
 
 const fakeOrders = [
@@ -127,89 +128,94 @@ const status = [
   { id: 'inProgress', name: 'inProgress' },
 ];
 
-const OrdersBO = () => (
-  <div>
-    <div className="card-header bg-dark mb-2">
-      <h3>Orders</h3>
-    </div>
-    <div className="row p-2">
-      {fakeOrders &&
-        fakeOrders.map((o) => (
-          <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-            <div className="card bg-light d-flex flex-fill">
-              <div className="card-header text-muted border-bottom-0">
-                <h2 className="lead">
-                  <b>Order n° {o.id}</b>
-                </h2>
-              </div>
-              <div className="card-body pt-0">
-                <div className="row">
-                  <div className="col-7">
-                    <p className="text-muted text-sm mb-0">
-                      Status:{' '}
-                      {o.status === 'pending' ? (
-                        <b className="text-warning">{o.status}</b>
-                      ) : (
-                        <b className="text-success">{o.status}</b>
-                      )}
-                    </p>
-                    <p className="text-muted text-sm mb-0">
-                      Priority:{' '}
-                      <b>
-                        {o.priority ? (
-                          <span className="text-success">Success</span>
+const OrdersBO = () => {
+  const orders = useSelector((state) => state.ordersBOReducer.orders);
+  console.log(orders);
+  return (
+    <div>
+      <div className="card-header bg-dark mb-2">
+        <h3>Orders</h3>
+      </div>
+      <div className="row p-2">
+        {fakeOrders &&
+          fakeOrders.map((o) => (
+            <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+              <div className="card bg-light d-flex flex-fill">
+                <div className="card-header text-muted border-bottom-0">
+                  <h2 className="lead">
+                    <b>Order n° {o.id}</b>
+                  </h2>
+                </div>
+                <div className="card-body pt-0">
+                  <div className="row">
+                    <div className="col-7">
+                      <p className="text-muted text-sm mb-0">
+                        Status:{' '}
+                        {o.status === 'pending' ? (
+                          <b className="text-warning">{o.status}</b>
                         ) : (
-                          <span className="text-danger">Low</span>
+                          <b className="text-success">{o.status}</b>
                         )}
-                      </b>
-                    </p>
-                    <p className="text-muted text-sm mb-0">
-                      Start date: <b>{o.start_date}</b>
-                    </p>
-                    <p className="text-muted text-sm mb-0">
-                      End date: <b>{o.end_date}</b>
-                    </p>
-                    <ul className="ml-4 mb-0 fa-ul text-muted mt-3">
-                      <li className="small">
-                        <span className="fa-li">
-                          <i className="fas fa-lg fa-envelope" />
-                        </span>
-                        E-mail: <b>{o.assigned_user.mail}</b>
-                      </li>
-                      <li className="small mt-2">
-                        <span className="fa-li">
-                          <i className="fas fa-lg fa-phone" />
-                        </span>
-                        Phone: <b>{o.assigned_user.phone}</b>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="col-5 text-center">
-                    <img
-                      src="https://i.ibb.co/VSRq9tP/logo.png"
-                      alt="user-avatar"
-                      className="img-circle img-fluid"
-                      height="50"
-                    />
-                    <p>{o.assigned_user.name}</p>
+                      </p>
+                      <p className="text-muted text-sm mb-0">
+                        Priority:{' '}
+                        <b>
+                          {o.priority ? (
+                            <span className="text-success">Success</span>
+                          ) : (
+                            <span className="text-danger">Low</span>
+                          )}
+                        </b>
+                      </p>
+                      <p className="text-muted text-sm mb-0">
+                        Start date: <b>{o.start_date}</b>
+                      </p>
+                      <p className="text-muted text-sm mb-0">
+                        End date: <b>{o.end_date}</b>
+                      </p>
+                      <ul className="ml-4 mb-0 fa-ul text-muted mt-3">
+                        <li className="small">
+                          <span className="fa-li">
+                            <i className="fas fa-lg fa-envelope" />
+                          </span>
+                          E-mail: <b>{o.assigned_user.mail}</b>
+                        </li>
+                        <li className="small mt-2">
+                          <span className="fa-li">
+                            <i className="fas fa-lg fa-phone" />
+                          </span>
+                          Phone: <b>{o.assigned_user.phone}</b>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="col-5 text-center">
+                      <img
+                        src="https://i.ibb.co/VSRq9tP/logo.png"
+                        alt="user-avatar"
+                        className="img-circle img-fluid"
+                        height="50"
+                      />
+                      <p>{o.assigned_user.name}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="card-footer">
-                <OrderModal
-                  id={o.id}
-                  users={users}
-                  status={status}
-                  myStatus={o.status}
-                  assignedUser={o.assigned_user}
-                  startDate={o.start_date}
-                  endDate={o.end_date}
-                />
+                <div className="card-footer">
+                  <OrderModal
+                    id={o.id}
+                    users={users}
+                    status={status}
+                    myStatus={o.status}
+                    assignedUser={o.assigned_user}
+                    startDate={o.start_date}
+                    endDate={o.end_date}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
 export default OrdersBO;
