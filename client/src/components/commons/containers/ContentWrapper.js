@@ -23,7 +23,7 @@ import FAQ from '../../frontoffice/FAQ/faq';
 import Contact from '../../frontoffice/Contact/Contact';
 import InvoiceId from '../../frontoffice/InvoiceId/InvoiceId';
 import Categories from '../../Backoffice/categories/categories';
-import OrdersBO from '../../Backoffice/orders/orders';
+import OrdersBO from '../../Backoffice/orders/Orders';
 import ServicesBO from '../../Backoffice/services/services';
 
 const ContentWrapper = () => {

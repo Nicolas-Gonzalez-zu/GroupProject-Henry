@@ -341,11 +341,15 @@ const Register = () => {
             </form>
             <hr />
             <div className="d-flex flex-row justify-content-around align-items-center mb-3">
-              <Link to="/client/login" className="btn btn-primary">
+              {/* <Link to="/register/facebook" className="btn btn-primary">
                 <i className="fab fa-facebook mr-2" />
                 Sign up using Facebook
-              </Link>
-              <Link to="/client/login" className="btn btn-danger">
+              </Link> */}
+              <a href="http://localhost:3001/api/auth/facebook/" className="btn btn-primary">
+                <i className="fab fa-facebook mr-2" />
+                Sign up using Facebook
+              </a>
+              <Link to="/register/google" className="btn btn-danger">
                 <i className="fab fa-google-plus mr-2" />
                 Sign up using Google+
               </Link>

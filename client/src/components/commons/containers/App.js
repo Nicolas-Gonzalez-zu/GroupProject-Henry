@@ -10,6 +10,9 @@ import Footer from './Footer';
 import Register from '../../frontoffice/register';
 import ForgotPassword from '../../frontoffice/ForgotPassword';
 import ResetPassword from '../../frontoffice/resetPassword';
+import FormFB from '../../frontoffice/FormFacebook';
+import FormGoogle from '../../frontoffice/FormGoogle';
+import LandingPage from '../../landingPage';
 import About from '../../frontoffice/about/About';
 
 import { initialize } from '../../../actions/frontoffice/creators';
@@ -49,6 +52,7 @@ function App() {
         <Route path="/client">
           <Switch>
             <Route exact path="/client/login" render={() => <Login adm={false} />} />
+            <Route exact path="/client/login/google" component={FormGoogle} />
             <Route exact path="/client/register" component={Register} />
             <Route
               exact
@@ -102,7 +106,7 @@ function App() {
         {/* Landing page */}
         <Route path="/">
           <Route exact path="/about" component={About} />
-          <div>Landing</div>
+          <Route path="/" component={LandingPage} />
         </Route>
       </Switch>
     );

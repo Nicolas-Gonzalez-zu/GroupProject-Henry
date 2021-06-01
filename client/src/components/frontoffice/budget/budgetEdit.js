@@ -23,7 +23,7 @@ const BudgetsEdit = ({ nameBefore, amountBefore, id }) => {
     }
     if (!values.amount) {
       errors.amount = 'The amount is required!';
-    } else if (!/^[0-9]*$/gm.test(values.amount)) {
+    } else if (!/(^-?\d\d*\.\d*$)|(^-?\d\d*$)|(^-?\.\d\d*$)/gm.test(values.amount)) {
       errors.amount = 'This field only accept numbers!';
     }
     return errors;

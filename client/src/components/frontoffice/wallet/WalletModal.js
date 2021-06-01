@@ -35,7 +35,7 @@ const WalletModal = () => {
         }
       });
     }
-    action.getWallet(dispatch);
+    // action.getWallet(dispatch);
   }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const validate = (values) => {
@@ -72,7 +72,6 @@ const WalletModal = () => {
     const cantWallets = user.plan.name === 'Free' ? 5 : 10;
     return cantWallets;
   };
-
   return (
     <div>
       {walletsAvailable.length < setCantWallet() ? (
