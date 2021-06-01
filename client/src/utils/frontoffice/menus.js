@@ -68,12 +68,28 @@ export const FRONT_OFFICE_MENU = [
 
 export const BACK_OFFICE_MENU = [
   {
+    title: 'Categories',
+    tree: false,
+    icon: 'file-contract',
+    requiredPermission: 'MENU_CATEGORIES',
+    nameSpace: 'admin',
+    path: 'categories',
+  },
+  {
     title: 'Orders',
     tree: false,
     icon: 'file-invoice-dollar',
     requiredPermission: 'MENU_ORDERS',
     nameSpace: 'admin',
     path: 'orders',
+  },
+  {
+    title: 'Services',
+    tree: false,
+    icon: 'box',
+    requiredPermission: 'MENU_SERVICES',
+    nameSpace: 'admin',
+    path: 'services',
   },
   {
     title: 'Customers',

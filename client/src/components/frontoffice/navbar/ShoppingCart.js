@@ -18,7 +18,7 @@ const ShoppingCart = () => {
           Total <span className="float-right">${total}</span>
         </span>
         <div className="dropdown-divider" />
-        <Link to="/cart" className="dropdown-item dropdown-footer">
+        <Link to="/client/cart" className="dropdown-item dropdown-footer">
           See Detail Cart
         </Link>
       </div>

@@ -51,7 +51,7 @@ const SideBarMenu = ({ adm, menu }) => {
       return (
         <li className="nav-item" key={`li-elem-branch-${m.activeStateName}`}>
           <a
-            href="/#"
+            href="#"
             type="button"
             className={`nav-link ${ActiveMenu[m.activeStateName] ? 'active' : 'collapsed'}`}
             data-toggle="collapse"
