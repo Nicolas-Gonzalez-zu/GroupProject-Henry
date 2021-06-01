@@ -8,6 +8,7 @@ const path = require('path');
 const checkIfLoggedIn = require('../auth/authorizeMiddleware');
 const db = require('../../db/models');
 const { errorCode, statusCode, supportCode } = require('../utils/globalCodes');
+const { Sequelize } = require('../../db/models');
 
 const router = express.Router();
 router.use(checkIfLoggedIn);
@@ -30,8 +31,18 @@ router.get('/', (req, res) => {
   const filter = 'All movements';
   const value = '';
   const date = new Date();
+
+  const today = new Date();
+  const monthBefore = new Date();
+  monthBefore.setMonth(today.getMonth() - 1);
+  const where = { customer_id: req.user.id };
+
+  if (req.user.plan.dataValues.name === 'Free') {
+    where.generation_date = { [Op.between]: [monthBefore, today] };
+  }
+
   db.Movement.findAll({
-    where: { customer_id: req.user.id },
+    where,
     order: [['generation_date', 'ASC']],
     include: [
       { model: db.Wallet, as: 'origin_wallet' },
@@ -62,7 +73,6 @@ router.get('/', (req, res) => {
             message: 'No bucket assigned',
           };
         }
-
         return {
           id,
           amount,
@@ -77,7 +87,6 @@ router.get('/', (req, res) => {
           budget: conditionalBudget,
         };
       });
-      console.log(processedMovements[0].generation_date);
       const template = path.resolve(__dirname, '..', 'views', 'template.pug');
       const compiledFunction = pug.compileFile(template);
       const compiledHtml = compiledFunction({
@@ -103,7 +112,6 @@ router.get('/', (req, res) => {
 
 router.get('/filter', (req, res) => {
   const { filter, value } = req.query;
-  console.log(value, 'soy el value en el back');
   const name = req.user.first_name;
   const lastname = req.user.last_name;
   const date = new Date();
@@ -126,7 +134,6 @@ router.get('/filter', (req, res) => {
           origin_wallet, // eslint-disable-line camelcase
           budget,
         } = movement.dataValues;
-        console.log(generation_date, 'soy el generation date en reports back');
 
         let conditionalBudget = {};
         if (budget) {
