@@ -31,8 +31,8 @@ router.get('/', (req, res) => {
       });
       res.status(statusCode.OK).json(processedServices);
     })
-    .catch(() => {
-      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: errorCode.REJECTED_OPERATION });
+    .catch((e) => {
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: e.stack });
     });
 });
 
