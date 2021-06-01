@@ -13,6 +13,9 @@ import shopReducer from './frontoffice/shopReducer';
 import invoiceReducer from './frontoffice/invoiceReducer';
 import orderReducer from './frontoffice/orderReducer';
 
+import categoryBOReducer from './backoffice/categoryBOReducer';
+import serviceBOReducer from './backoffice/serviceBOReducer';
+
 const persistConfig = {
   key: 'primary',
   storage,
@@ -31,6 +34,8 @@ const rootReducer = combineReducers({
   serviceReducer,
   invoiceReducer,
   orderReducer,
+  categoryBOReducer,
+  serviceBOReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);
