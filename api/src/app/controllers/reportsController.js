@@ -7,7 +7,7 @@ const path = require('path');
 
 const checkIfLoggedIn = require('../auth/authorizeMiddleware');
 const db = require('../../db/models');
-const { errorCode, statusCode, supportCode } = require('../utils/globalCodes');
+const { statusCode } = require('../utils/globalCodes');
 
 const router = express.Router();
 router.use(checkIfLoggedIn);
@@ -30,8 +30,18 @@ router.get('/', (req, res) => {
   const filter = 'All movements';
   const value = '';
   const date = new Date();
+
+  const today = new Date();
+  const monthBefore = new Date();
+  monthBefore.setMonth(today.getMonth() - 1);
+  const where = { customer_id: req.user.id };
+
+  if (req.user.plan.dataValues.name === 'Free') {
+    where.generation_date = { [Op.between]: [monthBefore, today] };
+  }
+
   db.Movement.findAll({
-    where: { customer_id: req.user.id },
+    where,
     order: [['generation_date', 'ASC']],
     include: [
       { model: db.Wallet, as: 'origin_wallet' },
@@ -62,7 +72,6 @@ router.get('/', (req, res) => {
             message: 'No bucket assigned',
           };
         }
-
         return {
           id,
           amount,
@@ -77,7 +86,6 @@ router.get('/', (req, res) => {
           budget: conditionalBudget,
         };
       });
-      console.log(processedMovements[0].generation_date);
       const template = path.resolve(__dirname, '..', 'views', 'template.pug');
       const compiledFunction = pug.compileFile(template);
       const compiledHtml = compiledFunction({
