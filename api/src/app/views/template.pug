@@ -7,9 +7,12 @@ html
   body(style='margin:20; padding:0; background-color:#FFFFFF;')
     center
       div#pageHeader(style={height:20, background:'#3c8dbc', margin:5})
-        label(style='position:absolute; background-color:white; left:19; top:2; border: 2px solid #3c8dbc; padding:5; border-radius:10px') FinanceApp
+        label(style='position:absolute; background-color:white; left:19; top:2; border: 2px solid #3c8dbc; padding:5; border-radius:10px') e-conomy
         label(style='position:absolute; background-color:white; right:19; top:2; border: 2px solid #3c8dbc; padding:5; border-radius:10px') #{date.toString().slice(0,21)}
       h2 #{name}'s Movements Report
+    if second
+      h5 Filter by: #{filter} #{value} and #{second} #{secval}
+    else
       h5 Filter by: #{filter} #{value}
   left
 
@@ -26,12 +29,14 @@ html
         tbody
           each pm in processedMovements
               tr
-              #{console.log(pm.generation_date, "soy el generaton date")}
                 td #{pm.generation_date.slice(4,21)}
                 td #{pm.type}
                 td #{pm.description}
                 td #{pm.wallet.name}
                 td $#{pm.amount}
-
+  if second
+    div#pageFooter(style='height:20; background-color:#3c8dbc; margin-top:20;')
+      label Filter by: #{filter} #{value} and #{second} #{secval}
+  else
     div#pageFooter(style='height:20; background-color:#3c8dbc; margin-top:20;')
       label Filter by: #{filter} #{value}

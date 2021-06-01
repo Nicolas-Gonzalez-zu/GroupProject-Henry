@@ -155,7 +155,7 @@ router.post('/resetPassword/:id/:token', (req, res) => {
 router.get(
   '/facebook',
   passport.authenticate('facebook', {
-    scope: ['public_profile', 'email'],
+    scope: ['email'],
   }),
 );
 
