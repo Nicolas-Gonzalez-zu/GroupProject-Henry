@@ -2,9 +2,10 @@
 /* eslint-disable consistent-return */
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
 const path = require('path');
+const passport = require('../auth/setup');
 const bcryptUtils = require('../utils/bcryptUtils');
+const facebookauth = require('../controllers/facebookauth');
 
 const sendEmail = require('../helpers/sendgrid');
 
@@ -165,5 +166,21 @@ router.post('/resetPassword/:id/:token', (req, res) => {
       res.status(500).json({ message: err.message, success: false });
     });
 });
+
+router.get(
+  '/facebook',
+  passport.authenticate('facebook', {
+    scope: ['public_profile', 'email'],
+  }),
+);
+
+router.get(
+  '/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/',
+  }),
+);
+router.use('/facebook', facebookauth);
 
 module.exports = router;

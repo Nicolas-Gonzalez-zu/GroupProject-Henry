@@ -11,7 +11,7 @@ import parti from '../../assets/particles/particlesjs-config.json';
 
 import * as action from '../../actions/creators';
 
-const Login = () => {
+const Login = ({ auth }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const sessionData = useSelector((store) => store.authReducers.sessionData);
@@ -186,10 +186,13 @@ const Login = () => {
               }}
             </Formik>
             <div className="social-auth-links text-center mt-2 mb-3">
-              <Link to="/login" className="btn btn-block btn-primary">
+              <a
+                href="http://localhost:3001/api/auth/facebook/"
+                className="btn btn-block btn-primary"
+              >
                 <i className="fab fa-facebook mr-2" /> Sign in using Facebook
-              </Link>
-              <Link to="/login" className="btn btn-block btn-danger">
+              </a>
+              <Link to="/login/google" className="btn btn-block btn-danger">
                 <i className="fab fa-google-plus mr-2" /> Sign in using Google+
               </Link>
             </div>
