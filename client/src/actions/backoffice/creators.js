@@ -93,8 +93,9 @@ export const getCategory = (dispatch) => {
 
 export const getOrders = (dispatch) => {
   serverPetition
-    .get('bo/order')
+    .get('bo/order/orderBo')
     .then(({ data }) => {
+      console.log(data, 'sou la data en el back back');
       dispatch({
         type: actionType.GET_ORDERS,
         payload: data,

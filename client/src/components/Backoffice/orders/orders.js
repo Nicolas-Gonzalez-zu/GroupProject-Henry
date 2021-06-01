@@ -1,121 +1,122 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import OrderModal from './OrderEditModal';
+import * as action from '../../../actions/backoffice/creators';
 
-const fakeOrders = [
-  {
-    id: 6,
-    status: 'unassigned',
-    priority: false,
-    start_date: null,
-    end_date: null,
-    assigned_user_id: null,
-    assigned_user: {},
-    invoice_id: 59,
-    invoice: {
-      id: 59,
-      payment_method: 'mercado pago',
-      amount: '80965.13',
-      status: 'completed',
-      services: [
-        {
-          id: 1,
-          name: 'Savings Account',
-          price: '52471.89',
-        },
-        {
-          id: 2,
-          name: 'Auto Loan Account',
-          price: '48126.40',
-        },
-        {
-          id: 3,
-          name: 'Money Market Account',
-          price: '608.12',
-        },
-      ],
-    },
-  },
-  {
-    id: 8,
-    status: 'unassigned',
-    priority: false,
-    start_date: null,
-    end_date: null,
-    assigned_user_id: null,
-    assigned_user: {},
-    invoice_id: 61,
-    invoice: {
-      id: 61,
-      payment_method: 'mercado pago',
-      amount: '41977.51',
-      status: 'completed',
-      services: [
-        {
-          id: 1,
-          name: 'Savings Account',
-          price: '52471.89',
-        },
-      ],
-    },
-  },
-  {
-    id: 10,
-    status: 'unassigned',
-    priority: false,
-    start_date: null,
-    end_date: null,
-    assigned_user_id: null,
-    assigned_user: {},
-    invoice_id: 208,
-    invoice: {
-      id: 208,
-      payment_method: 'mercado pago',
-      amount: '53941.12',
-      status: 'completed',
-      services: [
-        {
-          id: 2,
-          name: 'Auto Loan Account',
-          price: '48126.40',
-        },
-        {
-          id: 5,
-          name: 'Credit Card Account',
-          price: '19300.00',
-        },
-      ],
-    },
-  },
-  {
-    id: 11,
-    status: 'unassigned',
-    priority: false,
-    start_date: null,
-    end_date: null,
-    assigned_user_id: null,
-    assigned_user: {},
-    invoice_id: 209,
-    invoice: {
-      id: 209,
-      payment_method: 'mercado pago',
-      amount: '53941.12',
-      status: 'completed',
-      services: [
-        {
-          id: 2,
-          name: 'Auto Loan Account',
-          price: '48126.40',
-        },
-        {
-          id: 5,
-          name: 'Credit Card Account',
-          price: '19300.00',
-        },
-      ],
-    },
-  },
-];
+// const fakeOrders = [
+//   {
+//     id: 6,
+//     status: 'unassigned',
+//     priority: false,
+//     start_date: null,
+//     end_date: null,
+//     assigned_user_id: null,
+//     assigned_user: {},
+//     invoice_id: 59,
+//     invoice: {
+//       id: 59,
+//       payment_method: 'mercado pago',
+//       amount: '80965.13',
+//       status: 'completed',
+//       services: [
+//         {
+//           id: 1,
+//           name: 'Savings Account',
+//           price: '52471.89',
+//         },
+//         {
+//           id: 2,
+//           name: 'Auto Loan Account',
+//           price: '48126.40',
+//         },
+//         {
+//           id: 3,
+//           name: 'Money Market Account',
+//           price: '608.12',
+//         },
+//       ],
+//     },
+//   },
+//   {
+//     id: 8,
+//     status: 'unassigned',
+//     priority: false,
+//     start_date: null,
+//     end_date: null,
+//     assigned_user_id: null,
+//     assigned_user: {},
+//     invoice_id: 61,
+//     invoice: {
+//       id: 61,
+//       payment_method: 'mercado pago',
+//       amount: '41977.51',
+//       status: 'completed',
+//       services: [
+//         {
+//           id: 1,
+//           name: 'Savings Account',
+//           price: '52471.89',
+//         },
+//       ],
+//     },
+//   },
+//   {
+//     id: 10,
+//     status: 'unassigned',
+//     priority: false,
+//     start_date: null,
+//     end_date: null,
+//     assigned_user_id: null,
+//     assigned_user: {},
+//     invoice_id: 208,
+//     invoice: {
+//       id: 208,
+//       payment_method: 'mercado pago',
+//       amount: '53941.12',
+//       status: 'completed',
+//       services: [
+//         {
+//           id: 2,
+//           name: 'Auto Loan Account',
+//           price: '48126.40',
+//         },
+//         {
+//           id: 5,
+//           name: 'Credit Card Account',
+//           price: '19300.00',
+//         },
+//       ],
+//     },
+//   },
+//   {
+//     id: 11,
+//     status: 'unassigned',
+//     priority: false,
+//     start_date: null,
+//     end_date: null,
+//     assigned_user_id: null,
+//     assigned_user: {},
+//     invoice_id: 209,
+//     invoice: {
+//       id: 209,
+//       payment_method: 'mercado pago',
+//       amount: '53941.12',
+//       status: 'completed',
+//       services: [
+//         {
+//           id: 2,
+//           name: 'Auto Loan Account',
+//           price: '48126.40',
+//         },
+//         {
+//           id: 5,
+//           name: 'Credit Card Account',
+//           price: '19300.00',
+//         },
+//       ],
+//     },
+//   },
+// ];
 
 const users = [
   { id: 1, name: 'nacho garay' },
@@ -130,6 +131,11 @@ const status = [
 
 const OrdersBO = () => {
   const orders = useSelector((state) => state.ordersBOReducer.orders);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    action.getOrders(dispatch);
+  }, [dispatch]);
   console.log(orders);
   return (
     <div>
@@ -137,8 +143,8 @@ const OrdersBO = () => {
         <h3>Orders</h3>
       </div>
       <div className="row p-2">
-        {fakeOrders &&
-          fakeOrders.map((o) => (
+        {orders &&
+          orders.map((o) => (
             <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
               <div className="card bg-light d-flex flex-fill">
                 <div className="card-header text-muted border-bottom-0">
