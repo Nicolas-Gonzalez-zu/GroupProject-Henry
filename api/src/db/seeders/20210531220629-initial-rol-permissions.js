@@ -10,15 +10,13 @@ const initialRolsPermissions = [
   },
 ];
 
-for (let i = 0; i < permissions.length; i += 1) {
-  if (permissions[i].id_code.includes('ORDERS')) {
-    initialRolsPermissions.push({
-      rol_id: 2,
-      permission_id: i + 1,
-      createdAt: faker.date.recent(),
-      updatedAt: faker.date.recent(),
-    });
-  }
+for (let i = 1; i < permissions.length; i += 1) {
+  initialRolsPermissions.push({
+    rol_id: 2,
+    permission_id: i + 1,
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
+  });
 }
 
 module.exports = {

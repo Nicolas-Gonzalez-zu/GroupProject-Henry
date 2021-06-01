@@ -209,7 +209,7 @@ const Login = ({ adm }) => {
                   </Link>
                 </p>
                 <div className="d-flex flex-row-reverse">
-                  <Link to="/client/about">
+                  <Link to="/about">
                     <button type="button" className="btn btn-warning">
                       <img
                         src="https://i.ibb.co/XS4mQ0f/logopng.png"
