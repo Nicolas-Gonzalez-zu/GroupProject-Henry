@@ -24,19 +24,24 @@ const Login = ({ auth }) => {
   };
 
   useEffect(() => {
-    // sidebar - mini;
+    const body = document.getElementsByTagName('body');
+    body[0].classList.remove('sidebar-mini');
+    body[0].classList.add('login-page');
+    body[0].classList.add('hold-transition');
     if (authAlert.fire) {
-      Swal.fire({
-        title: authAlert.message,
-        icon: 'error',
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 4000,
-      }).then(() => {
-        action.setAlert(dispatch, '', false);
-      });
-      setIsSubmitting(false);
+      if (authAlert.message !== 'Not logged in') {
+        Swal.fire({
+          title: authAlert.message,
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 4000,
+        }).then(() => {
+          action.setAlert(dispatch, '', false);
+        });
+        setIsSubmitting(false);
+      }
     }
     if (sessionData.loggedIn) {
       setIsSubmitting(true);
@@ -52,8 +57,9 @@ const Login = ({ auth }) => {
       });
     }
     return () => {
-      const body = document.getElementsByTagName('body');
-      body[0].classList.remove('register-page');
+      // const body = document.getElementsByTagName('body');
+      body[0].classList.remove('login-page');
+      body[0].classList.remove('hold-transition');
       body[0].classList.add('sidebar-mini');
       action.redirect(dispatch);
       action.setAlert(dispatch);
@@ -63,7 +69,7 @@ const Login = ({ auth }) => {
   return (
     <div>
       <div className="login-box" id="login" style={{ minHeight: 466 }}>
-        <div className="card logincard">
+        <div className="card login-card">
           <div className="card-header text-center">
             <div className="h1">
               <img
@@ -199,6 +205,19 @@ const Login = ({ auth }) => {
                 Sign up
               </Link>
             </p>
+            <div className="d-flex flex-row-reverse">
+              <Link to="/about">
+                <button type="button" className="btn btn-warning">
+                  <img
+                    src="https://i.ibb.co/XS4mQ0f/logopng.png"
+                    alt="user-avatar"
+                    className="img-circle img-fluid mr-2"
+                    width="30"
+                  />
+                  <b>About Us</b>
+                </button>
+              </Link>
+            </div>
           </div>
           <div className={`overlay dark ${!isSubmitting ? 'd-none' : ''}`}>
             <i className={`fas fa-3x fa-sync-alt fa-spin ${authAlert.fire ? 'd-none' : ''}`} />
