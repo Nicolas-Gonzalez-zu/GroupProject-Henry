@@ -3,8 +3,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const path = require('path');
 const bcryptUtils = require('../utils/bcryptUtils');
+const facebookauth = require('../controllers/facebookauth');
 
 const sendEmail = require('../helpers/sendgrid');
 
@@ -59,20 +59,6 @@ router.get('/test-auth', checkIfLoggedIn, (req, res) => {
 
 router.get('/me', checkIfLoggedIn, (req, res) => {
   res.status(200).json(req.user);
-  // db.Customer.findOne({
-  //   where: { user_id: req.user.id },
-  //   include: [
-  //     { model: db.User, as: 'user' },
-  //     { model: db.Plan, as: 'plan' },
-  //   ],
-  // })
-  //   .then((user) => {
-  //     res.status(200).json(user);
-  //   })
-  //   .catch((e) => {
-  //     console.log(e.message);
-  //     res.status(500).json({ error: e.message });
-  //   });
 });
 
 router.get('/logout', (req, res) => {
@@ -165,5 +151,21 @@ router.post('/resetPassword/:id/:token', (req, res) => {
       res.status(500).json({ message: err.message, success: false });
     });
 });
+
+router.get(
+  '/facebook',
+  passport.authenticate('facebook', {
+    scope: ['email'],
+  }),
+);
+
+router.get(
+  '/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/',
+  }),
+);
+router.use('/facebook', facebookauth);
 
 module.exports = router;

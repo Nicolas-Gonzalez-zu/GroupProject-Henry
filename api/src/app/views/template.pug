@@ -18,6 +18,9 @@ html
           img(src='https://i.ibb.co/1spYSQ5/logoscalable.png' style=' width: 30px; max-width: 300px')
         label(style='position:absolute; background-color:white; right:19; top:2; border: 2px solid #3c8dbc; padding:5; border-radius:10px') #{date.toString().slice(0,21)}
       h2 #{name}'s Movements Report
+    if second
+      h5 Filter by: #{filter} #{value} and #{second} #{secval}
+    else
       h5 Filter by: #{filter} #{value}
   left
 
@@ -39,6 +42,9 @@ html
                 td.td #{pm.description}
                 td.td #{pm.wallet.name}
                 td $#{pm.amount}
-
+  if second
+    div#pageFooter(style='height:20; background-color:#3c8dbc; margin-top:20;')
+      label Filter by: #{filter} #{value} and #{second} #{secval}
+  else
     div#pageFooter(style='height:20; background-color:#3c8dbc; margin-top:20;')
       label Filter by: #{filter} #{value}
