@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
+import { Redirect } from 'react-router';
+/* eslint-disable consistent-return */
 import { useSelector, useDispatch } from 'react-redux';
 import * as action from '../../../actions/frontoffice/creators';
 import InternalLoader from '../loaders/InternalLoader';
@@ -11,6 +12,9 @@ export default function Reports() {
   const [filter, setFilter] = useState('default');
   const [options, setOptions] = useState([]);
   const [send, setSend] = useState([]);
+  const [switchSecond, setSwitchSecond] = useState(false);
+  const [secondOptions, setSecondOptions] = useState([]);
+  const [secondSelect, setSecondSelect] = useState([]);
   const movements = useSelector((state) => state.movementReducer.movements);
   const reports = useSelector((state) => state.reportReducer.reports);
   const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
@@ -29,7 +33,6 @@ export default function Reports() {
       return isNew;
     });
   }
-
   // console.log('soy el reportsss', reports);
 
   const reset = () => {
@@ -61,6 +64,11 @@ export default function Reports() {
   }
 
   function handleSend(e) {
+    if (secondSelect.length > 0) {
+      document.getElementById('myform').value = 'default';
+      setSecondSelect([]);
+      setSwitchSecond(false);
+    }
     if (filter === 'type') {
       setSend([
         {
@@ -88,6 +96,7 @@ export default function Reports() {
   }
 
   function handleFilter(prop) {
+    setSwitchSecond(false);
     if (prop === 'type') {
       const data = movements.map((x) => {
         const { type } = x;
@@ -116,7 +125,6 @@ export default function Reports() {
       // aca podriamos hacer el filter en data donde si el usuario es free deje solo las fechas del mes actual
       const newData =
         user.plan.name === 'Free' ? data.filter((d) => d.name.slice(5, 7) === realMonth) : data;
-      console.log(newData, 'soy el nuevo objeto');
       const toType = removeDuplicatesBy((x) => x.name, newData);
 
       setOptions(toType);
@@ -128,7 +136,91 @@ export default function Reports() {
     reset();
   }
 
-  // console.log(realMonth);
+  function secondFilter() {
+    setSwitchSecond(true);
+    if (filter === 'date') {
+      setSecondOptions(['wallet', 'type']);
+    }
+    if (filter === 'wallet') {
+      setSecondOptions(['type', 'date']);
+    }
+    if (filter === 'type') {
+      setSecondOptions(['wallet', 'date']);
+    }
+  }
+  function handleSecond(e) {
+    const fltr = send[0].filt;
+    if (fltr !== 'wallet_id') {
+      if (e.target.value === 'type') {
+        const data = movements
+          .map((x) => {
+            if (x[fltr] === send[0].value) {
+              const { type } = x;
+              return { name: type, value: type };
+            }
+          })
+          .filter((x) => x !== undefined);
+        const toType = removeDuplicatesBy((x) => x.name, data);
+        setSecondSelect(toType);
+      }
+      if (e.target.value === 'wallet') {
+        const data = movements
+          .map((x) => {
+            if (x[fltr] === send[0].value) {
+              const {
+                wallet, // eslint-disable-line camelcase
+              } = x;
+              return { name: wallet.name, value: wallet.id };
+            }
+          })
+          .filter((x) => x !== undefined);
+        const toType = removeDuplicatesBy((x) => x.name, data);
+        setSecondSelect(toType);
+      }
+      if (e.target.value === 'date') {
+        const data = movements
+          .map((x) => {
+            if (x[fltr] === send[0].value) {
+              const {
+                generation_date, // eslint-disable-line camelcase
+              } = x;
+              return { name: generation_date.slice(0, 10), value: generation_date };
+            }
+          })
+          .filter((x) => x !== undefined);
+        const toType = removeDuplicatesBy((x) => x.name, data);
+        setSecondSelect(toType);
+      }
+    } else {
+      if (e.target.value === 'type') {
+        const data = movements
+          .map((x) => {
+            if (x.wallet.id === Number(send[0].value)) {
+              const { type } = x;
+              return { name: type, value: type };
+            }
+          })
+          .filter((x) => x !== undefined);
+        const toType = removeDuplicatesBy((x) => x.name, data);
+        setSecondSelect(toType);
+      }
+      if (e.target.value === 'date') {
+        const data = movements
+          .map((x) => {
+            if (x.wallet.id === Number(send[0].value)) {
+              const {
+                generation_date, // eslint-disable-line camelcase
+              } = x;
+              return { name: generation_date.slice(0, 10), value: generation_date };
+            }
+          })
+          .filter((x) => x !== undefined);
+        const toType = removeDuplicatesBy((x) => x.name, data);
+        setSecondSelect(toType);
+      }
+    }
+  }
+  // console.log(secondSelect);
 
   return (
     <div>
@@ -144,15 +236,16 @@ export default function Reports() {
           <div className="d-flex card-header">
             <label className="p-1">Filter by: </label>
             <select
-              className="p-2 mr-3"
+              className="p-2"
               name="select"
+              className="mr-3"
               onChange={(e) => handleChange(e)}
               defaultValue="default"
             >
               <option value="default" disabled>
                 None
               </option>
-              {user.plan && user.plan.name === 'Free' ? (
+              {/* {user.plan && user.plan.name === 'Free' ? (
                 <>
                   <option value="date">Date</option>
                 </>
@@ -162,7 +255,10 @@ export default function Reports() {
                   <option value="date">Date</option>
                   <option value="wallet">Wallet</option>
                 </>
-              )}
+              )} */}
+              <option value="type">Type</option>
+              <option value="date">Date</option>
+              <option value="wallet">Wallet</option>
             </select>
             {filter !== 'default' && (
               <>
@@ -200,6 +296,55 @@ export default function Reports() {
             >
               <b>Download filtered by {filter}</b>
             </button>
+          )}
+        </div>
+        <div>
+          {/* user.plan && user.plan.name === 'Free' && */}
+          {send.length > 0 && (
+            <button type="button" className="btn btn-warning" onClick={() => secondFilter()}>
+              <b> + </b>
+            </button>
+          )}
+          {switchSecond && (
+            <select
+              className="p-2"
+              name="select"
+              className="mr-3"
+              id="myform"
+              onChange={(e) => handleSecond(e)}
+              defaultValue="default"
+            >
+              <option value="default" disabled>
+                None
+              </option>
+              {secondOptions.map((e) => (
+                <option key={e} value={e}>
+                  {e}
+                </option>
+              ))}
+            </select>
+          )}
+          {secondSelect.length > 0 && (
+            <>
+              <label className="p-1">This {filter}:</label>
+              <select
+                className="p-2"
+                name="select"
+                id="myform"
+                onChange={(e) => handleSend(e)}
+                defaultValue="default"
+              >
+                <option value="default" disabled>
+                  Select
+                </option>
+                {options.length > 0 &&
+                  secondSelect.map((e) => (
+                    <option key={e.value} value={e.value}>
+                      {e.name}
+                    </option>
+                  ))}
+              </select>
+            </>
           )}
         </div>
       </div>
