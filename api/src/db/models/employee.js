@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         as: 'user',
         foreignKey: 'user_id',
       });
+      Employee.belongsTo(models.Plan, {
+        as: 'rol',
+        foreignKey: 'rol_id',
+      });
     }
   }
   Employee.init(
