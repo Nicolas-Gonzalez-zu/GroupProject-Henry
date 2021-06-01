@@ -1,11 +1,11 @@
 const express = require('express');
 
-// const checkIfLoggedIn = require('../auth/authorizeMiddleware');
+const checkIfLoggedIn = require('../auth/authorizeMiddleware');
 const db = require('../../db/models');
 const { errorCode, statusCode } = require('../utils/globalCodes');
 
 const router = express.Router();
-// router.use(checkIfLoggedIn);
+router.use(checkIfLoggedIn);
 
 router.get('/', (req, res) => {
   db.Permission.findAll()

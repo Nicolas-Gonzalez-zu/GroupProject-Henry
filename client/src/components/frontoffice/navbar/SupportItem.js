@@ -14,7 +14,7 @@ const SupportItem = ({ adm }) => {
           FAQ
         </Link>
         <div className="dropdown-divider" />
-        <Link to={`${redirectTo}/about`} className="dropdown-item ">
+        <Link to="/about" className="dropdown-item ">
           Contact us
         </Link>
       </div>

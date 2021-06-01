@@ -37,7 +37,8 @@ function App() {
       initialized &&
       !loggedIn &&
       !location.pathname.includes('login') &&
-      !location.pathname.includes('signup') &&
+      !location.pathname.includes('register') &&
+      !location.pathname.includes('forgot') &&
       (location.pathname.includes('admin') || location.pathname.includes('client'))
     ) {
       const redirectTo = location.pathname.includes('admin') ? '/admin' : '/client';
@@ -106,7 +107,7 @@ function App() {
         {/* Landing page */}
         <Route path="/">
           <Route exact path="/about" component={About} />
-          <Route path="/" component={LandingPage} />
+          <Route exact path="/" component={LandingPage} />
         </Route>
       </Switch>
     );
