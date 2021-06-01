@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import NewCategories from './newCategories';
 import EditCategories from './editCategories';
+import * as action from '../../../actions/backoffice/creators';
 
 export default function Categories() {
-  const categories = [
+  const categories = useSelector((state) => state.categoryBOReducer.category);
+  console.log(categories, 'hola');
+  const dispatch = useDispatch();
+  useEffect(() => {
+    action.getCategory(dispatch);
+  }, []);
+  const categories2 = [
     {
       id: 1,
       name: 'Beauty',
@@ -60,8 +68,8 @@ export default function Categories() {
                 <th style={{ width: '1rem' }}>Edit</th>
               </tr>
             </thead>
-            {categories &&
-              categories.map((x) => (
+            {categories2 &&
+              categories2.map((x) => (
                 <tbody>
                   <tr>
                     <td>{x.id}</td>
