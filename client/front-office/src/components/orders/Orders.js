@@ -10,15 +10,25 @@ const Orders = () => {
     action.getOrders(dispatch);
   }, [dispatch]);
 
-  console.log(orders);
+  console.log('soy la order', orders);
+  const newOrders = [
+    ...orders,
+    {
+      ...orders[0],
+      start_date: '12/05/2021',
+      end_date: '17/05/2021',
+      status: 'pending',
+      assigned_user: { name: 'nacho', phone: '1111111', mail: 'nacho@mail.com' },
+    },
+  ];
   const ordersAssigned = orders.filter((o) => o.status !== 'unassigned');
+  console.log(newOrders);
 
   const popover = (services) => (
     <Popover id="popover-basic">
       <Popover.Title as="h3">Services</Popover.Title>
       <Popover.Content>
-        {/* {orders.invoice.services && orders.invoice.services.map((s) => <p>{s.name}</p>)} */}
-        {services.map((s) => (
+        {services?.map((s) => (
           <p>
             <b> • {s.name}</b>
           </p>
@@ -27,9 +37,29 @@ const Orders = () => {
     </Popover>
   );
 
+  const Newpopover = (name, phone, email) => (
+    <Popover id="popover-basic">
+      <Popover.Title as="h3">contact {name}!</Popover.Title>
+      <Popover.Content>
+        <p>
+          Please send me an email to <b className=" text text-decoration-underline">{email}</b> in
+          the chat below or call me to {phone}
+        </p>
+        <p>
+          <b>Thank you!</b>
+        </p>
+      </Popover.Content>
+    </Popover>
+  );
   const showServices = (services) => (
     <OverlayTrigger trigger="click" placement="top" overlay={popover(services)}>
-      <Button variant="success">See services</Button>
+      <Button variant="info">See services</Button>
+    </OverlayTrigger>
+  );
+
+  const showContact = (name, phone, email) => (
+    <OverlayTrigger trigger="click" placement="right" overlay={Newpopover(name, phone, email)}>
+      <Button variant="success">Contact</Button>
     </OverlayTrigger>
   );
 
@@ -39,8 +69,8 @@ const Orders = () => {
         <h3>Orders</h3>
       </div>
       <div className="row p-2">
-        {orders &&
-          orders.map((o) => (
+        {newOrders &&
+          newOrders.map((o) => (
             <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
               <div className="card bg-light d-flex flex-fill">
                 <div className="card-header text-muted border-bottom-0">
@@ -52,7 +82,12 @@ const Orders = () => {
                   <div className="row">
                     <div className="col-7">
                       <p className="text-muted text-sm mb-0">
-                        Status: <b>{o.status}</b>
+                        Status:{' '}
+                        {o.status === 'pending' ? (
+                          <b className="text-warning">{o.status}</b>
+                        ) : (
+                          <b className="text-success">{o.status}</b>
+                        )}
                       </p>
                       <p className="text-muted text-sm mb-0">
                         Priority:{' '}
@@ -75,13 +110,13 @@ const Orders = () => {
                           <span className="fa-li">
                             <i className="fas fa-lg fa-envelope" />
                           </span>
-                          E-mail: {o.assigned_user.mail}
+                          E-mail: <b>{o.assigned_user.mail}</b>
                         </li>
                         <li className="small mt-2">
                           <span className="fa-li">
                             <i className="fas fa-lg fa-phone" />
                           </span>
-                          Phone: {o.assigned_user.phone}
+                          Phone: <b>{o.assigned_user.phone}</b>
                         </li>
                       </ul>
                     </div>
@@ -98,10 +133,8 @@ const Orders = () => {
                 </div>
                 <div className="card-footer">
                   <div className="d-flex justify-content-between">
-                    <a href="#" className="btn btn-sm bg-teal">
-                      <i className="fas fa-comments" />
-                    </a>
-                    {showServices(o.invoice.services)}
+                    {showContact(o.assigned_user.name, o.assigned_user.phone, o.assigned_user.mail)}
+                    {showServices(o.invoice?.services)}
                   </div>
                 </div>
               </div>
@@ -113,58 +146,3 @@ const Orders = () => {
 };
 
 export default Orders;
-// <>
-//
-// {orders &&
-// orders.map((o) => (
-//   <>
-//     <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column mt-3">
-//       <div className="card bg-light d-flex flex-fill">
-//         <div className="card-header text-muted border-bottom-0">Order n°{orders.id}</div>
-//         <div className="card-body pt-0">
-//           <div className="row">
-//             <div className="col-7">
-//               <h2 className="lead">
-//                 <b>Nicole Pearson</b>
-//               </h2>
-//               <p className="text-muted text-sm">
-//                 <b>About: </b> Web Designer / UX / Graphic Artist / Coffee Lover{' '}
-//               </p>
-//               <ul className="ml-4 mb-0 fa-ul text-muted">
-//                 <li className="small">
-//                   <span className="fa-li">
-//                     <i className="fas fa-lg fa-building" />
-//                   </span>{' '}
-//                   Address: Demo Street 123, Demo City 04312, NJ
-//                 </li>
-//                 <li className="small">
-//                   <span className="fa-li">
-//                     <i className="fas fa-lg fa-phone" />
-//                   </span>
-//                   Phone #: + 800 - 12 12 23 52
-//                 </li>
-//               </ul>
-//             </div>
-//             <div className="col-5 text-center">
-//               <img
-//                 src="../../dist/img/user1-128x128.jpg"
-//                 alt="user-avatar"
-//                 className="img-circle img-fluid"
-//               />
-//             </div>
-//           </div>
-//         </div>
-//         {/* <div className="card-footer">
-//         <div className="text-right">
-//           <a href="#" className="btn btn-sm bg-teal">
-//             <i className="fas fa-comments" />
-//           </a>
-//           <a href="#" className="btn btn-sm btn-primary">
-//             <i className="fas fa-user" /> View Profile
-//           </a>
-//         </div>
-//       </div> */}
-//       </div>
-
-// </div>
-//   </>

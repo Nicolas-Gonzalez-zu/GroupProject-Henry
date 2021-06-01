@@ -17,6 +17,7 @@ body {
   height: 100vh;
 }
 
-.logincard {
+.login-card {
   width: 30rem;
+  background-color: white;
 }

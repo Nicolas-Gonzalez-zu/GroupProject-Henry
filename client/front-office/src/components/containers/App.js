@@ -12,6 +12,8 @@ import ForgotPassword from '../ForgotPassword';
 import ResetPassword from '../resetPassword';
 import FormFB from '../FormFacebook';
 import FormGoogle from '../FormGoogle';
+import LandingPage from '../landingPage';
+import About from '../about/About';
 
 import { initialize } from '../../actions/creators';
 import Login from '../login';
@@ -22,6 +24,8 @@ function App() {
   const initialized = useSelector((state) => state.authReducers.initialized);
 
   useEffect(() => {
+    const html = document.getElementsByTagName('html')[0];
+    html.style.height = '100vh';
     if (!initialized) {
       initialize(dispatch);
     }
@@ -30,6 +34,9 @@ function App() {
   if (initialized) {
     return (
       <Switch>
+        <Route exact path="/landing">
+          <LandingPage />
+        </Route>
         <Route exact path="/login" component={Login} />
         <Route exact path="/login/google" component={FormGoogle} />
         <Route exact path="/register" component={Register} />
@@ -39,7 +46,7 @@ function App() {
           render={({ match }) => <ResetPassword id={match.params.id} token={match.params.token} />}
         />
         <Route exact path="/forgot" component={ForgotPassword} />
-
+        <Route exact path="/about" component={About} />
         <Route path="/">
           <div className="wrapper">
             <NavBar />

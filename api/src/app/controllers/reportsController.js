@@ -103,6 +103,7 @@ router.get('/', (req, res) => {
 
 router.get('/filter', (req, res) => {
   const { filter, value } = req.query;
+  console.log(value, 'soy el value en el back');
   const name = req.user.first_name;
   const lastname = req.user.last_name;
   const date = new Date();
@@ -125,6 +126,7 @@ router.get('/filter', (req, res) => {
           origin_wallet, // eslint-disable-line camelcase
           budget,
         } = movement.dataValues;
+        console.log(generation_date, 'soy el generation date en reports back');
 
         let conditionalBudget = {};
         if (budget) {

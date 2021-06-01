@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import imgDefault from '../../assets/img/profile-default.png';
 
 const UserInfo = () => {
-  const userData = useSelector((store) => store.authReducers.sessionData.loggedUser);
+  const user = useSelector((store) => store.authReducers.sessionData.loggedUser);
 
   const onError = (e) => {
     e.target.src = imgDefault;
@@ -13,7 +13,7 @@ const UserInfo = () => {
     <div className="user-panel mt-3 pb-3 mb-3 d-flex">
       <div className="image">
         <img
-          src={userData.profile}
+          src={user.profile}
           onError={onError}
           className="img-circle elevation-2"
           alt="User profile"
@@ -21,8 +21,7 @@ const UserInfo = () => {
       </div>
       <div className="info">
         <NavLink to="/profile" className="d-block">
-          {userData.user ? userData.user.first_name : 'not login info'}{' '}
-          {userData.user ? userData.user.last_name : 'not login info'}
+          {user ? user.first_name : 'not login info'} {user ? user.last_name : 'not login info'}
         </NavLink>
       </div>
     </div>

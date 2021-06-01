@@ -6,4 +6,6 @@ const checkIfLoggedIn = (req, res, next) => {
   }
 };
 
+// const checkIfAuthorized = (req, res, next) => {};
+
 module.exports = checkIfLoggedIn;
