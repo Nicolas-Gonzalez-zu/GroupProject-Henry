@@ -26,7 +26,6 @@ html
         tbody
           each pm in processedMovements
               tr
-              #{console.log(pm.generation_date, "soy el generaton date")}
                 td #{pm.generation_date.slice(4,21)}
                 td #{pm.type}
                 td #{pm.description}

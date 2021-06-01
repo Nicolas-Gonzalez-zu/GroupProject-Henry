@@ -15,6 +15,7 @@ export default function Reports() {
   const [switchSecond, setSwitchSecond] = useState(false);
   const [secondOptions, setSecondOptions] = useState([]);
   const [secondSelect, setSecondSelect] = useState([]);
+  const [secondFilt, setSecondFilt] = useState(null);
   const movements = useSelector((state) => state.movementReducer.movements);
   const reports = useSelector((state) => state.reportReducer.reports);
   const user = useSelector((state) => state.authReducers.sessionData.loggedUser);
@@ -58,6 +59,8 @@ export default function Reports() {
     if (filter !== 'default') {
       document.getElementById('myform').value = 'default';
       setSend([]);
+      setSwitchSecond(false);
+      setSecondSelect([]);
     }
     setFilter(e.target.value);
     handleFilter(e.target.value);
@@ -65,9 +68,9 @@ export default function Reports() {
 
   function handleSend(e) {
     if (secondSelect.length > 0) {
-      document.getElementById('myform').value = 'default';
       setSecondSelect([]);
       setSwitchSecond(false);
+      setSecondFilt(null);
     }
     if (filter === 'type') {
       setSend([
@@ -97,6 +100,7 @@ export default function Reports() {
 
   function handleFilter(prop) {
     setSwitchSecond(false);
+    setSecondFilt(null);
     if (prop === 'type') {
       const data = movements.map((x) => {
         const { type } = x;
@@ -132,23 +136,36 @@ export default function Reports() {
   }
   function downloadFilter(e) {
     e.preventDefault();
-    action.getFilteredReports(send[0], dispatch);
+    action.getFilteredReports(send, dispatch);
     reset();
   }
 
   function secondFilter() {
-    setSwitchSecond(true);
-    if (filter === 'date') {
-      setSecondOptions(['wallet', 'type']);
-    }
-    if (filter === 'wallet') {
-      setSecondOptions(['type', 'date']);
-    }
-    if (filter === 'type') {
-      setSecondOptions(['wallet', 'date']);
+    if (!secondFilt) {
+      setSwitchSecond(true);
+      if (filter === 'date') {
+        setSecondOptions(['wallet', 'type']);
+      }
+      if (filter === 'wallet') {
+        setSecondOptions(['type', 'date']);
+      }
+      if (filter === 'type') {
+        setSecondOptions(['wallet', 'date']);
+      }
+    } else {
+      document.getElementById('sel1').value = 'default';
+      document.getElementById('myform').value = 'default';
+      setSend([]);
+      setSwitchSecond(false);
+      setSecondSelect([]);
+      setSecondFilt(null);
     }
   }
   function handleSecond(e) {
+    if (secondSelect.length > 0) {
+      document.getElementById('sel4').value = 'default';
+    }
+    setSecondFilt(e.target.value);
     const fltr = send[0].filt;
     if (fltr !== 'wallet_id') {
       if (e.target.value === 'type') {
@@ -220,7 +237,14 @@ export default function Reports() {
       }
     }
   }
-  // console.log(secondSelect);
+
+  function handleFourth(e) {
+    if (send.length > 1) {
+      setSend([send[0], { sec: secondFilt, secVal: e.target.value }]);
+    } else {
+      setSend([...send, { sec: secondFilt, secVal: e.target.value }]);
+    }
+  }
 
   return (
     <div>
@@ -239,6 +263,7 @@ export default function Reports() {
               className="p-2"
               name="select"
               className="mr-3"
+              id="sel1"
               onChange={(e) => handleChange(e)}
               defaultValue="default"
             >
@@ -298,11 +323,15 @@ export default function Reports() {
             </button>
           )}
         </div>
-        <div>
+        <div className="d-flex justify-content-center p-4">
           {/* user.plan && user.plan.name === 'Free' && */}
           {send.length > 0 && (
-            <button type="button" className="btn btn-warning" onClick={() => secondFilter()}>
-              <b> + </b>
+            <button
+              type="button"
+              className={!secondFilt ? 'btn btn-warning mr-2' : 'btn btn-danger mr-2'}
+              onClick={() => secondFilter()}
+            >
+              <b> {!secondFilt ? 'Add another filter' : 'Clear filter'} </b>
             </button>
           )}
           {switchSecond && (
@@ -310,7 +339,7 @@ export default function Reports() {
               className="p-2"
               name="select"
               className="mr-3"
-              id="myform"
+              id="sel3"
               onChange={(e) => handleSecond(e)}
               defaultValue="default"
             >
@@ -326,12 +355,12 @@ export default function Reports() {
           )}
           {secondSelect.length > 0 && (
             <>
-              <label className="p-1">This {filter}:</label>
+              <label className="p-1">This {secondFilt}:</label>
               <select
                 className="p-2"
                 name="select"
-                id="myform"
-                onChange={(e) => handleSend(e)}
+                id="sel4"
+                onChange={(e) => handleFourth(e)}
                 defaultValue="default"
               >
                 <option value="default" disabled>
