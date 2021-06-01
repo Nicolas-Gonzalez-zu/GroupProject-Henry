@@ -91,6 +91,20 @@ export const getCategory = (dispatch) => {
     });
 };
 
+
+export const getOrders = (dispatch) => {
+  serverPetition
+    .get('bo/order/orderBo')
+    .then(({ data }) => {
+      console.log(data, 'sou la data en el back back');
+      dispatch({
+        type: actionType.GET_ORDERS,
+        payload: data,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+
 export const addCategory = (newCategory, dispatch) => {
   serverPetition
     .post('bo/category/add', newCategory)

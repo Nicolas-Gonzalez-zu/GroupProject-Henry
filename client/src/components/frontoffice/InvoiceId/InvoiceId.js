@@ -11,16 +11,17 @@ const InvoiceId = ({ match }) => {
 
   useEffect(() => {
     const { idInvoice } = match.params;
-    action.getInvoiceById(idInvoice, dispatch);
-    reset();
+    action.getInvoiceById(idInvoice, dispatch); // por algun motivo esto se ejecuta muchas veces
+    // reset();
+    console.log('hola');
   }, [dispatch, invoiceId, invoicePdf, match.params]);
 
-  const reset = () => {
-    setLoading(false);
-    setTimeout(() => {
-      setLoading(true);
-    }, 1500);
-  };
+  // const reset = () => {
+  //   setLoading(false);
+  //   setTimeout(() => {
+  //     setLoading(true);
+  //   }, 1500);
+  // };
 
   const getInvoicePdf = (id, e) => {
     action.getInvoice(id, dispatch);

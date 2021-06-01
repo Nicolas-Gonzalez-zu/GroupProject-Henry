@@ -6,10 +6,12 @@ import * as action from '../../../actions/frontoffice/creators';
 const Orders = () => {
   const orders = useSelector((state) => state.orderReducer.orders);
   const dispatch = useDispatch();
+
   useEffect(() => {
     action.getOrders(dispatch);
   }, [dispatch]);
 
+  console.log(orders, 'orders en fo');
   console.log('soy la order', orders);
   const newOrders = [
     ...orders,
@@ -39,8 +41,7 @@ const Orders = () => {
       <Popover.Title as="h3">contact {name}!</Popover.Title>
       <Popover.Content>
         <p>
-          Please send me an email to <b className=" text text-decoration-underline">{email}</b> in
-          the chat below or call me to {phone}
+          Please send me an email to <b>{email}</b> in the chat below or call me to {phone}
         </p>
         <p>
           <b>Thank you!</b>
