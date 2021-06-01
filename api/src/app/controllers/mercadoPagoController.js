@@ -48,7 +48,6 @@ server.post('/', async (req, res) => {
   // eslint-disable-next-line camelcase
   const { services, payment_method } = req.body;
   const { user } = req;
-
   const subtotal = services.map((s) => s.price).reduce((a, b) => a + b);
   const total = Number(req.user.plan.price) <= 0 ? subtotal - subtotal * 0.2 : subtotal;
 
