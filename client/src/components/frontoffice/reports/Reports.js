@@ -270,7 +270,7 @@ export default function Reports() {
               <option value="default" disabled>
                 None
               </option>
-              {/* {user.plan && user.plan.name === 'Free' ? (
+              {user.plan && user.plan.name === 'Free' ? (
                 <>
                   <option value="date">Date</option>
                 </>
@@ -280,10 +280,7 @@ export default function Reports() {
                   <option value="date">Date</option>
                   <option value="wallet">Wallet</option>
                 </>
-              )} */}
-              <option value="type">Type</option>
-              <option value="date">Date</option>
-              <option value="wallet">Wallet</option>
+              )}
             </select>
             {filter !== 'default' && (
               <>
@@ -324,8 +321,7 @@ export default function Reports() {
           )}
         </div>
         <div className="d-flex justify-content-center p-4">
-          {/* user.plan && user.plan.name === 'Free' && */}
-          {send.length > 0 && (
+          {user.plan && user.plan.name !== 'Free' && send.length > 0 && (
             <button
               type="button"
               className={!secondFilt ? 'btn btn-warning mr-2' : 'btn btn-danger mr-2'}

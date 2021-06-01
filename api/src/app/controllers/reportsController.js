@@ -168,6 +168,8 @@ router.get('/filter', (req, res) => {
         date,
         filter,
         value,
+        second,
+        secval,
       });
       pdf.create(compiledHtml, options).toStream((err, file) => {
         if (err) {
