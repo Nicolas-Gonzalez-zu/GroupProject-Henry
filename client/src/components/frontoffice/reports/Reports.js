@@ -205,7 +205,9 @@ export default function Reports() {
             }
           })
           .filter((x) => x !== undefined);
-        const toType = removeDuplicatesBy((x) => x.name, data);
+        const newData =
+          user.plan.name === 'Free' ? data.filter((d) => d.name.slice(5, 7) === realMonth) : data;
+        const toType = removeDuplicatesBy((x) => x.name, newData);
         setSecondSelect(toType);
       }
     } else {
@@ -232,17 +234,20 @@ export default function Reports() {
             }
           })
           .filter((x) => x !== undefined);
-        const toType = removeDuplicatesBy((x) => x.name, data);
+        const newData =
+          user.plan.name === 'Free' ? data.filter((d) => d.name.slice(5, 7) === realMonth) : data;
+        const toType = removeDuplicatesBy((x) => x.name, newData);
         setSecondSelect(toType);
       }
     }
   }
 
   function handleFourth(e) {
+    const obj = { wallet: 'wallet_id', date: 'generation_date', type: 'type' };
     if (send.length > 1) {
-      setSend([send[0], { sec: secondFilt, secVal: e.target.value }]);
+      setSend([send[0], { sec: obj[secondFilt], secVal: e.target.value }]);
     } else {
-      setSend([...send, { sec: secondFilt, secVal: e.target.value }]);
+      setSend([...send, { sec: obj[secondFilt], secVal: e.target.value }]);
     }
   }
 
