@@ -102,13 +102,18 @@ router.get('/', (req, res) => {
 });
 
 router.get('/filter', (req, res) => {
-  const { filter, value } = req.query;
-  console.log(value, 'soy el value en el back');
+  const { filter, value, second, secval } = req.query;
   const name = req.user.first_name;
   const lastname = req.user.last_name;
   const date = new Date();
+  let obj = {};
+  if (second && secval) {
+    obj = { customer_id: req.user.id, [filter]: value, [second]: secval };
+  } else {
+    obj = { customer_id: req.user.id, [filter]: value };
+  }
   db.Movement.findAll({
-    where: { customer_id: req.user.id, [filter]: value },
+    where: obj,
     order: [['generation_date', 'ASC']],
     include: [
       { model: db.Wallet, as: 'origin_wallet' },
@@ -126,7 +131,6 @@ router.get('/filter', (req, res) => {
           origin_wallet, // eslint-disable-line camelcase
           budget,
         } = movement.dataValues;
-        console.log(generation_date, 'soy el generation date en reports back');
 
         let conditionalBudget = {};
         if (budget) {
@@ -164,6 +168,8 @@ router.get('/filter', (req, res) => {
         date,
         filter,
         value,
+        second,
+        secval,
       });
       pdf.create(compiledHtml, options).toStream((err, file) => {
         if (err) {
