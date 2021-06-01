@@ -11,14 +11,14 @@
   padding: 10px;
   margin: 8px;
   border-radius: 5px;
-  background-color: #343a40;
+  background-color: #0e123d;
   color: #fff;
   cursor: pointer;
 }
 
 .paginationBttns a:hover {
   color: #fff;
-  background-color: #434649;
+  background-color: #0e123d;
 }
 
 .paginationActive a {
@@ -28,5 +28,5 @@
 
 .paginationDisabled a {
   color: #fff;
-  background-color: #343a40;
+  background-color: #0e123d;
 }

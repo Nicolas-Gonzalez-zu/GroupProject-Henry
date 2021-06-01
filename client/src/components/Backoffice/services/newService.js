@@ -1,54 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 import MultiSelect from 'react-multi-select-component';
+import * as action from '../../../actions/backoffice/creators';
 
 export default function NewService() {
   const [state, setstate] = useState(false);
   const [selected, setSelected] = useState([]);
+  const dispatch = useDispatch();
+  const authAlert = useSelector((store) => store.authReducers.authAlert);
 
-  const categories = [
-    {
-      id: 1,
-      name: 'Beauty',
-      createdAt: '2020-10-17T10:41:51.124Z',
-      updatedAt: '2021-09-01T17:21:22.872Z',
-    },
-    {
-      id: 2,
-      name: 'Toys',
-      createdAt: '2021-03-19T17:39:19.083Z',
-      updatedAt: '2021-12-02T07:24:22.774Z',
-    },
-    {
-      id: 3,
-      name: 'Tools',
-      createdAt: '2021-04-09T14:22:05.230Z',
-      updatedAt: '2021-06-27T06:46:13.549Z',
-    },
-    {
-      id: 4,
-      name: 'Movies',
-      createdAt: '2020-12-31T11:45:27.732Z',
-      updatedAt: '2022-03-02T17:18:04.396Z',
-    },
-    {
-      id: 5,
-      name: 'Baby',
-      createdAt: '2020-06-26T16:09:11.672Z',
-      updatedAt: '2021-12-18T04:49:13.725Z',
-    },
-    {
-      id: 6,
-      name: 'Benefits',
-      createdAt: '2021-05-25T02:24:48.643Z',
-      updatedAt: '2021-05-25T02:24:48.643Z',
-    },
-  ];
+  const categories = useSelector((statee) => statee.categoryBOReducer.category);
 
   const setModalHandler = () => {
     setstate(!state);
   };
+
+  useEffect(() => {
+    action.getCategory(dispatch);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (authAlert.fire) {
+      Swal.fire({
+        title: authAlert.message,
+        icon: authAlert.type,
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        action.setAlert(dispatch);
+      });
+    }
+  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const validate = (values) => {
     const errors = {};
@@ -83,7 +70,7 @@ export default function NewService() {
     onSubmit: (values) => {
       const cate = selected.map((x) => x.value);
       const newValues = { ...values, categories: cate, img_url: 'none' };
-      alert(JSON.stringify(newValues, null, 2));
+      action.addService(newValues, dispatch);
       setTimeout(() => {
         setModalHandler();
         formik.resetForm(
