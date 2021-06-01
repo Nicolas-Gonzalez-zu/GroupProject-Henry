@@ -90,3 +90,31 @@ export const getCategory = (dispatch) => {
       console.log(e);
     });
 };
+
+export const addCategory = (newCategory, dispatch) => {
+  serverPetition
+    .post('bo/category/add', newCategory)
+    .then(({ data }) => {
+      if (!data.error) {
+        getCategory(dispatch);
+        setAlert(dispatch, 'Category added', true, 'success');
+      }
+    })
+    .catch((e) => {
+      setError(e, dispatch);
+    });
+};
+
+export const changeCategory = (dataChange, dispatch) => {
+  serverPetition
+    .put('bo/category/edit', dataChange)
+    .then(({ data }) => {
+      if (!data.error) {
+        getCategory(dispatch);
+        setAlert(dispatch, 'Category Changed', true, 'success');
+      }
+    })
+    .catch((e) => {
+      setError(e, dispatch);
+    });
+};

@@ -1,5 +1,5 @@
 import * as actionType from '../../actions/backoffice/types';
-import { orderWallet } from '../../utils/frontoffice/sortWallet';
+import { sortID } from '../../utils/frontoffice/sortWallet';
 
 const initialState = {
   services: [],
@@ -8,7 +8,7 @@ const initialState = {
 const serviceBOReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionType.GET_SERVICES:
-      return { ...state, services: [...action.payload].sort(orderWallet) };
+      return { ...state, services: [...action.payload].sort(sortID) };
     default:
       return { ...state };
   }
