@@ -1,18 +1,27 @@
 const faker = require('faker');
-const { Plan } = require('../models');
 
 const initialPlanBenefitsDetails = [
   {
-    plan_id: 'Create movement',
-    benefit_id: 'LIMITED_MOVEMENTS_5',
+    plan_id: 1,
+    benefit_id: 1,
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
   },
   {
-    name: 'All benefits',
-    id_code: 'ALL_BENEFITS',
+    plan_id: 1,
+    benefit_id: 2,
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
+  },
+  {
+    plan_id: 2,
+    benefit_id: 3,
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
   },
 ];
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     /**
      * Add seed commands here.
      *
@@ -22,14 +31,16 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
+    await queryInterface.bulkInsert('PlanBenefits', initialPlanBenefitsDetails);
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     /**
      * Add commands to revert seed here.
      *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await queryInterface.bulkDelete('PlanBenefits', null, {});
   },
 };
