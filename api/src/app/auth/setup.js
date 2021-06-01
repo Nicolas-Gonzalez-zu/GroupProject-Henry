@@ -39,6 +39,7 @@ passport.deserializeUser(async (user, done) => {
 });
 
 passport.use(LocalStrategy);
+passport.use(FacebookStrategy);
 
 passport.use(FacebookStrategy);
 
