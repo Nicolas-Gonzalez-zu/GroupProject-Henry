@@ -3,11 +3,11 @@ const bcryptUtils = require('../../app/utils/bcryptUtils');
 
 const demoUsers = [
   {
-    first_name: 'Yilmer',
-    last_name: 'Avila',
-    phone: '+5754asdasdc',
-    email: 'yilmer0001@hotmail.com',
-    password: bcryptUtils.encrypt('123456789'),
+    first_name: 'Testing',
+    last_name: 'test',
+    phone: '+575545454',
+    email: 'test@test.com',
+    password: bcryptUtils.encrypt('123456789cC'),
     createdAt: faker.date.past(),
     updatedAt: faker.date.future(),
   },
