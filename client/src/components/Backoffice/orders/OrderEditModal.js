@@ -67,10 +67,10 @@ const OrderModal = ({
     }
     return errors;
   };
-
+  // console.log(users, 'hu');
   const formik = useFormik({
     initialValues: {
-      user: assignedUserBefore,
+      user: '',
       status: myStatus,
       startDate: onlyStartDate,
       startTime: onlyStartTime,
@@ -79,14 +79,16 @@ const OrderModal = ({
     },
     validate,
     onSubmit: (values) => {
+      console.log(values, 'values');
       const newOrder = {
         id,
-        assigned_user_id: values.user,
-        start_date: new Date(`${values.startDate}T${values.startTime}:00.000Z`),
-        end_date: new Date(`${values.endDate}T${values.endTime}:00.000Z`),
-        priority,
+        assigned_user_id: Number(values.user),
+        start_date: `${values.startDate}T${values.startTime}:00.000Z`,
+        end_date: `${values.endDate}T${values.endTime}:00.000Z`,
+
         status: values.status,
       };
+      console.log(newOrder, 'neww');
       action.editOrder(newOrder, dispatch);
 
       setTimeout(() => {
