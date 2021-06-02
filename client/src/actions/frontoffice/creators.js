@@ -300,7 +300,6 @@ export const addIncome = (income, dispatch) => {
     .post('fo/movement/add', income)
     .then(({ data }) => {
       if (!data.error) {
-        console.log(income);
         getMovements(dispatch);
         setAlert(dispatch, 'Income added', true, 'success');
       }

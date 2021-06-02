@@ -1,7 +1,5 @@
 import dotenv from 'dotenv';
-
 import axios from 'axios';
-
 import * as actionType from './types';
 
 dotenv.config();
@@ -131,5 +129,45 @@ export const changeCategory = (dataChange, dispatch) => {
     })
     .catch((e) => {
       setError(e, dispatch);
+    });
+};
+export const getOrders = (dispatch) => {
+  serverPetition
+    .get('bo/order/orderBo')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_ORDERS,
+        payload: data,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+export const editOrder = (newOrder, dispatch) => {
+  serverPetition
+    .put('bo/order/edit', newOrder)
+    .then(({ data }) => {
+      if (!data.error) {
+        getOrders(dispatch);
+        setAlert(dispatch, 'Order Edited', true, 'success');
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+export const getEmployees = (dispatch) => {
+  serverPetition
+    .get('bo/employee')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_EMPLOYEES,
+        payload: data,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
     });
 };

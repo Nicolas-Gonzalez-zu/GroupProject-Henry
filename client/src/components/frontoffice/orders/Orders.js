@@ -11,18 +11,6 @@ const Orders = () => {
     action.getOrders(dispatch);
   }, [dispatch]);
 
-  console.log(orders, 'orders en fo');
-  console.log('soy la order', orders);
-  const newOrders = [
-    ...orders,
-    {
-      ...orders[0],
-      start_date: '12/05/2021',
-      end_date: '17/05/2021',
-      status: 'pending',
-      assigned_user: { name: 'nacho', phone: '1111111', mail: 'nacho@mail.com' },
-    },
-  ];
   const popover = (services) => (
     <Popover id="popover-basic">
       <Popover.Title as="h3">Services</Popover.Title>
@@ -61,14 +49,16 @@ const Orders = () => {
     </OverlayTrigger>
   );
 
+  const ordersFiltered = orders.filter((o) => o.status !== 'unassigned');
+
   return (
     <div>
       <div className="card-header bg-dark mb-2">
         <h3>Orders</h3>
       </div>
       <div className="row p-2">
-        {newOrders &&
-          newOrders.map((o) => (
+        {ordersFiltered &&
+          ordersFiltered.map((o) => (
             <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
               <div className="card bg-light d-flex flex-fill">
                 <div className="card-header text-muted border-bottom-0">
