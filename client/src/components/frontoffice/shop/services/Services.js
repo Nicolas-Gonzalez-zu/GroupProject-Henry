@@ -14,9 +14,7 @@ export default function Services() {
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
 
-  const filterservices = services.filter(
-    (f) => f.name !== 'Pro-Account' && f.name !== 'Pro Account' && f.name !== 'Pro-Accounts',
-  );
+  const filterservices = services.filter((f) => f.name !== 'Pro Account' && f.status !== false);
   console.log(items);
   const agregarShop = (id, name, description, price) => {
     const data = {

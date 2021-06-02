@@ -89,6 +89,20 @@ export const getCategory = (dispatch) => {
     });
 };
 
+export const getOrders = (dispatch) => {
+  serverPetition
+    .get('bo/order/orderBo')
+    .then(({ data }) => {
+      dispatch({
+        type: actionType.GET_ORDERS,
+        payload: data,
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
 export const addCategory = (newCategory, dispatch) => {
   serverPetition
     .post('bo/category/add', newCategory)
@@ -114,19 +128,6 @@ export const changeCategory = (dataChange, dispatch) => {
     })
     .catch((e) => {
       setError(e, dispatch);
-    });
-};
-export const getOrders = (dispatch) => {
-  serverPetition
-    .get('bo/order/orderBo')
-    .then(({ data }) => {
-      dispatch({
-        type: actionType.GET_ORDERS,
-        payload: data,
-      });
-    })
-    .catch((e) => {
-      console.log(e);
     });
 };
 
