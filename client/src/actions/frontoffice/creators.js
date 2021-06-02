@@ -220,7 +220,7 @@ export const initialize = (dispatch) => {
       });
     })
     .catch((e) => {
-      setError(e, dispatch);
+      console.log(e.message);
       dispatch({
         type: actionType.INITIALIZE,
         payload: true,
