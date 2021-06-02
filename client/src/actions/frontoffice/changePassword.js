@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import axios from 'axios';
 import * as actionType from './types';
-import { getMe, setAlert } from './creators';
+import { setAlert } from './creators';
 
 dotenv.config();
 const BASE_URL = 'http://localhost:3001/api/';
@@ -24,7 +24,6 @@ export function resetPassword(passwords) {
       })
       .then(({ data }) => {
         if (data.success) {
-          getMe(dispatch);
           setAlert(dispatch, 'We change your password', true, 'success');
         }
       })
@@ -45,8 +44,6 @@ export function forgotPassword(email) {
       })
       .then(({ data }) => {
         if (data.message === 'request recived') {
-          console.log('aca');
-          getMe(dispatch);
           setAlert(dispatch, 'Request sended', true, 'success');
         }
       })
@@ -67,7 +64,6 @@ export default function changePassword(editPassword) {
         })
         .then(({ data }) => {
           if (data.success) {
-            getMe(dispatch);
             setAlert(dispatch, 'change success', true, 'success');
           }
         })

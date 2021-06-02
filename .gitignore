@@ -105,5 +105,5 @@ typings/
 
 .idea/
 package-lock.json
-yarn.lock
+yarn.lockm
 build/
