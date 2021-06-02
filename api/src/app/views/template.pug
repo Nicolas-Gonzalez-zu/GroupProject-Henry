@@ -4,12 +4,23 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     title #{name}'s movements
+    style.
+      .td {
+        max-width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
   body(style='margin:20; padding:0; background-color:#FFFFFF;')
     center
-      div#pageHeader(style={height:20, background:'#3c8dbc', margin:5})
-        label(style='position:absolute; background-color:white; left:19; top:2; border: 2px solid #3c8dbc; padding:5; border-radius:10px') FinanceApp
+      div#pageHeader(style={height:30, background:'#3c8dbc', margin:5})
+        label(style='position:absolute; width:100px; background-color:white; left:19; top:2; border: 2px solid #3c8dbc; padding:5; margin: 0px 40px; border-radius:10px') e-conomy
+          img(src='https://i.ibb.co/1spYSQ5/logoscalable.png' style=' width: 30px; max-width: 300px')
         label(style='position:absolute; background-color:white; right:19; top:2; border: 2px solid #3c8dbc; padding:5; border-radius:10px') #{date.toString().slice(0,21)}
       h2 #{name}'s Movements Report
+    if second
+      h5 Filter by: #{filter} #{value} and #{second} #{secval}
+    else
       h5 Filter by: #{filter} #{value}
   left
 
@@ -26,12 +37,14 @@ html
         tbody
           each pm in processedMovements
               tr
-              #{console.log(pm.generation_date, "soy el generaton date")}
                 td #{pm.generation_date.slice(4,21)}
                 td #{pm.type}
-                td #{pm.description}
-                td #{pm.wallet.name}
+                td.td #{pm.description}
+                td.td #{pm.wallet.name}
                 td $#{pm.amount}
-
+  if second
+    div#pageFooter(style='height:20; background-color:#3c8dbc; margin-top:20;')
+      label Filter by: #{filter} #{value} and #{second} #{secval}
+  else
     div#pageFooter(style='height:20; background-color:#3c8dbc; margin-top:20;')
       label Filter by: #{filter} #{value}

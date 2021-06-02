@@ -224,7 +224,7 @@ export const initialize = (dispatch) => {
       });
     })
     .catch((e) => {
-      setError(e, dispatch);
+      console.log(e.message);
       dispatch({
         type: actionType.INITIALIZE,
         payload: true,
@@ -304,7 +304,6 @@ export const addIncome = (income, dispatch) => {
     .post('fo/movement/add', income)
     .then(({ data }) => {
       if (!data.error) {
-        console.log(income);
         getMovements(dispatch);
         setAlert(dispatch, 'Income added', true, 'success');
       }
@@ -383,7 +382,12 @@ export const resetReports = (dispatch) => {
 export const getFilteredReports = (data, dispatch) => {
   console.log('soy la data en reports action', data);
   serverPetition
-    .get(`fo/reports/filter?filter=${data.filt}&value=${data.value}`, { responseType: 'blob' })
+    .get(
+      data.length === 1
+        ? `fo/reports/filter?filter=${data[0].filt}&value=${data[0].value}`
+        : `fo/reports/filter?filter=${data[0].filt}&value=${data[0].value}&second=${data[1].sec}&secval=${data[1].secVal}`,
+      { responseType: 'blob' },
+    )
     .then((response) => {
       const file = new Blob([response.data], { type: 'application/pdf' });
       const fileURL = URL.createObjectURL(file);

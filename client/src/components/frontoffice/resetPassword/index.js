@@ -88,7 +88,7 @@ const ResetPassword = ({ id, token }) => {
         setAlert(dispatch);
         setPassword({ valid: 'none', value1: '', value2: '' });
         setFormReady(false);
-        history.push('/login');
+        history.push('/client/login');
       });
     }
   }, [authAlert, dispatch, history]);

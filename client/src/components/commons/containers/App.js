@@ -10,7 +10,6 @@ import Footer from './Footer';
 import Register from '../../frontoffice/register';
 import ForgotPassword from '../../frontoffice/ForgotPassword';
 import ResetPassword from '../../frontoffice/resetPassword';
-import FormFB from '../../frontoffice/FormFacebook';
 import FormGoogle from '../../frontoffice/FormGoogle';
 import LandingPage from '../../landingPage';
 import About from '../../frontoffice/about/About';
@@ -36,6 +35,7 @@ function App() {
     if (
       initialized &&
       !loggedIn &&
+      !location.pathname.includes('resetPassword') &&
       !location.pathname.includes('login') &&
       !location.pathname.includes('register') &&
       !location.pathname.includes('forgot') &&

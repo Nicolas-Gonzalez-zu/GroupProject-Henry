@@ -93,11 +93,9 @@ router.post('/mail-exists', (req, res) => {
 
 router.post('/forgotPassword', (req, res) => {
   const { email } = req.body;
-
   db.User.findOne({ where: { email } })
     .then((user) => {
       if (user === null) return res.status(200).json({ message: 'request recived' });
-
       const secret = process.env.JWT_SECRET + user.password;
       const payload = {
         id: user.id,
@@ -105,7 +103,7 @@ router.post('/forgotPassword', (req, res) => {
       };
 
       const token = jwt.sign(payload, secret, { expiresIn: '15m' });
-      const link = `http://localhost:3000/resetPassword/${user.id}/${token}`;
+      const link = `http://localhost:3000/client/resetPassword/${user.id}/${token}`;
 
       sendEmail(user.email, 'Forgot password', link, 'd-0ab651e511cd4640a24fa879effca7fd');
 
@@ -155,7 +153,7 @@ router.post('/resetPassword/:id/:token', (req, res) => {
 router.get(
   '/facebook',
   passport.authenticate('facebook', {
-    scope: ['public_profile', 'email'],
+    scope: ['email'],
   }),
 );
 

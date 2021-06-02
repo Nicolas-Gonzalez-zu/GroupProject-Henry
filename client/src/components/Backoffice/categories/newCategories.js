@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 import FormDefault from '../../commons/FormDefault/FormDefault';
+import * as action from '../../../actions/backoffice/creators';
 
 export default function NewCategories() {
   const [state, setstate] = useState(false);
+  const authAlert = useSelector((store) => store.authReducers.authAlert);
+  const dispatch = useDispatch();
 
   const setModalHandler = () => {
     setstate(!state);
   };
+
+  useEffect(() => {
+    if (authAlert.fire) {
+      Swal.fire({
+        title: authAlert.message,
+        icon: authAlert.type,
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        action.setAlert(dispatch);
+      });
+    }
+  }, [dispatch, authAlert.fire, authAlert.message, authAlert.type]);
 
   const validate = (values) => {
     const errors = {};
@@ -26,6 +46,7 @@ export default function NewCategories() {
     },
     validate,
     onSubmit: (values) => {
+      action.addCategory(values, dispatch);
       setTimeout(() => {
         setModalHandler();
         formik.resetForm({ name: '' });
