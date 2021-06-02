@@ -14,7 +14,7 @@ export default function ServicesBO() {
   const pagesVisited = pageNumber * servicePerPage;
   const pageCount = Math.ceil(services?.length / servicePerPage);
   const dispatch = useDispatch();
-
+  console.log(services);
   const changePage = ({ selected }) => {
     setPageNumber(selected);
   };
@@ -41,6 +41,11 @@ export default function ServicesBO() {
               <h2 className="lead ">
                 <b>{s.name}</b>
               </h2>
+              {s.status ? (
+                <p className="text-success"> Active </p>
+              ) : (
+                <p className="text-danger"> Inactive </p>
+              )}
               <hr />
               <p className="text-muted ">
                 <b>Description: </b>

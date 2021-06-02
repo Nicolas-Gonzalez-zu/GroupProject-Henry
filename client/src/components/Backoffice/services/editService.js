@@ -12,6 +12,7 @@ export default function EditService({ categories, name, price, description, id }
   const category = useSelector((statee) => statee.categoryBOReducer.category);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
+  const on = true;
 
   const setModalHandler = () => {
     setstate(!state);
@@ -60,6 +61,7 @@ export default function EditService({ categories, name, price, description, id }
 
   const formik = useFormik({
     initialValues: {
+      status: '-',
       name,
       price,
       description,
@@ -67,8 +69,10 @@ export default function EditService({ categories, name, price, description, id }
     validate,
     onSubmit: (values) => {
       const cate = selected.map((x) => x.value);
+
       const newValues = {
         ...values,
+        status: Boolean(values.status),
         service_id: id,
         img_url: 'none',
         modifiedCategories: {
@@ -76,16 +80,12 @@ export default function EditService({ categories, name, price, description, id }
           newCategories: cate,
         },
       };
+      console.log(newValues, 'nuevos');
       action.changeService(newValues, dispatch);
       setTimeout(() => {
         setModalHandler();
         formik.resetForm(
-          {
-            name: '',
-            price: '',
-            description: '',
-            img_url: '',
-          },
+          { status: '', name: '', price: '', description: '', img_url: '' },
           setSelected([]),
         );
       }, 1500);
@@ -110,6 +110,22 @@ export default function EditService({ categories, name, price, description, id }
         <form onSubmit={formik.handleSubmit}>
           <div className="d-flex justify-content-center ">
             <div className="d-flex flex-column">
+              <label className="align-self-center">Status</label>
+              <select
+                onChange={formik.handleChange}
+                value={formik.values.status}
+                id="status"
+                className=" ml-2 border rounded  "
+              >
+                <option>-</option>
+                <option value={on}>Active</option>
+                <option value="">Inactive</option>
+              </select>
+              {formik.errors.status ? (
+                <b className="text-danger text-center">{formik.errors.status}</b>
+              ) : (
+                <br />
+              )}
               <b className="text-center">Name</b>
               <input
                 onChange={formik.handleChange}

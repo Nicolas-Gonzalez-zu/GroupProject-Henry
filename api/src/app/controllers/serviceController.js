@@ -65,7 +65,8 @@ router.put('/edit', (req, res) => {
   if (price) modifiedService.price = price;
   if (description) modifiedService.description = description;
   if (img_url) modifiedService.img_url = img_url; // eslint-disable-line camelcase
-  if (status) modifiedService.status = status;
+  if (status !== undefined) modifiedService.status = status;
+
   // eslint-disable-next-line camelcase
   if (service_id) {
     db.Service.update(modifiedService, {
