@@ -5,6 +5,7 @@ import { Modal } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import './Pro.css';
 import Tilt from 'react-vanilla-tilt';
+import Paypal from '../Paypal/Paypal';
 
 import * as action from '../../../actions/frontoffice/creators';
 
@@ -16,23 +17,24 @@ export default function Pro() {
   const [preferenceId, setPreferenceId] = useState(null);
   const [state, setstate] = useState(false);
   const [btns, setbtns] = useState(false);
+  const [toPaypal, setToPaypal] = useState({});
   const FORM_ID = 'payment-form';
 
   // console.log(services, 'servi');
   const showmodal = () => {
     setstate(!state);
     setbtns(false);
+    setPaymentMethod(null);
   };
 
   useEffect(() => {
     action.getServices(dispatch);
   }, [dispatch]);
 
-  const addcarrito = (e) => {
-    const filtrado = services.filter((f) => f.name === 'Pro-Accounts');
+  const addcarrito = (payment) => {
+    const filtrado = services.filter((f) => f.name === 'Pro Account');
     console.log(filtrado, 'fil');
     const pro = filtrado.map((s) => {
-      console.log(s.price, 'dentrodelmap');
       const data = {
         id: s.id,
         name: s.name,
@@ -41,7 +43,7 @@ export default function Pro() {
       };
       return data;
     });
-
+    console.log(filtrado, 'pat');
     // eslint-disable-next-line no-restricted-globals
     Swal.fire({
       title: 'Do you really want to confirm purchase?',
@@ -51,7 +53,7 @@ export default function Pro() {
       showConfirmButton: true,
       showCancelButton: true,
     }).then((res) => {
-      if (res.isConfirmed) {
+      if (res.isConfirmed && payment === 'mercadopago') {
         setbtns(true);
         setPaymentMethod('mercado pago');
         const miUuid = uuid();
@@ -69,6 +71,21 @@ export default function Pro() {
           .catch((err) => {
             console.log(err);
           });
+      } else if (res.isConfirmed && payment === 'paypal') {
+        setbtns(true);
+
+        const itemPaypal = filtrado.map((i) => ({
+          name: i.name,
+          description: i.description,
+          unit_amount: {
+            currency_code: 'USD',
+            value: i.price,
+          },
+          quantity: '1',
+          sku: i.id,
+        }));
+        setToPaypal(itemPaypal);
+        setPaymentMethod('paypal');
       }
     });
   };
@@ -84,6 +101,9 @@ export default function Pro() {
         const form = document.getElementById(FORM_ID);
         form.appendChild(script);
       }
+    }
+    if (paymentMethod === 'paypal' && preferenceId) {
+      setPreferenceId(null);
     }
   }, [paymentMethod, preferenceId]);
 
@@ -214,28 +234,18 @@ export default function Pro() {
             <div className="d-flex justify-content-around">
               {btns ? (
                 <>
-                  <button
-                    type="button"
-                    className="btn  btn-outline-dark"
-                    onClick={addcarrito}
-                    disabled
-                  >
+                  <button type="button" className="btn  btn-outline-dark" disabled>
                     <img
                       src="https://help.turitop.com/hc/article_attachments/360013282039/isologoVertical.png"
-                      alt="American Express"
+                      alt="mercadopago"
                       height="70"
                       width="70"
                     />
                   </button>
-                  <button
-                    type="button"
-                    className="btn  btn-outline-dark"
-                    onClick={addcarrito}
-                    disabled
-                  >
+                  <button type="button" className="btn  btn-outline-dark" disabled>
                     <img
                       src="https://i.ibb.co/Wvs4LWh/paypal.png"
-                      alt="American Express"
+                      alt="paypal"
                       height="70"
                       width="70"
                     />
@@ -244,7 +254,11 @@ export default function Pro() {
               ) : (
                 <>
                   {' '}
-                  <button type="button" className="btn  btn-outline-dark" onClick={addcarrito}>
+                  <button
+                    type="button"
+                    className="btn  btn-outline-dark"
+                    onClick={() => addcarrito('mercadopago')}
+                  >
                     <img
                       src="https://help.turitop.com/hc/article_attachments/360013282039/isologoVertical.png"
                       alt="American Express"
@@ -252,7 +266,11 @@ export default function Pro() {
                       width="70"
                     />
                   </button>
-                  <button type="button" className="btn  btn-outline-dark" onClick={addcarrito}>
+                  <button
+                    type="button"
+                    className="btn  btn-outline-dark"
+                    onClick={() => addcarrito('paypal')}
+                  >
                     <img
                       src="https://i.ibb.co/Wvs4LWh/paypal.png"
                       alt="American Express"
@@ -269,6 +287,7 @@ export default function Pro() {
               <div className="row no-print">
                 <div className="col-12">
                   {preferenceId ? <form id={FORM_ID} method="POST" /> : ''}
+                  {paymentMethod === 'paypal' ? <Paypal items={toPaypal} /> : ''}
                 </div>
               </div>
             </div>

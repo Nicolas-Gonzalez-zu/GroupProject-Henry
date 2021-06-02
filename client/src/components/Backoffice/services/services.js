@@ -3,10 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 import NewService from './newService';
 import EditService from './editService';
+import InternalLoader from '../../frontoffice/loaders/InternalLoader';
 import * as action from '../../../actions/backoffice/creators';
 
 export default function ServicesBO() {
   const services = useSelector((state) => state.serviceBOReducer.services);
+  const [loading, setLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(0);
   const servicePerPage = 9;
   const pagesVisited = pageNumber * servicePerPage;
@@ -17,8 +19,16 @@ export default function ServicesBO() {
     setPageNumber(selected);
   };
 
+  const reset = () => {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 1500);
+  };
+
   useEffect(() => {
     action.getServices(dispatch);
+    reset();
   }, [dispatch]);
 
   const displayServices = services?.slice(pagesVisited, pagesVisited + servicePerPage).map((s) => (
@@ -71,8 +81,9 @@ export default function ServicesBO() {
             <NewService />
           </div>
         </div>
+        {!loading && <InternalLoader />}
         <div className="card-body">
-          <div className="row">{services && displayServices}</div>
+          <div className="row"> {services && displayServices}</div>
           <ReactPaginate
             previousLabel="Previous"
             nextLabel="Next"

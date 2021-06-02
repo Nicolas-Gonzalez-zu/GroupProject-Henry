@@ -248,7 +248,13 @@ export default function ExpenseModal() {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          {alerto.length === 0 ? '' : <p className="text-warning">{alerto}!</p>}
+          {alerto.length === 0 ? (
+            ''
+          ) : (
+            <div className="alert bg-gradient-warning" role="alert">
+              {alerto}!
+            </div>
+          )}
         </Modal.Footer>
       </Modal>
     </>

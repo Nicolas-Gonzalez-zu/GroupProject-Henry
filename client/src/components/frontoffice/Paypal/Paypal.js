@@ -43,7 +43,7 @@ export default function Paypal(props) {
             actions.order.create({
               purchase_units: [
                 {
-                  description: user.user.id.toString(),
+                  description: user.id.toString(),
                   amount: {
                     currency_code: 'USD',
                     value: value.toString(),
@@ -84,7 +84,7 @@ export default function Paypal(props) {
 
   return (
     <div>
-      <div ref={paypal} />
+      <div ref={paypal} className="mt-2" />
     </div>
   );
 }
