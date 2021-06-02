@@ -18,11 +18,11 @@ const OrderModal = ({
   const [showModal, setShowModal] = useState(false);
   const [onlyStartDate, onlyStartTime] = startDate
     ? startDate.replace('T', '~').replace('.000Z', '').split('~')
-    : '0000-00-00T00:00:00.000Z'.replace('T', '~').replace('.000Z', '').split('~');
+    : '0000-00-00T00:00.000Z'.replace('T', '~').replace('.000Z', '').split('~');
 
   const [onlyEndDate, onlyEndTime] = endDate
     ? endDate.replace('T', '~').replace('.000Z', '').split('~')
-    : '0000-00-00T00:00:00.000Z'.replace('T', '~').replace('.000Z', '').split('~');
+    : '0000-00-00T00:00.000Z'.replace('T', '~').replace('.000Z', '').split('~');
   const authAlert = useSelector((state) => state.authReducers.authAlert);
   const dispatch = useDispatch();
 
@@ -56,14 +56,33 @@ const OrderModal = ({
     if (!values.user) {
       errors.user = 'User is required';
     }
+    if (values.user === assignedUserBefore) {
+      errors.user = 'Please, select user again';
+    }
     if (!values.status) {
       errors.status = 'Status is required';
+    }
+    if (values.status === 'unassigned') {
+      errors.status = 'Please, you need to specify a status';
     }
     if (!values.startDate) {
       errors.startDate = 'Start date is required';
     }
+    if (values.startDate === '0000-00-00') {
+      errors.startDate = 'Please, you need to set an Start Date';
+    }
     if (!values.endDate) {
       errors.endDate = 'End date is required';
+    }
+    if (values.endDate === '0000-00-00') {
+      errors.endDate = 'Please, you need to set an End Date';
+    }
+    if (!values.startTime) {
+      errors.startTime = 'Start Time is required';
+    }
+
+    if (!values.endTime) {
+      errors.endTime = 'End time is required';
     }
     return errors;
   };
@@ -95,6 +114,7 @@ const OrderModal = ({
     },
     enableReinitialize: true,
   });
+  console.log(formik.values.endTime);
   return (
     <div>
       <Button className="btn-success" onClick={setShowModalHandler}>
@@ -127,6 +147,11 @@ const OrderModal = ({
                     </option>
                   ))}
               </select>
+              {formik.errors.user ? (
+                <b className="align-self-center text-danger">{formik.errors.user}</b>
+              ) : (
+                ''
+              )}
             </div>
             <div className="d-flex flex-column m-3">
               <label className="align-self-center">Status</label>
@@ -140,6 +165,9 @@ const OrderModal = ({
                     : 'form-control w-50 align-self-center'
                 }
               >
+                <option value="unassigned" disabled>
+                  unassigned
+                </option>
                 {status && status.map((u) => <option value={u.id}>{u.name}</option>)}
               </select>
             </div>

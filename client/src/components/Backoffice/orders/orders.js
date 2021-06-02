@@ -3,11 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import OrderModal from './OrderEditModal';
 import * as action from '../../../actions/backoffice/creators';
 
-const users = [
-  { id: 1, name: 'nacho garay' },
-  { id: 2, name: 'Joaquin Bianchi' },
-  { id: 3, name: 'nico gonzalez' },
-];
 const status = [
   { id: 'pending', name: 'pending' },
   { id: 'done', name: 'done' },
@@ -24,6 +19,7 @@ const OrdersBO = () => {
     action.getEmployees(dispatch);
   }, [dispatch]);
 
+  console.log(orders);
   return (
     <div>
       <div className="card-header bg-dark mb-2">
