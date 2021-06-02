@@ -6,7 +6,7 @@ import * as action from '../../../actions/frontoffice/creators';
 const Orders = () => {
   const orders = useSelector((state) => state.orderReducer.orders);
   const dispatch = useDispatch();
-
+  console.log(orders, 'gogo');
   useEffect(() => {
     action.getOrders(dispatch);
   }, [dispatch]);
