@@ -115,10 +115,40 @@ router.get('/filter', (req, res) => {
   const lastname = req.user.last_name;
   const date = new Date();
   let obj = {};
-  if (second && secval) {
+  let init = '';
+  let end = '';
+  const today = new Date();
+  const monthBefore = new Date();
+  monthBefore.setMonth(today.getMonth() - 1);
+
+  if (filter === 'generation_date') {
+    const date = value.slice(0, 10).split('-');
+    init = new Date(date[0], date[1], date[2], 00, 00, 00);
+    end = new Date(date[0], date[1], date[2], 23, 59, 59);
+    init.setMonth(end.getMonth() - 1);
+    end.setMonth(init.getMonth());
+    if (second && secval) {
+      obj = { customer_id: req.user.id, [filter]: { [Op.between]: [init, end] }, [second]: secval };
+    } else {
+      obj = { customer_id: req.user.id, [filter]: { [Op.between]: [init, end] } };
+    }
+  } else if (second === 'generation_date') {
+    const date = secval.slice(0, 10).split('-');
+    init = new Date(date[0], date[1], date[2], 00, 00, 00);
+    end = new Date(date[0], date[1], date[2], 23, 59, 59);
+    init.setMonth(end.getMonth() - 1);
+    end.setMonth(init.getMonth());
+    obj = { customer_id: req.user.id, [filter]: value, [second]: { [Op.between]: [init, end] } };
+  } else if (second !== 'generation_date' && secval) {
     obj = { customer_id: req.user.id, [filter]: value, [second]: secval };
+    if (req.user.plan.dataValues.name === 'Free') {
+      obj.generation_date = { [Op.between]: [monthBefore, today] };
+    }
   } else {
     obj = { customer_id: req.user.id, [filter]: value };
+    if (req.user.plan.dataValues.name === 'Free') {
+      obj.generation_date = { [Op.between]: [monthBefore, today] };
+    }
   }
   db.Movement.findAll({
     where: obj,
