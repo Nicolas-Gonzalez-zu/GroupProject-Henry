@@ -62,6 +62,8 @@ export const getMe = (dispatch) => {
           },
         });
       }
+      const shop = JSON.parse(window.localStorage.getItem(`cart_${data.id}`)) || [];
+      dispatch({ type: 'SET_SHOP', payload: shop });
     })
     .catch((err) => setError(err, dispatch));
 };
@@ -214,6 +216,8 @@ export const initialize = (dispatch) => {
           },
         });
       }
+      const shop = JSON.parse(window.localStorage.getItem(`cart_${data.id}`)) || [];
+      dispatch({ type: 'SET_SHOP', payload: shop });
       dispatch({
         type: actionType.INITIALIZE,
         payload: true,
@@ -421,16 +425,23 @@ export const getServices = (dispatch) => {
     });
 };
 
-export const addShop = (payload, dispatch) => {
-  dispatch({ type: 'ADD_SHOP', payload });
+export const addShop = (payload, userId, dispatch) => {
+  const shop = JSON.parse(window.localStorage.getItem(`cart_${userId}`)) || [];
+  shop.push(payload);
+  window.localStorage.setItem(`cart_${userId}`, JSON.stringify(shop));
+  dispatch({ type: 'SET_SHOP', payload: shop });
   setAlert(dispatch, 'Added to the cart', true, 'success');
 };
-export const deleteShop = (payload, dispatch) => {
-  dispatch({ type: 'DELETE_SHOP', payload });
-};
+// export const deleteShop = (payload, dispatch) => {
+//   dispatch({ type: 'DELETE_SHOP', payload });
+// };
 
-export const removeFromShop = (payload, dispatch) => {
-  dispatch({ type: 'REMOVE_FROM_SHOP', payload });
+export const removeFromShop = (id, userId, dispatch) => {
+  let shop = JSON.parse(window.localStorage.getItem(`cart_${userId}`)) || [];
+  shop = shop.filter((el) => el.id !== id);
+  console.log(shop);
+  window.localStorage.setItem(`cart_${userId}`, JSON.stringify(shop));
+  dispatch({ type: 'SET_SHOP', payload: shop });
 };
 
 export const getInvoice = (data, dispatch) => {
