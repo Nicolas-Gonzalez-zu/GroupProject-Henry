@@ -25,6 +25,7 @@ import InvoiceId from '../../frontoffice/InvoiceId/InvoiceId';
 import Categories from '../../Backoffice/categories/categories';
 import OrdersBO from '../../Backoffice/orders/orders';
 import ServicesBO from '../../Backoffice/services/services';
+import DashboardBO from '../../Backoffice/dashboard/dashboard';
 
 const ContentWrapper = () => {
   const dispatch = useDispatch();
@@ -107,6 +108,9 @@ const ContentWrapper = () => {
               <div className="wrapper">
                 <Contact />
               </div>
+            </Route>
+            <Route exact path="/admin">
+              <DashboardBO />
             </Route>
             <Route exact path="/admin/categories">
               <Categories />

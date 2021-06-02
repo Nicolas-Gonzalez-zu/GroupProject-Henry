@@ -2,19 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 import NewCategories from './newCategories';
+import InternalLoader from '../../frontoffice/loaders/InternalLoader';
 import EditCategories from './editCategories';
 import * as action from '../../../actions/backoffice/creators';
 
 export default function Categories() {
   const categories = useSelector((state) => state.categoryBOReducer.category);
   const [pageNumber, setPageNumber] = useState(0);
+  const [loading, setLoading] = useState(true);
   const categoryPerPage = 7;
   const pagesVisited = pageNumber * categoryPerPage;
   const pageCount = Math.ceil(categories?.length / categoryPerPage);
   const dispatch = useDispatch();
 
+  const reset = () => {
+    setLoading(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 1500);
+  };
+
   useEffect(() => {
     action.getCategory(dispatch);
+    reset();
   }, [dispatch]);
 
   const changePage = ({ selected }) => {
@@ -45,7 +55,7 @@ export default function Categories() {
             <NewCategories />
           </div>
         </div>
-
+        {!loading && <InternalLoader />}
         <div className="card-body">
           <table className="table table-bordered">
             <thead>
