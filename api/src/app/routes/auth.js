@@ -42,6 +42,12 @@ router.post('/register', (req, res) => {
     .then((user) => {
       db.Customer.create({ user_id: user.id, plan_id: 1 })
         .then(() => {
+          sendEmail(
+            user.email,
+            'Register success',
+            'http://localhost:3000/client/login',
+            'd-6cc3991cd50f4deaa247f89b6e59a5fd',
+          );
           res.status(201).json({ success: true });
         })
         .catch((e) => {
