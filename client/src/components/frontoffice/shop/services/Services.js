@@ -8,6 +8,8 @@ import * as action from '../../../../actions/frontoffice/creators';
 export default function Services() {
   const [loading, setLoading] = useState(true);
   const items = useSelector((state) => state.shopReducer.shop);
+  const { id: userId } = useSelector((state) => state.authReducers.sessionData.loggedUser);
+
   const services = useSelector((state) => state.serviceReducer.services);
   const authAlert = useSelector((store) => store.authReducers.authAlert);
   const dispatch = useDispatch();
@@ -23,7 +25,7 @@ export default function Services() {
       description,
       price,
     };
-    action.addShop(data, dispatch);
+    action.addShop(data, userId, dispatch);
   };
 
   const reset = () => {

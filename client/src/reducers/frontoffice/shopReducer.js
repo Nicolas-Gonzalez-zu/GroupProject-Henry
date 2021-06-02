@@ -1,16 +1,15 @@
 const initialState = {
   shop: [],
+  cartItemsCounter: 0,
 };
 
 const shopReducer = (state = initialState, action) => {
   //  console.log(action, 'priceen reducer');
   // console.log(typeof action.payload.price, 'typeof');
   switch (action.type) {
-    case 'ADD_SHOP':
+    case 'SET_SHOP':
       //   console.log(action.payload, 'soy el supuesto item que le llega el precio como string');
-      return { ...state, shop: state.shop.concat(action.payload) };
-    case 'REMOVE_FROM_SHOP':
-      return { ...state, shop: state.shop.filter((el) => el.id !== action.payload) };
+      return { ...state, shop: action.payload };
     default:
       return state;
   }

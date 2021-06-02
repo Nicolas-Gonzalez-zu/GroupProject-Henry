@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+// import { persistReducer } from 'redux-persist';
+// import storage from 'redux-persist/lib/storage';
 import walletReducer from './frontoffice/walletReducer';
 import authReducers from './authReducers';
 import budgetReducer from './frontoffice/budgetReducer';
@@ -13,11 +13,11 @@ import shopReducer from './frontoffice/shopReducer';
 import invoiceReducer from './frontoffice/invoiceReducer';
 import orderReducer from './frontoffice/orderReducer';
 
-const persistConfig = {
-  key: 'primary',
-  storage,
-  whitelist: ['shopReducer'],
-};
+// const persistConfig = {
+//   key: 'primary',
+//   storage,
+//   whitelist: ['shopReducer'],
+// };
 
 const rootReducer = combineReducers({
   authReducers,
@@ -33,4 +33,5 @@ const rootReducer = combineReducers({
   orderReducer,
 });
 
-export default persistReducer(persistConfig, rootReducer);
+// export default persistReducer(rootReducer);
+export default rootReducer;

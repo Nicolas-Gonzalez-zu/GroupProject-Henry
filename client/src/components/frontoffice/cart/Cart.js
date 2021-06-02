@@ -82,7 +82,7 @@ const Cart = () => {
   }, [paymentMethod, preferenceId]);
 
   const removeFromShop = (id) => {
-    action.removeFromShop(id, dispatch);
+    action.removeFromShop(id, user.id, dispatch);
     setPaymentMethod('null');
     /* eslint-disable no-param-reassign */
     document.querySelectorAll('[name=method]').forEach((x) => {

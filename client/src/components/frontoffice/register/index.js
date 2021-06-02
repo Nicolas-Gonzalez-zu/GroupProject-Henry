@@ -138,7 +138,7 @@ const Register = () => {
         }).then(() => {
           if (authAlert.type === 'success') {
             action.setAlert(dispatch);
-            history.push('/login');
+            history.push('/client/login');
           } else {
             action.setAlert(dispatch);
           }
