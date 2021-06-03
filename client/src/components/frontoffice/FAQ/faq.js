@@ -53,8 +53,8 @@ const FAQ = () => (
           First you will have to go to the Profile section and then click on the Change Password
           button, that will lead you to a form. You have to click on the Forgot Password? link. You
           can recover your password by writing the same email address that you Sign up with. We will
-          send you a code so you can change the password. Even if you Signed up with a Facebook or
-          Google account you can change the password following the same steps.
+          send you a code so you can change the password with it. Even if you Signed up with a
+          Facebook or Google account you can change the password following the same steps.
         </div>
       </div>
     </div>
@@ -159,7 +159,7 @@ const FAQ = () => (
           </h4>
         </div>
       </a>
-      <div id="collapseNine" className="collapse" data-parent="#accordion">
+      <div id="collapseTen" className="collapse" data-parent="#accordion">
         <div className="card-body">
           Not yet, we are working on adding more features so you can have a better experience
           managing your finances.
@@ -174,7 +174,7 @@ const FAQ = () => (
           </h4>
         </div>
       </a>
-      <div id="collapseNine" className="collapse" data-parent="#accordion">
+      <div id="collapseEleven" className="collapse" data-parent="#accordion">
         <div className="card-body">
           You can chat or send an email to a member of the team by opening the chat on the left
           side. Fill out the form and we will get back to you as soon as possible.
@@ -187,7 +187,7 @@ const FAQ = () => (
           <h4 className="card-title w-100">12. How can I know that the website is secure?</h4>
         </div>
       </a>
-      <div id="collapseNine" className="collapse" data-parent="#accordion">
+      <div id="collapseTwelve" className="collapse" data-parent="#accordion">
         <div className="card-body">
           All the information in your account is Encrypted. Our first priority is that your data is
           safe. Checkout
