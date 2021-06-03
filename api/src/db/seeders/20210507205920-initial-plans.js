@@ -2,15 +2,17 @@ const faker = require('faker');
 
 const initialPlans = [
   {
-    name: 'Free',
-    price: 0,
+    id: 1,
+    name: 'Pro',
+    price: 300,
     status: true,
     createdAt: faker.date.recent(),
     updatedAt: faker.date.recent(),
   },
   {
-    name: 'Pro',
-    price: 20,
+    id: 2,
+    name: 'Free',
+    price: 0,
     status: true,
     createdAt: faker.date.recent(),
     updatedAt: faker.date.recent(),

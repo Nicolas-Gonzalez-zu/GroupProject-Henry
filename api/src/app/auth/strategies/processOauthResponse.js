@@ -31,7 +31,7 @@ module.exports = async (token, refreshToken, profile, done) => {
         password: bcryptUtils.encrypt(faker.internet.password()),
       });
       if (user) {
-        const customer = await Customer.create({ user_id: user.id, plan_id: 1 });
+        const customer = await Customer.create({ user_id: user.id, plan_id: 2 });
         if (customer) done(null, user);
         else {
           await User.destroy({
@@ -39,10 +39,10 @@ module.exports = async (token, refreshToken, profile, done) => {
               email,
             },
           });
-          done(null, false, { error: 'Facebook authentication failed, try again' });
+          done(null, false, { error: 'Authentication failed, try again' });
         }
       } else {
-        done(null, false, { error: 'Facebook authentication failed, try again' });
+        done(null, false, { error: 'Authentication failed, try again' });
       }
     }
   } catch (e) {

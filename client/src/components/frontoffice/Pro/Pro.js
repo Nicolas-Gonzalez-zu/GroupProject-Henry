@@ -32,7 +32,7 @@ export default function Pro() {
   }, [dispatch]);
 
   const addcarrito = (payment) => {
-    const filtrado = services.filter((f) => f.name === 'Pro Account');
+    const filtrado = services.filter((f) => f.name === 'E-conomy Pro Account');
     console.log(filtrado, 'fil');
     const pro = filtrado.map((s) => {
       const data = {
