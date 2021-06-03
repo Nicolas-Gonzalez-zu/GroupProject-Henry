@@ -106,7 +106,6 @@ const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDat
         assigned_user_id: Number(values.user),
         start_date: `${values.startDate}T${newStartTime}`,
         end_date: `${values.endDate}T${newEndTime}`,
-
         status: values.status,
       };
       action.editOrder(newOrder, dispatch);
