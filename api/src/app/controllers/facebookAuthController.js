@@ -13,9 +13,9 @@ router.get(
 router.get(
   '/callback',
   passport.authenticate('facebook', {
-    successRedirect: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/client?sucess=true`,
+    successRedirect: `${process.env.SITE_URL || 'http://localhost:3000'}/client?sucess=true`,
     failureRedirect: `${
-      process.env.FRONTEND_URL || 'http://localhost:3000'
+      process.env.SITE_URL || 'http://localhost:3000'
     }/client/login?fb_success=false`,
   }),
 );
