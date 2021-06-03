@@ -4,7 +4,8 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const bcryptUtils = require('../utils/bcryptUtils');
-const facebookauth = require('../controllers/facebookauth');
+const facebookauth = require('../controllers/facebookAuthController');
+const googleauth = require('../controllers/googleAuthController');
 
 const sendEmail = require('../helpers/sendgrid');
 
@@ -152,20 +153,7 @@ router.post('/resetPassword/:id/:token', (req, res) => {
     });
 });
 
-router.get(
-  '/facebook',
-  passport.authenticate('facebook', {
-    scope: ['public_profile', 'email'],
-  }),
-);
-
-router.get(
-  '/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect: '/',
-    failureRedirect: '/',
-  }),
-);
 router.use('/facebook', facebookauth);
+router.use('/google', googleauth);
 
 module.exports = router;
