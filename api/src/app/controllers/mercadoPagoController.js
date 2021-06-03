@@ -76,9 +76,9 @@ server.post('/', async (req, res) => {
       name: `${user.first_name} ${user.last_name}`,
     },
     back_urls: {
-      success: `${process.env.SITE_URL || 'http://localhost:3000/'}client/payment/confirmation`,
-      failure: `${process.env.SITE_URL || 'http://localhost:3000/'}client/payment/confirmation`,
-      pending: `${process.env.SITE_URL || 'http://localhost:3000/'}client/payment/confirmation`,
+      success: `${process.env.SITE_URL || 'http://localhost:3000'}/client/payment/confirmation`,
+      failure: `${process.env.SITE_URL || 'http://localhost:3000'}/client/payment/confirmation`,
+      pending: `${process.env.SITE_URL || 'http://localhost:3000'}/client/payment/confirmation`,
     },
     auto_return: 'approved',
     marketplace: 'E-conomy',
