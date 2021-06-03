@@ -1,15 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Popover, OverlayTrigger, Button } from 'react-bootstrap';
 import * as action from '../../../actions/frontoffice/creators';
 
 const Orders = () => {
+  const [sort, setSort] = useState('');
   const orders = useSelector((state) => state.orderReducer.orders);
   const dispatch = useDispatch();
 
   useEffect(() => {
     action.getOrders(dispatch);
   }, [dispatch]);
+
+  useEffect(() => {
+    if (sort !== 'all' && sort !== 'startDate') {
+      return action.sortOrdersStatus(sort, dispatch);
+    }
+    if (sort === 'startDate') {
+      return action.sortOrdersByDate(dispatch);
+    }
+    return action.getOrders(dispatch);
+  }, [sort, dispatch]);
+
+  const status = [
+    { id: 'unassigned', name: 'unassigned' },
+    { id: 'pending', name: 'pending' },
+    { id: 'done', name: 'done' },
+    { id: 'inProgress', name: 'inProgress' },
+  ];
 
   const popover = (services) => (
     <Popover id="popover-basic">
@@ -51,18 +69,46 @@ const Orders = () => {
 
   const ordersFiltered = orders.filter((o) => o.status !== 'unassigned');
   const ordersUnassigned = orders.filter((o) => o.status === 'unassigned');
+  const handleChange = (e) => {
+    setSort(e.target.value);
+  };
   return (
     <div>
       <div className="card-header bg-dark mb-2">
-        <h3>Orders</h3>
+        <div className="d-flex justify-content-between">
+          <h3>Orders</h3>
+          {ordersUnassigned.length ? (
+            <h4>
+              Awaiting for: <b className="text-danger">{ordersUnassigned.length} orders</b>
+            </h4>
+          ) : (
+            ''
+          )}
+        </div>
       </div>
       <div className="column">
-        <div className="row p-3">
-          <h4>
-            Awaiting for: <b className="text-danger">{ordersUnassigned.length} orders</b>
-          </h4>
+        <div className="row p-3 d-flex justify-content-between">
+          <div className=" d-flex justify-content-center w-25">
+            <h4>Sort by:</h4>
+          </div>
+          <div className="w-75 d-flex align-items-center justify-content-around">
+            <div>
+              <label>Date</label>
+              <select onChange={handleChange}>
+                <option value="all">Default</option>
+                <option value="startDate">Start date</option>
+              </select>
+            </div>
+            <div>
+              <label>Status</label>
+              <select onChange={handleChange}>
+                <option value="all">-</option>
+                {status && status.map((s) => <option value={s.id}>{s.name}</option>)}
+              </select>
+            </div>
+          </div>
         </div>
-        <div className="row p-2 w-100">
+        <div className="row p-2 mr-0">
           {ordersFiltered &&
             ordersFiltered.map((o) => (
               <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">

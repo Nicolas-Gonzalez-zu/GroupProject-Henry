@@ -18,11 +18,11 @@ const OrderModal = ({
   const [showModal, setShowModal] = useState(false);
   const [onlyStartDate, onlyStartTime] = startDate
     ? startDate.replace('T', '~').replace('.000Z', '').split('~')
-    : '0000-00-00T00:00.000Z'.replace('T', '~').replace('.000Z', '').split('~');
+    : '0000-00-00T00:00:00.000Z'.replace('T', '~').replace('.000Z', '').split('~');
 
   const [onlyEndDate, onlyEndTime] = endDate
     ? endDate.replace('T', '~').replace('.000Z', '').split('~')
-    : '0000-00-00T00:00.000Z'.replace('T', '~').replace('.000Z', '').split('~');
+    : '0000-00-00T00:00:00.000Z'.replace('T', '~').replace('.000Z', '').split('~');
   const authAlert = useSelector((state) => state.authReducers.authAlert);
   const dispatch = useDispatch();
 
@@ -77,6 +77,9 @@ const OrderModal = ({
     if (values.endDate === '0000-00-00') {
       errors.endDate = 'Please, you need to set an End Date';
     }
+    if (new Date(values.endDate) < new Date(values.startDate)) {
+      errors.endDate = 'Please, the end date must be next to start date';
+    }
     if (!values.startTime) {
       errors.startTime = 'Start Time is required';
     }
@@ -98,14 +101,22 @@ const OrderModal = ({
     },
     validate,
     onSubmit: (values) => {
+      const newStartTime =
+        values.startTime === onlyStartTime
+          ? `${values.startTime}.000Z`
+          : `${values.startTime}:00.000Z`;
+
+      const newEndTime =
+        values.endTime === onlyEndTime ? `${values.endTime}.000Z` : `${values.endTime}:00.000Z`;
+
       const newOrder = {
         id,
-        assigned_user_id: values.user,
-        start_date: new Date(`${values.startDate}T${values.startTime}:00.000Z`),
-        end_date: new Date(`${values.endDate}T${values.endTime}:00.000Z`),
-        priority,
+        assigned_user_id: Number(values.user),
+        start_date: `${values.startDate}T${newStartTime}`,
+        end_date: `${values.endDate}T${newEndTime}`,
         status: values.status,
       };
+      console.log(newOrder, 'neww');
       action.editOrder(newOrder, dispatch);
 
       setTimeout(() => {
@@ -114,7 +125,6 @@ const OrderModal = ({
     },
     enableReinitialize: true,
   });
-  console.log(formik.values.endTime);
   return (
     <div>
       <Button className="btn-success" onClick={setShowModalHandler}>
@@ -170,6 +180,11 @@ const OrderModal = ({
                 </option>
                 {status && status.map((u) => <option value={u.id}>{u.name}</option>)}
               </select>
+              {formik.errors.status ? (
+                <b className="align-self-center text-danger">{formik.errors.status}</b>
+              ) : (
+                ''
+              )}
             </div>
             <div className="d-flex flex-column m-3">
               <label className="align-self-center">Start Date</label>
@@ -184,12 +199,18 @@ const OrderModal = ({
                     : 'form-control w-50 align-self-center'
                 }
               />
+              {formik.errors.startDate ? (
+                <b className="align-self-center text-danger">{formik.errors.startDate}</b>
+              ) : (
+                ''
+              )}
             </div>
             <div className="d-flex flex-column m-3">
               <label className="align-self-center">Start Time</label>
               <input
                 type="time"
                 name="startTime"
+                placeholder={onlyStartTime}
                 value={formik.values.startTime}
                 onChange={formik.handleChange}
                 className={
@@ -198,6 +219,11 @@ const OrderModal = ({
                     : 'form-control w-50 align-self-center'
                 }
               />
+              {formik.errors.startTime ? (
+                <b className="align-self-center text-danger">{formik.errors.startTime}</b>
+              ) : (
+                ''
+              )}
             </div>
             <div className="d-flex flex-column m-3">
               <label className="align-self-center">End Date</label>
@@ -212,6 +238,11 @@ const OrderModal = ({
                     : 'form-control w-50 align-self-center'
                 }
               />
+              {formik.errors.endDate ? (
+                <b className="align-self-center text-danger">{formik.errors.endDate}</b>
+              ) : (
+                ''
+              )}
             </div>
             <div className="d-flex flex-column m-3">
               <label className="align-self-center">End Time</label>
@@ -226,6 +257,11 @@ const OrderModal = ({
                     : 'form-control w-50 align-self-center'
                 }
               />
+              {formik.errors.endTime ? (
+                <b className="align-self-center text-danger">{formik.errors.endTime}</b>
+              ) : (
+                ''
+              )}
             </div>
 
             <footer className="d-flex justify-content-center">
