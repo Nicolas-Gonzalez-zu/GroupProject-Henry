@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 import { Popover, OverlayTrigger, Button } from 'react-bootstrap';
+import Emptypage from '../../commons/FormDefault/Emptypage';
 import * as action from '../../../actions/frontoffice/creators';
 import { statusBO, statusColors } from '../../../utils/backoffice/statusBO';
 
@@ -180,52 +181,56 @@ const Orders = () => {
           )}
         </div>
       </div>
-      <div className="column">
-        <div className="row p-3 d-flex justify-content-between">
-          <div className=" d-flex justify-content-center w-25">
-            <h4>Sort by:</h4>
+      {orders.length === 0 ? (
+        <Emptypage name="Orders" />
+      ) : (
+        <div className="column">
+          <div className="row p-3 d-flex justify-content-between">
+            <div className=" d-flex justify-content-center w-25">
+              <h4>Sort by:</h4>
+            </div>
+            <div className="w-75 d-flex align-items-center justify-content-around">
+              <div>
+                <label>Date</label>
+                <select onChange={(e) => setSortDate(e.target.value)}>
+                  <option value="all">Default</option>
+                  <option value="startDate">Start date</option>
+                  <option value="lastStartDate">Last Start Date</option>
+                </select>
+              </div>
+              <div>
+                <label>Status</label>
+                <select onChange={(e) => setSortStatus(e.target.value)}>
+                  <option value="all">-</option>
+                  {statusBO && statusBO.map((s) => <option value={s.id}>{s.name}</option>)}
+                </select>
+              </div>
+              <div>
+                <label>Priority</label>
+                <select onChange={(e) => setSortPriority(e.target.value)}>
+                  <option value="all">-</option>
+                  <option value="high">High</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
+            </div>
           </div>
-          <div className="w-75 d-flex align-items-center justify-content-around">
-            <div>
-              <label>Date</label>
-              <select onChange={(e) => setSortDate(e.target.value)}>
-                <option value="all">Default</option>
-                <option value="startDate">Start date</option>
-                <option value="lastStartDate">Last Start Date</option>
-              </select>
-            </div>
-            <div>
-              <label>Status</label>
-              <select onChange={(e) => setSortStatus(e.target.value)}>
-                <option value="all">-</option>
-                {statusBO && statusBO.map((s) => <option value={s.id}>{s.name}</option>)}
-              </select>
-            </div>
-            <div>
-              <label>Priority</label>
-              <select onChange={(e) => setSortPriority(e.target.value)}>
-                <option value="all">-</option>
-                <option value="high">High</option>
-                <option value="low">Low</option>
-              </select>
-            </div>
+          <div className="row p-2 mr-0">
+            {ordersFiltered && displayOrders}
+            <ReactPaginate
+              previousLabel="Previous"
+              nextLabel="Next"
+              pageCount={pageCount}
+              onPageChange={changePage}
+              containerClassName="paginationBttns"
+              previousLinkClassName="previousBttn"
+              nextLinkClassName="nextBttn"
+              disabledClassName="paginationDisabled"
+              activeClassName="paginationActive"
+            />
           </div>
         </div>
-        <div className="row p-2 mr-0">
-          {ordersFiltered && displayOrders}
-          <ReactPaginate
-            previousLabel="Previous"
-            nextLabel="Next"
-            pageCount={pageCount}
-            onPageChange={changePage}
-            containerClassName="paginationBttns"
-            previousLinkClassName="previousBttn"
-            nextLinkClassName="nextBttn"
-            disabledClassName="paginationDisabled"
-            activeClassName="paginationActive"
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 };
