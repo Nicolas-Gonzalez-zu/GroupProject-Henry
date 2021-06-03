@@ -36,7 +36,6 @@ export default function Categories() {
     .map((x) => (
       <tbody>
         <tr>
-          <td>{x.id}</td>
           <td>{x.name}</td>
 
           <td>
@@ -60,7 +59,6 @@ export default function Categories() {
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th style={{ width: '1rem' }}>Edit</th>
               </tr>

@@ -156,3 +156,22 @@ export const getEmployees = (dispatch) => {
       console.log(e);
     });
 };
+export const ordersById = (dispatch) => {
+  dispatch({ type: actionType.SORT_ORDERS_ID });
+};
+export const sortOrdersByStatus = (data, dispatch) => {
+  dispatch({ type: actionType.SORT_ORDERS_STATUS, payload: data });
+};
+export const sortOrdersByPriority = (dispatch) => {
+  dispatch({ type: actionType.SORT_ORDERS_PRIORITY });
+};
+export const sortOrdersByPriorityLow = (dispatch) => {
+  dispatch({ type: actionType.SORT_ORDERS_PRIORITY_LOW });
+};
+export const sortOrdersByDate = (dispatch) => {
+  dispatch({ type: actionType.SORT_ORDERS_DATE });
+};
+export const sortOrdersByDateReverse = (dispatch) => {
+  console.log('hola entre auqi');
+  dispatch({ type: actionType.SORT_ORDERS_DATE_REVERSE });
+};

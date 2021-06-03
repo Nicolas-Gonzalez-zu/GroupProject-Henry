@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Popover, OverlayTrigger, Button } from 'react-bootstrap';
 import * as action from '../../../actions/frontoffice/creators';
+import status from '../../../utils/backoffice/statusBO';
 
 const Orders = () => {
-  const [sort, setSort] = useState('');
+  const [sortDate, setSortDate] = useState('');
+  const [sortStatus, setSortStatus] = useState('');
+  const [sortPriority, setSortPriority] = useState('');
+
   const orders = useSelector((state) => state.orderReducer.orders);
   const dispatch = useDispatch();
 
@@ -13,22 +17,34 @@ const Orders = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (sort !== 'all' && sort !== 'startDate') {
-      return action.sortOrdersStatus(sort, dispatch);
-    }
-    if (sort === 'startDate') {
+    // if (sort !== 'all' && sort !== 'startDate' && sort !== 'lastStartDate') {
+    //   return action.sortOrdersStatus(sort, dispatch);
+    // }
+    if (sortDate === 'startDate') {
       return action.sortOrdersByDate(dispatch);
     }
+    if (sortDate === 'lastStartDate') {
+      return action.sortOrdersByDateReverse(dispatch);
+    }
     return action.getOrders(dispatch);
-  }, [sort, dispatch]);
+  }, [sortDate, dispatch]);
 
-  const status = [
-    { id: 'unassigned', name: 'unassigned' },
-    { id: 'pending', name: 'pending' },
-    { id: 'done', name: 'done' },
-    { id: 'inProgress', name: 'inProgress' },
-  ];
+  useEffect(() => {
+    if (sortStatus !== 'all') {
+      return action.sortOrdersStatus(sortStatus, dispatch);
+    }
+    return action.getOrders / dispatch;
+  }, [sortStatus, dispatch]);
 
+  useEffect(() => {
+    if (sortPriority === 'high') {
+      return action.sortOrdersPriority(dispatch);
+    }
+    if (sortPriority === 'low') {
+      return action.sortOrdersPriorityLow(dispatch);
+    }
+    return action.getOrders(dispatch);
+  }, [sortPriority, dispatch]);
   const popover = (services) => (
     <Popover id="popover-basic">
       <Popover.Title as="h3">Services</Popover.Title>
@@ -69,9 +85,9 @@ const Orders = () => {
 
   const ordersFiltered = orders.filter((o) => o.status !== 'unassigned');
   const ordersUnassigned = orders.filter((o) => o.status === 'unassigned');
-  const handleChange = (e) => {
-    setSort(e.target.value);
-  };
+  // const handleChange = (e) => {
+  //   setSort(e.target.value);
+  // };
   return (
     <div>
       <div className="card-header bg-dark mb-2">
@@ -94,16 +110,25 @@ const Orders = () => {
           <div className="w-75 d-flex align-items-center justify-content-around">
             <div>
               <label>Date</label>
-              <select onChange={handleChange}>
+              <select onChange={(e) => setSortDate(e.target.value)}>
                 <option value="all">Default</option>
                 <option value="startDate">Start date</option>
+                <option value="lastStartDate">Last Start Date</option>
               </select>
             </div>
             <div>
               <label>Status</label>
-              <select onChange={handleChange}>
+              <select onChange={(e) => setSortStatus(e.target.value)}>
                 <option value="all">-</option>
                 {status && status.map((s) => <option value={s.id}>{s.name}</option>)}
+              </select>
+            </div>
+            <div>
+              <label>Priority</label>
+              <select onChange={(e) => setSortPriority(e.target.value)}>
+                <option value="all">-</option>
+                <option value="high">High</option>
+                <option value="low">Low</option>
               </select>
             </div>
           </div>

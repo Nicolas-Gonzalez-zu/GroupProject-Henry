@@ -4,17 +4,9 @@ import { useFormik } from 'formik';
 import Swal from 'sweetalert2';
 import { Modal, Button } from 'react-bootstrap';
 import * as action from '../../../actions/backoffice/creators';
+import statusBO from '../../../utils/backoffice/statusBO';
 
-const OrderModal = ({
-  id,
-  users,
-  status,
-  myStatus,
-  assignedUserBefore,
-  startDate,
-  endDate,
-  priority,
-}) => {
+const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDate, priority }) => {
   const [showModal, setShowModal] = useState(false);
   const [onlyStartDate, onlyStartTime] = startDate
     ? startDate.replace('T', '~').replace('.000Z', '').split('~')
@@ -178,7 +170,7 @@ const OrderModal = ({
                 <option value="unassigned" disabled>
                   unassigned
                 </option>
-                {status && status.map((u) => <option value={u.id}>{u.name}</option>)}
+                {statusBO && statusBO.map((u) => <option value={u.id}>{u.name}</option>)}
               </select>
               {formik.errors.status ? (
                 <b className="align-self-center text-danger">{formik.errors.status}</b>

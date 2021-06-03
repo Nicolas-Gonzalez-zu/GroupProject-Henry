@@ -557,7 +557,6 @@ export const getOrders = (dispatch) => {
 };
 
 export const sortOrdersStatus = (data, dispatch) => {
-  console.log('entre aca');
   dispatch({ type: actionType.SORT_ORDERS_STATUS, payload: data });
 };
 export const sortOrdersPriority = (dispatch) => {
@@ -569,4 +568,7 @@ export const sortOrdersPriorityLow = (dispatch) => {
 
 export const sortOrdersByDate = (dispatch) => {
   dispatch({ type: actionType.SORT_ORDERS_DATE });
+};
+export const sortOrdersByDateReverse = (dispatch) => {
+  dispatch({ type: actionType.SORT_ORDERS_DATE_REVERSE });
 };
