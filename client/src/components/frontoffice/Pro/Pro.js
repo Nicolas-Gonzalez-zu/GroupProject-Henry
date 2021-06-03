@@ -61,7 +61,7 @@ export default function Pro() {
           payment_method: 'mercado pago',
         };
         action.serverPetition
-          .post('http://localhost:3001/api/fo/mp', obj)
+          .post(process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001/api/fo/mp', obj)
           .then((order) => {
             setPreferenceId(order.data.body.id);
           })

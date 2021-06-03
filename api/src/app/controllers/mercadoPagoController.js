@@ -83,6 +83,7 @@ server.post('/', async (req, res) => {
     auto_return: 'approved',
     marketplace: 'E-conomy',
     statement_descriptor: 'ECONOMYAPP',
+    notification_url: process.env.MP_IPN_URL || `https://finance.app.yilmer.work/api/ipn/mp_test`,
     binary_mode: true,
     external_reference: user.id.toString(),
   };
