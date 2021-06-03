@@ -45,14 +45,6 @@ export default function About() {
       img: 'https://avatars.githubusercontent.com/u/36289180?v=4',
       github: 'https://github.com/juliozaravia',
       linkedin: 'https://www.linkedin.com/in/julio-zaravia/',
-      web: 'http://www.juliozaravia.com/',
-    },
-    {
-      name: 'Edgar Castillejos',
-      about: 'Full Stack Developer | JavaScript, ReactJS, NodeJS | Digital Designer',
-      img: 'https://avatars.githubusercontent.com/u/75849461?v=4',
-      github: 'https://github.com/ecastillejos',
-      linkedin: 'https://www.linkedin.com/in/edgarcastillejos/',
       web: '',
     },
     {
@@ -61,6 +53,14 @@ export default function About() {
       img: 'https://avatars.githubusercontent.com/u/76920761?v=4',
       github: 'https://github.com/CamiKubaSilva',
       linkedin: 'https://www.linkedin.com/in/camilakubasilva/',
+      web: '',
+    },
+    {
+      name: 'Edgar Castillejos',
+      about: 'Full Stack Developer | JavaScript, ReactJS, NodeJS | Digital Designer',
+      img: 'https://avatars.githubusercontent.com/u/75849461?v=4',
+      github: 'https://github.com/ecastillejos',
+      linkedin: 'https://www.linkedin.com/in/edgarcastillejos/',
       web: '',
     },
   ];

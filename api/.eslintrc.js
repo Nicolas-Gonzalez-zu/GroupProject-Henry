@@ -20,5 +20,7 @@ module.exports = {
       },
     ],
     'no-console': 'off',
+    camelcase: 'off',
+    'no-underscore-dangle': 'off',
   },
 };

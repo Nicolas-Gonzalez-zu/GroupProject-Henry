@@ -36,7 +36,7 @@ const FormDefault = ({ values, errors, handleChange, inputType, selectFrom }) =>
               }
             />
           )}
-          {errors[key] ? <p className="text text-danger align-self-center">{errors[key]}</p> : ''}
+          {errors[key] ? <b className="text-danger text-center">{errors[key]}</b> : <br />}
         </div>
       ))}
   </div>

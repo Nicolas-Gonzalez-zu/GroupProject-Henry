@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const SideBarMenu = ({ adm, menu }) => {
@@ -50,8 +50,8 @@ const SideBarMenu = ({ adm, menu }) => {
       }
       return (
         <li className="nav-item" key={`li-elem-branch-${m.activeStateName}`}>
-          <a
-            href="#"
+          <Link
+            to="#"
             type="button"
             className={`nav-link ${ActiveMenu[m.activeStateName] ? 'active' : 'collapsed'}`}
             data-toggle="collapse"
@@ -63,7 +63,7 @@ const SideBarMenu = ({ adm, menu }) => {
               {m.title}
               <i className="right fas fa-angle-down" />
             </p>
-          </a>
+          </Link>
           <ul
             data-widget="treeview"
             role="menu"
