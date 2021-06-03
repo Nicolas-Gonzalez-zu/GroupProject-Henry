@@ -187,12 +187,18 @@ const Login = ({ adm }) => {
             </Formik>
             {!adm ? (
               <div className="social-auth-links text-center mt-2 mb-3">
-                <Link to="/client/login" className="btn btn-block btn-primary">
+                <a
+                  href={`${process.env.REACT_APP_BACKEND_URL}auth/facebook/`}
+                  className="btn btn-block btn-primary"
+                >
                   <i className="fab fa-facebook mr-2" /> Sign in using Facebook
-                </Link>
-                <Link to="/client/login" className="btn btn-block btn-danger">
+                </a>
+                <a
+                  href={`${process.env.REACT_APP_BACKEND_URL}auth/google/`}
+                  className="btn btn-block btn-danger"
+                >
                   <i className="fab fa-google-plus mr-2" /> Sign in using Google+
-                </Link>
+                </a>
               </div>
             ) : (
               ''
