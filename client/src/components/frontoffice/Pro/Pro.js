@@ -32,17 +32,14 @@ export default function Pro() {
   }, [dispatch]);
 
   const addcarrito = (payment) => {
-    const filtrado = services.filter((f) => f.name === 'E-conomy Pro Account');
+    const filtrado = services.filter((f) => f.name === 'Pro Account');
     console.log(filtrado, 'fil');
-    const pro = filtrado.map((s) => {
-      const data = {
-        id: s.id,
-        name: s.name,
-        description: s.description,
-        price: Number(s.price),
-      };
-      return data;
-    });
+    const pro = filtrado.map((s) => ({
+      id: s.id,
+      name: s.name,
+      description: s.description,
+      price: Number(s.price),
+    }));
     console.log(filtrado, 'pat');
     // eslint-disable-next-line no-restricted-globals
     Swal.fire({
