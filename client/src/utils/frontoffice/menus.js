@@ -7,6 +7,7 @@ export const FRONT_OFFICE_MENU = [
     path: 'pro',
     promoLabel: 'New',
     PromoLabelVariant: 'warning',
+    requiredPermission: 'free',
   },
   {
     title: 'Wallet',

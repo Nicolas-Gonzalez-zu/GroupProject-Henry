@@ -105,8 +105,12 @@ export default SideBarMenu;
 
 const filterHelper = (menu, acl, adm) => {
   if (!adm) {
+    if (acl.includes('ALL_BENEFITS') && menu.requiredPermission === 'free') {
+      return false;
+    }
     return true;
   }
+
   return (
     acl.includes(menu.requiredPermission) ||
     acl.includes('ALL_PERMISSIONS') ||
