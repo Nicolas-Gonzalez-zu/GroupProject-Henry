@@ -1,7 +1,11 @@
-const statusBO = [
+export const statusBO = [
   { id: 'pending', name: 'pending' },
   { id: 'done', name: 'done' },
   { id: 'inProgress', name: 'inProgress' },
 ];
 
-export default statusBO;
+export const statusColors = {
+  pending: 'warning',
+  done: 'success',
+  inProgress: 'primary',
+};

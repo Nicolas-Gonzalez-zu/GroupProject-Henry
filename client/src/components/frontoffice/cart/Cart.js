@@ -27,38 +27,58 @@ const Cart = () => {
       showCancelButton: true,
     })
       .then((response) => {
-        if (response.isConfirmed && e.target.value === 'mercado pago') {
-          setPaymentMethod(e.target.value);
-          const miUuid = uuid();
-          const obj = {
-            services: items,
-            user: user.user,
-            orderId: miUuid,
-            payment_method: e.target.value,
-          };
-          action.serverPetition
-            .post('http://localhost:3001/api/fo/mp', obj)
-            .then((order) => {
-              setPreferenceId(order.data.body.id);
-            })
-            .catch((err) => {
-              e.target.checked = false;
-              console.log(err);
-            });
-        } else if (response.isConfirmed && e.target.value === 'paypal') {
-          const itemPaypal = items.map((i) => ({
-            name: i.name,
-            description: i.description,
-            unit_amount: {
-              currency_code: 'USD',
-              value: i.price,
-            },
-            quantity: '1',
-            sku: i.id,
-          }));
+        if (response.isConfirmed) {
+          if (items.length >= 1) {
+            if (response.isConfirmed && e.target.value === 'mercado pago') {
+              setPaymentMethod(e.target.value);
+              const miUuid = uuid();
+              const obj = {
+                services: items,
+                user: user.user,
+                orderId: miUuid,
+                payment_method: e.target.value,
+              };
+              action.serverPetition
+                .post('http://localhost:3001/api/fo/mp', obj)
+                .then((order) => {
+                  setPreferenceId(order.data.body.id);
+                })
+                .catch((err) => {
+                  e.target.checked = false;
+                  console.log(err);
+                });
+            } else if (response.isConfirmed && e.target.value === 'paypal') {
+              const itemPaypal = items.map((i) => ({
+                name: i.name,
+                description: i.description,
+                unit_amount: {
+                  currency_code: 'USD',
+                  value: i.price,
+                },
+                quantity: '1',
+                sku: i.id,
+              }));
 
-          setToPaypal(itemPaypal);
-          setPaymentMethod(e.target.value);
+              setToPaypal(itemPaypal);
+              setPaymentMethod(e.target.value);
+            }
+          } else {
+            Swal.fire({
+              title: 'Sorry, it seems that your cart is empty, please, try again',
+              icon: 'error',
+              toast: true,
+              position: 'top-right',
+              timer: 2000,
+              timerProgressBar: true,
+              showConfirmButton: false,
+            })
+              .then(() => {
+                e.target.checked = false;
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
         } else {
           e.target.checked = false;
         }
@@ -169,27 +189,42 @@ const Cart = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col-4">
-          <p className="lead">Payment Methods:</p>
-          <div className="d-flex justify-content-around align-items-center">
-            <img
-              src="https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/082013/untitled-1_49.png?itok=S3wtZ8fs"
-              alt="American Express"
-              height="70"
-              width="70"
-            />
-            <input type="radio" onChange={handleChange} name="method" value="mercado pago" />
-          </div>
-          <div className="d-flex justify-content-around align-items-center">
-            <img
-              src="https://logodownload.org/wp-content/uploads/2014/10/paypal-logo-4.png"
-              alt="Paypal"
-              height="18"
-              width="70"
-            />
+        <div
+          className={
+            items.length >= 1 ? 'col-4' : 'col-4 d-flex align-items-center justify-content-center'
+          }
+        >
+          {items.length >= 1 ? (
+            <>
+              <p className="lead">Payment Methods:</p>
+              <div className="d-flex justify-content-around align-items-center">
+                <img
+                  src="https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/082013/untitled-1_49.png?itok=S3wtZ8fs"
+                  alt="American Express"
+                  height="70"
+                  width="70"
+                />
+                <input type="radio" onChange={handleChange} name="method" value="mercado pago" />
+              </div>
+              <div className="d-flex justify-content-around align-items-center">
+                <img
+                  src="https://logodownload.org/wp-content/uploads/2014/10/paypal-logo-4.png"
+                  alt="Paypal"
+                  height="18"
+                  width="70"
+                />
 
-            <input type="radio" onChange={handleChange} name="method" value="paypal" />
-          </div>
+                <input type="radio" onChange={handleChange} name="method" value="paypal" />
+              </div>{' '}
+            </>
+          ) : (
+            <div className="text-secondary">
+              <h4>Empty cart</h4>
+              <div className="d-flex justify-content-center">
+                <i className="fas fa-cart-arrow-down" width="200" />
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="col-8">

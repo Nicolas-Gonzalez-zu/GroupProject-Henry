@@ -89,7 +89,6 @@ export const getCategory = (dispatch) => {
     });
 };
 
-
 export const getOrders = (dispatch) => {
   serverPetition
     .get('bo/order/orderBo')
