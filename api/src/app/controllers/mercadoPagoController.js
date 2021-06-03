@@ -48,7 +48,6 @@ server.post('/', async (req, res) => {
   // eslint-disable-next-line camelcase
   const { services, payment_method } = req.body;
   const { user } = req;
-
   const subtotal = services.map((s) => s.price).reduce((a, b) => a + b);
   const total = Number(req.user.plan.price) <= 0 ? subtotal - subtotal * 0.2 : subtotal;
 
@@ -79,13 +78,13 @@ server.post('/', async (req, res) => {
             name: `${user.first_name} ${user.last_name}`,
           },
           back_urls: {
-            success: `${process.env.SITE_URL || 'http://localhost:3000'}/invoice/${
+            success: `${process.env.SITE_URL || 'http://localhost:3000'}/client/invoice/${
               createdInvoice.id
             }`,
-            failure: `${process.env.SITE_URL || 'http://localhost:3000'}/invoice/${
+            failure: `${process.env.SITE_URL || 'http://localhost:3000'}/client/invoice/${
               createdInvoice.id
             }`,
-            pending: `${process.env.SITE_URL || 'http://localhost:3000'}/invoice/${
+            pending: `${process.env.SITE_URL || 'http://localhost:3000'}/client/invoice/${
               createdInvoice.id
             }`,
           },

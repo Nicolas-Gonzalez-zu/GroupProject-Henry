@@ -7,7 +7,7 @@ const path = require('path');
 
 const checkIfLoggedIn = require('../auth/authorizeMiddleware');
 const db = require('../../db/models');
-const { errorCode, statusCode, supportCode } = require('../utils/globalCodes');
+const { statusCode } = require('../utils/globalCodes');
 
 const router = express.Router();
 router.use(checkIfLoggedIn);
@@ -30,8 +30,18 @@ router.get('/', (req, res) => {
   const filter = 'All movements';
   const value = '';
   const date = new Date();
+
+  const today = new Date();
+  const monthBefore = new Date();
+  monthBefore.setMonth(today.getMonth() - 1);
+  const where = { customer_id: req.user.id };
+
+  if (req.user.plan.dataValues.name === 'Free') {
+    where.generation_date = { [Op.between]: [monthBefore, today] };
+  }
+
   db.Movement.findAll({
-    where: { customer_id: req.user.id },
+    where,
     order: [['generation_date', 'ASC']],
     include: [
       { model: db.Wallet, as: 'origin_wallet' },
@@ -62,7 +72,6 @@ router.get('/', (req, res) => {
             message: 'No bucket assigned',
           };
         }
-
         return {
           id,
           amount,
@@ -77,7 +86,6 @@ router.get('/', (req, res) => {
           budget: conditionalBudget,
         };
       });
-      console.log(processedMovements[0].generation_date);
       const template = path.resolve(__dirname, '..', 'views', 'template.pug');
       const compiledFunction = pug.compileFile(template);
       const compiledHtml = compiledFunction({
@@ -102,13 +110,48 @@ router.get('/', (req, res) => {
 });
 
 router.get('/filter', (req, res) => {
-  const { filter, value } = req.query;
-  console.log(value, 'soy el value en el back');
+  const { filter, value, second, secval } = req.query;
   const name = req.user.first_name;
   const lastname = req.user.last_name;
   const date = new Date();
+  let obj = {};
+  let init = '';
+  let end = '';
+  const today = new Date();
+  const monthBefore = new Date();
+  monthBefore.setMonth(today.getMonth() - 1);
+
+  if (filter === 'generation_date') {
+    const date = value.slice(0, 10).split('-');
+    init = new Date(date[0], date[1], date[2], 00, 00, 00);
+    end = new Date(date[0], date[1], date[2], 23, 59, 59);
+    init.setMonth(end.getMonth() - 1);
+    end.setMonth(init.getMonth());
+    if (second && secval) {
+      obj = { customer_id: req.user.id, [filter]: { [Op.between]: [init, end] }, [second]: secval };
+    } else {
+      obj = { customer_id: req.user.id, [filter]: { [Op.between]: [init, end] } };
+    }
+  } else if (second === 'generation_date') {
+    const date = secval.slice(0, 10).split('-');
+    init = new Date(date[0], date[1], date[2], 00, 00, 00);
+    end = new Date(date[0], date[1], date[2], 23, 59, 59);
+    init.setMonth(end.getMonth() - 1);
+    end.setMonth(init.getMonth());
+    obj = { customer_id: req.user.id, [filter]: value, [second]: { [Op.between]: [init, end] } };
+  } else if (second !== 'generation_date' && secval) {
+    obj = { customer_id: req.user.id, [filter]: value, [second]: secval };
+    if (req.user.plan.dataValues.name === 'Free') {
+      obj.generation_date = { [Op.between]: [monthBefore, today] };
+    }
+  } else {
+    obj = { customer_id: req.user.id, [filter]: value };
+    if (req.user.plan.dataValues.name === 'Free') {
+      obj.generation_date = { [Op.between]: [monthBefore, today] };
+    }
+  }
   db.Movement.findAll({
-    where: { customer_id: req.user.id, [filter]: value },
+    where: obj,
     order: [['generation_date', 'ASC']],
     include: [
       { model: db.Wallet, as: 'origin_wallet' },
@@ -126,7 +169,6 @@ router.get('/filter', (req, res) => {
           origin_wallet, // eslint-disable-line camelcase
           budget,
         } = movement.dataValues;
-        console.log(generation_date, 'soy el generation date en reports back');
 
         let conditionalBudget = {};
         if (budget) {
@@ -164,6 +206,8 @@ router.get('/filter', (req, res) => {
         date,
         filter,
         value,
+        second,
+        secval,
       });
       pdf.create(compiledHtml, options).toStream((err, file) => {
         if (err) {

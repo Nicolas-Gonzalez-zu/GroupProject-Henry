@@ -177,7 +177,7 @@ const Register = () => {
   return (
     <div>
       <div className="login-box" id="login" style={{ minHeight: 466 }}>
-        <div className="card logincard">
+        <div className="card login-card">
           <div className="card-header text-center">
             <div className="h1">
               <img
