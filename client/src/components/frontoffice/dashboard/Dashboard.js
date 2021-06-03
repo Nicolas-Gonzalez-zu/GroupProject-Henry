@@ -101,7 +101,7 @@ export default function Dashboard() {
                     <h3 className="txtdash text-center ">Your Wallets are Empty</h3>
 
                     <div className="d-flex justify-content-center">
-                      <Link to="/wallet">
+                      <Link to="/client/wallet">
                         <button className="btn btn-warning" type="button">
                           <b>Create a new Wallet</b>
                         </button>
@@ -128,7 +128,7 @@ export default function Dashboard() {
                     <h3 className="txtdash text-center ">Your Budgets are Empty</h3>
 
                     <div className="d-flex justify-content-center">
-                      <Link to="/budget">
+                      <Link to="/client/budget">
                         <button className="btn btn-warning" type="button">
                           <b>Create a new Budget</b>
                         </button>
