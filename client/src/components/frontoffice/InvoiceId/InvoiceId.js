@@ -14,20 +14,15 @@ const InvoiceId = ({ match }) => {
     action.getInvoiceById(idInvoice, dispatch); // por algun motivo esto se ejecuta muchas veces
     // reset();
     console.log('hola');
-  }, [dispatch, invoiceId, invoicePdf, match.params]);
+  }, [dispatch]);
 
-  // const reset = () => {
-  //   setLoading(false);
-  //   setTimeout(() => {
-  //     setLoading(true);
-  //   }, 1500);
-  // };
-
+  window.localStorage.clear();
   const getInvoicePdf = (id, e) => {
     action.getInvoice(id, dispatch);
     setInvoicePdf(!invoicePdf);
   };
 
+  console.log(invoiceId);
   return (
     <div className="invoice p-3 mb-3">
       {!loading && InternalLoader}
