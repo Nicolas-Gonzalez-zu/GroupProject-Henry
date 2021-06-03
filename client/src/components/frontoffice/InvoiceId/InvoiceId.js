@@ -14,7 +14,7 @@ const InvoiceId = ({ match }) => {
     action.getInvoiceById(idInvoice, dispatch); // por algun motivo esto se ejecuta muchas veces
     // reset();
     console.log('hola');
-  }, [dispatch]);
+  }, [dispatch, match.params]);
 
   window.localStorage.clear();
   const getInvoicePdf = (id, e) => {

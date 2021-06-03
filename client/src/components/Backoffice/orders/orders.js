@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import ReactPaginate from 'react-paginate';
 import OrderModal from './OrderEditModal';
 import * as action from '../../../actions/backoffice/creators';
-import status from '../../../utils/ordersStatus';
+import { status, statusColors } from '../../../utils/ordersStatus';
 
 const OrdersBO = () => {
   const orders = useSelector((state) => state.ordersBOReducer.orders);
@@ -38,12 +38,8 @@ const OrdersBO = () => {
           <div className="row">
             <div className="col-7">
               <p className="text-muted text-sm mb-0">
-                Status:{' '}
-                {o.status === 'pending' ? (
-                  <b className="text-warning">{o.status}</b>
-                ) : (
-                  <b className="text-success">{o.status}</b>
-                )}
+                Status:
+                <b className={`text-${statusColors[o.status]}`}>{o.status}</b>
               </p>
               <p className="text-muted text-sm mb-0">
                 Priority:{' '}

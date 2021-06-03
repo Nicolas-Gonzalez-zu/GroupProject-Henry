@@ -9,7 +9,7 @@ module.exports = {
       },
       invoice_id: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
         references: {
           model: 'Invoices',
           key: 'id',

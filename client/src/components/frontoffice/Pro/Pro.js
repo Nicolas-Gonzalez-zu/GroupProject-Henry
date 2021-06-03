@@ -34,15 +34,12 @@ export default function Pro() {
   const addcarrito = (payment) => {
     const filtrado = services.filter((f) => f.name === 'Pro Account');
     console.log(filtrado, 'fil');
-    const pro = filtrado.map((s) => {
-      const data = {
-        id: s.id,
-        name: s.name,
-        description: s.description,
-        price: Number(s.price),
-      };
-      return data;
-    });
+    const pro = filtrado.map((s) => ({
+      id: s.id,
+      name: s.name,
+      description: s.description,
+      price: Number(s.price),
+    }));
     console.log(filtrado, 'pat');
     // eslint-disable-next-line no-restricted-globals
     Swal.fire({
@@ -64,7 +61,7 @@ export default function Pro() {
           payment_method: 'mercado pago',
         };
         action.serverPetition
-          .post('http://localhost:3001/api/fo/mp', obj)
+          .post(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'}fo/mp`, obj)
           .then((order) => {
             setPreferenceId(order.data.body.id);
           })

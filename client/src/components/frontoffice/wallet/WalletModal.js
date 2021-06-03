@@ -69,7 +69,7 @@ const WalletModal = () => {
     if (!user) {
       return '';
     }
-    const cantWallets = user.plan.name === 'Free' ? 5 : 10;
+    const cantWallets = user.plan.name === 'Free' ? 3 : 10;
     return cantWallets;
   };
   return (

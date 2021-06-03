@@ -92,7 +92,7 @@ function Budget() {
 
   const setCantBudgets = () => {
     if (!user) return '';
-    const cantBudgets = user.plan.name === 'Free' ? 5 : 10;
+    const cantBudgets = user.plan.name === 'Free' ? 3 : 10;
     return cantBudgets;
   };
 

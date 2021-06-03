@@ -4,9 +4,9 @@ import { useFormik } from 'formik';
 import Swal from 'sweetalert2';
 import { Modal, Button } from 'react-bootstrap';
 import * as action from '../../../actions/backoffice/creators';
-import statusBO from '../../../utils/backoffice/statusBO';
+import { statusBO } from '../../../utils/backoffice/statusBO';
 
-const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDate, priority }) => {
+const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDate }) => {
   const [showModal, setShowModal] = useState(false);
   const [onlyStartDate, onlyStartTime] = startDate
     ? startDate.replace('T', '~').replace('.000Z', '').split('~')
@@ -23,7 +23,7 @@ const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDat
       const position = authAlert.type === 'success' ? 'center' : 'top-end';
 
       Swal.fire({
-        title: authAlert.title,
+        title: authAlert.message,
         icon: authAlert.type,
         toast: true,
         position,
@@ -81,10 +81,10 @@ const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDat
     }
     return errors;
   };
-  // console.log(users, 'hu');
+  console.log('soy el user before', assignedUserBefore);
   const formik = useFormik({
     initialValues: {
-      user: '',
+      user: assignedUserBefore,
       status: myStatus,
       startDate: onlyStartDate,
       startTime: onlyStartTime,
@@ -108,7 +108,6 @@ const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDat
         end_date: `${values.endDate}T${newEndTime}`,
         status: values.status,
       };
-      console.log(newOrder, 'neww');
       action.editOrder(newOrder, dispatch);
 
       setTimeout(() => {
@@ -141,7 +140,9 @@ const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDat
                     : 'form-control w-50 align-self-center'
                 }
               >
-                <option disabled>{assignedUserBefore}</option>
+                <option selected disabled>
+                  {assignedUserBefore}
+                </option>
                 {users &&
                   users.map((u) => (
                     <option value={u.id}>
