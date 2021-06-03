@@ -2,19 +2,19 @@ const faker = require('faker');
 
 const initialPlanBenefitsDetails = [
   {
-    plan_id: 1,
+    plan_id: 2,
     benefit_id: 1,
     createdAt: faker.date.recent(),
     updatedAt: faker.date.recent(),
   },
   {
-    plan_id: 1,
+    plan_id: 2,
     benefit_id: 2,
     createdAt: faker.date.recent(),
     updatedAt: faker.date.recent(),
   },
   {
-    plan_id: 2,
+    plan_id: 1,
     benefit_id: 3,
     createdAt: faker.date.recent(),
     updatedAt: faker.date.recent(),

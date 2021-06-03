@@ -8,7 +8,7 @@ const generateDemoCustomers = async () => {
   users.forEach((u) => {
     demoCustomers.push({
       user_id: u.id,
-      plan_id: 1,
+      plan_id: 2,
       createdAt: faker.date.past(),
       updatedAt: faker.date.future(),
     });

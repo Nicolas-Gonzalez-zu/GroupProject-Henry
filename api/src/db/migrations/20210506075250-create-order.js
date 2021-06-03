@@ -5,17 +5,18 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
         onDelete: 'cascade',
       },
       invoice_id: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
         references: {
           model: 'Invoices',
           key: 'id',
         },
         onDelete: 'cascade',
+        unique: true,
       },
       assigned_user_id: {
         allowNull: true,

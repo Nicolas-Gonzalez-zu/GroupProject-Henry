@@ -41,7 +41,7 @@ router.post('/register', (req, res) => {
   data.password = bcryptUtils.encrypt(data.password);
   db.User.create(data)
     .then((user) => {
-      db.Customer.create({ user_id: user.id, plan_id: 1 })
+      db.Customer.create({ user_id: user.id, plan_id: 2 })
         .then(() => {
           res.status(201).json({ success: true });
         })
