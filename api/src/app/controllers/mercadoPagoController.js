@@ -4,8 +4,8 @@ const db = require('../../db/models');
 const { generateOrderOrUpgrade } = require('../helpers/orders');
 
 const processPayment = async (req, res, id, prod = false) => {
-  // eslint-disable-next-line no-param-reassign
   id = Number(id);
+  prod = prod === 'true';
   try {
     const merchantOrder = await mercadopago.merchant_orders.findById(id);
     const payments = prod
@@ -54,7 +54,7 @@ server.post('/', async (req, res) => {
   // eslint-disable-next-line camelcase
   const { services } = req.body;
   const { user } = req;
-
+  console.log(typeof process.env.MP_IPN_PROD);
   const items =
     services &&
     services.map((service) => {
