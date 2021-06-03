@@ -3,11 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import OrderModal from './OrderEditModal';
 import * as action from '../../../actions/backoffice/creators';
 
-const users = [
-  { id: 1, name: 'nacho garay' },
-  { id: 2, name: 'Joaquin Bianchi' },
-  { id: 3, name: 'nico gonzalez' },
-];
 const status = [
   { id: 'pending', name: 'pending' },
   { id: 'done', name: 'done' },

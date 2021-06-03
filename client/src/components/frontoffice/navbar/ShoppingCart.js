@@ -7,7 +7,7 @@ const ShoppingCart = () => {
   const total = items.reduce((acc, b) => acc + parseInt(b.price, 10), 0);
   return (
     <li className="nav-item dropdown">
-      <a className="nav-link" data-toggle="dropdown" href="/">
+      <a className="nav-link" data-toggle="dropdown" href="#">
         <i className="fas fa-shopping-cart" />
         <span className="badge badge-info navbar-badge">{items.length}</span>
       </a>
