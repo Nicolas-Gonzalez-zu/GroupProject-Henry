@@ -4,7 +4,8 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const bcryptUtils = require('../utils/bcryptUtils');
-const facebookauth = require('../controllers/facebookauth');
+const facebookauth = require('../controllers/facebookAuthController');
+const googleauth = require('../controllers/googleAuthController');
 
 const sendEmail = require('../helpers/sendgrid');
 
@@ -42,12 +43,6 @@ router.post('/register', (req, res) => {
     .then((user) => {
       db.Customer.create({ user_id: user.id, plan_id: 1 })
         .then(() => {
-          sendEmail(
-            user.email,
-            'Register success',
-            'http://localhost:3000/client/login',
-            'd-6cc3991cd50f4deaa247f89b6e59a5fd',
-          );
           res.status(201).json({ success: true });
         })
         .catch((e) => {
@@ -99,9 +94,11 @@ router.post('/mail-exists', (req, res) => {
 
 router.post('/forgotPassword', (req, res) => {
   const { email } = req.body;
+
   db.User.findOne({ where: { email } })
     .then((user) => {
       if (user === null) return res.status(200).json({ message: 'request recived' });
+
       const secret = process.env.JWT_SECRET + user.password;
       const payload = {
         id: user.id,
@@ -109,7 +106,7 @@ router.post('/forgotPassword', (req, res) => {
       };
 
       const token = jwt.sign(payload, secret, { expiresIn: '15m' });
-      const link = `http://localhost:3000/client/resetPassword/${user.id}/${token}`;
+      const link = `http://localhost:3000/resetPassword/${user.id}/${token}`;
 
       sendEmail(user.email, 'Forgot password', link, 'd-0ab651e511cd4640a24fa879effca7fd');
 
@@ -156,20 +153,7 @@ router.post('/resetPassword/:id/:token', (req, res) => {
     });
 });
 
-router.get(
-  '/facebook',
-  passport.authenticate('facebook', {
-    scope: ['email'],
-  }),
-);
-
-router.get(
-  '/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect: '/',
-    failureRedirect: '/',
-  }),
-);
 router.use('/facebook', facebookauth);
+router.use('/google', googleauth);
 
 module.exports = router;

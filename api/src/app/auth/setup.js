@@ -3,6 +3,7 @@ const db = require('../../db/models');
 
 const LocalStrategy = require('./strategies/local');
 const FacebookStrategy = require('./strategies/facebook');
+const googleStrategy = require('./strategies/google');
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -50,7 +51,6 @@ passport.deserializeUser(async (user, done) => {
 
 passport.use(LocalStrategy);
 passport.use(FacebookStrategy);
-
-passport.use(FacebookStrategy);
+passport.use(googleStrategy);
 
 module.exports = passport;
