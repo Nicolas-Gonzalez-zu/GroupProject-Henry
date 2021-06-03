@@ -189,7 +189,11 @@ const Cart = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col-4">
+        <div
+          className={
+            items.length >= 1 ? 'col-4' : 'col-4 d-flex align-items-center justify-content-center'
+          }
+        >
           {items.length >= 1 ? (
             <>
               <p className="lead">Payment Methods:</p>
@@ -214,8 +218,8 @@ const Cart = () => {
               </div>{' '}
             </>
           ) : (
-            <div>
-              <h4>It seems that your cart is empty...</h4>
+            <div className="text-secondary">
+              <h4>Empty cart</h4>
               <div className="d-flex justify-content-center">
                 <i className="fas fa-cart-arrow-down" width="200" />
               </div>
