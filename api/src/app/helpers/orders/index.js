@@ -20,8 +20,6 @@ const createOrder = async (invoice) => {
 
 const generateOrderOrUpgrade = async (merchantOrder, invoice) => {
   const services = merchantOrder.body.items.map((s) => Number(s.id));
-  console.log(merchantOrder.body.items);
-  console.log(services);
   await invoice.addServices(services);
   if (services.includes(1)) {
     await db.Customer.update({ plan_id: 1 }, { where: { user_id: invoice.customer_id } });

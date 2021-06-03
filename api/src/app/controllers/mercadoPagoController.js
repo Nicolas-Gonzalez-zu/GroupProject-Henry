@@ -8,7 +8,6 @@ const processPayment = async (req, res, id, prod = false) => {
   id = Number(id);
   try {
     const merchantOrder = await mercadopago.merchant_orders.findById(id);
-    console.log(merchantOrder.body.items);
     const payments = prod
       ? merchantOrder.body.payments
           .filter((p) => p.status === 'approved')
@@ -101,29 +100,18 @@ server.post('/mp_prod', (req, res) => {
         .get(id)
         .then(({ response }) => {
           const { order } = response;
-          processPayment(req, res, order.id, true);
+          processPayment(req, res, order.id, process.env.MP_IPN_PROD);
         })
         .catch((e) => {
           res.status(500).json({ error: e.stack });
         });
       break;
     case 'merchant_order':
-      processPayment(req, res, id, true);
+      processPayment(req, res, id, process.env.MP_IPN_PROD);
       break;
     default:
       res.status(200).json({});
   }
-});
-
-server.get('/mp_test', async (req, res) => {
-  // const { id, topic } = req.query;
-  const sandboxMid = '2756058575';
-  // const realMid = '2755894389';
-  processPayment(req, res, sandboxMid, false);
-  // if (id && topic && topic === 'merchant_order') {
-  //   return processPayment(req, res, id, false);
-  // }
-  // res.status(500).json({ error: 'invalid payment data' });
 });
 
 module.exports = server;
