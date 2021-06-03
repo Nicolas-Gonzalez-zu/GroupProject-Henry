@@ -43,6 +43,12 @@ router.post('/register', (req, res) => {
     .then((user) => {
       db.Customer.create({ user_id: user.id, plan_id: 2 })
         .then(() => {
+          sendEmail(
+            user.email,
+            'Register success',
+            `${process.env.SITE_URL}/client/login`,
+            'd-6cc3991cd50f4deaa247f89b6e59a5fd',
+          );
           res.status(201).json({ success: true });
         })
         .catch((e) => {
@@ -106,7 +112,7 @@ router.post('/forgotPassword', (req, res) => {
       };
 
       const token = jwt.sign(payload, secret, { expiresIn: '15m' });
-      const link = `http://localhost:3000/resetPassword/${user.id}/${token}`;
+      const link = `${process.env.SITE_URL}/client/resetPassword/${user.id}/${token}`;
 
       sendEmail(user.email, 'Forgot password', link, 'd-0ab651e511cd4640a24fa879effca7fd');
 

@@ -106,8 +106,10 @@ function App() {
         </Route>
         {/* Landing page */}
         <Route path="/">
-          <Route exact path="/about" component={About} />
-          <Route exact path="/" component={LandingPage} />
+          <Switch>
+            <Route exact path="/about" component={About} />
+            <Route path="/" component={LandingPage} />
+          </Switch>
         </Route>
       </Switch>
     );
