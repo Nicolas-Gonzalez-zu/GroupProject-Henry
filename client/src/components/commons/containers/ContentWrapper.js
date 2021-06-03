@@ -26,6 +26,7 @@ import Categories from '../../Backoffice/categories/categories';
 import OrdersBO from '../../Backoffice/orders/orders';
 import ServicesBO from '../../Backoffice/services/services';
 import DashboardBO from '../../Backoffice/dashboard/dashboard';
+import PaymentConfirmation from '../../frontoffice/payment/confirmation';
 
 const ContentWrapper = () => {
   const dispatch = useDispatch();
@@ -47,6 +48,9 @@ const ContentWrapper = () => {
 
             <Route exact path="/client/pro">
               <Pro />
+            </Route>
+            <Route exact path="/client/payment/confirmation">
+              <PaymentConfirmation />
             </Route>
 
             <Route exact path="/client/profile">
