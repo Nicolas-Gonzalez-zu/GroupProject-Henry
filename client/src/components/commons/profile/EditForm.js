@@ -146,10 +146,10 @@ const EditForm = () => {
                 onChange={(e) => onChange(e)}
                 name="email"
                 type="email"
+                placeholder={user.email}
                 className={`form-control ${formValid.valid} `}
                 id="exampleInputEmail1"
                 value={editProfile.userInfo ? editProfile.userInfo.email : ''}
-                placeholder="Enter email"
               />
               <div className="input-group-append">
                 <div className="input-group-text">
@@ -163,10 +163,10 @@ const EditForm = () => {
                 onChange={(e) => onChange(e)}
                 name="phone"
                 type="number"
+                placeholder={user.phone}
                 className="form-control"
                 id="exampleInputTel"
                 value={editProfile.userInfo ? editProfile.userInfo.phone : ''}
-                placeholder="Enter phone"
               />
               <div className="input-group-append">
                 <div className="input-group-text">

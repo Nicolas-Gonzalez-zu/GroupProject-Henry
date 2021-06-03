@@ -92,14 +92,6 @@ export const BACK_OFFICE_MENU = [
     path: 'services',
   },
   {
-    title: 'Customers',
-    tree: false,
-    icon: 'users',
-    requiredPermission: 'MENU_CUSTOMERS',
-    nameSpace: 'admin',
-    path: 'customers',
-  },
-  {
     title: 'Profile',
     icon: 'user-tie',
     requiredPermission: '*',
