@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import Swal from 'sweetalert2';
 import { Modal, Button } from 'react-bootstrap';
 import * as action from '../../../actions/backoffice/creators';
-import statusBO from '../../../utils/backoffice/statusBO';
+import { statusBO } from '../../../utils/backoffice/statusBO';
 
 const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDate, priority }) => {
   const [showModal, setShowModal] = useState(false);
@@ -23,7 +23,7 @@ const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDat
       const position = authAlert.type === 'success' ? 'center' : 'top-end';
 
       Swal.fire({
-        title: authAlert.title,
+        title: authAlert.message,
         icon: authAlert.type,
         toast: true,
         position,
@@ -84,7 +84,7 @@ const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDat
   // console.log(users, 'hu');
   const formik = useFormik({
     initialValues: {
-      user: '',
+      user: assignedUserBefore,
       status: myStatus,
       startDate: onlyStartDate,
       startTime: onlyStartTime,
@@ -93,7 +93,6 @@ const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDat
     },
     validate,
     onSubmit: (values) => {
-
       const newStartTime =
         values.startTime === onlyStartTime
           ? `${values.startTime}.000Z`
@@ -107,7 +106,7 @@ const OrderModal = ({ id, users, myStatus, assignedUserBefore, startDate, endDat
         assigned_user_id: Number(values.user),
         start_date: `${values.startDate}T${newStartTime}`,
         end_date: `${values.endDate}T${newEndTime}`,
-      
+
         status: values.status,
       };
       console.log(newOrder, 'neww');
