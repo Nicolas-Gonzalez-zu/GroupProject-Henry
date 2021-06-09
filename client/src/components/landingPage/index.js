@@ -16,28 +16,26 @@ function LandingPage() {
   return (
     <>
       <div className="navBar">
-        <div className="logo">
+        <div>
           <img
             src="https://i.ibb.co/XS4mQ0f/logoscalable.png"
             alt="logoImg"
             className="rocketImg"
             name="rocketGif"
           />
-          <span style={{ fontSize: '3vw' }} className="brand-text font-weight-light txt">
-            e-conomy
-          </span>
+          <img className="logo" src="https://i.ibb.co/SskGjNd/economy.png" />
         </div>
       </div>
       <section className="layout">
         <div className="callToActionContainer">
           <div className="callToAction">
-            <p className="text brand-text font-weight-light txt">Keep your finances in order</p>
+            <img className="text" alt="texto" src="https://i.ibb.co/4f4jHkJ/textLand.png" />
             <div className="callToActionButtons">
               <button className="buttonLogin" type="button" onClick={onclick}>
-                Go for it
+                <br />
               </button>
               <a className="meetTheTeam" href="/about">
-                Meet the team
+                <img alt="MeetUs" className="meet" src="https://i.ibb.co/QDMnDH1/meet.png" />
               </a>
             </div>
           </div>
