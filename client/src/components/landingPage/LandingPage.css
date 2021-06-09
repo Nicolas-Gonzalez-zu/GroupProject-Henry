@@ -24,9 +24,6 @@ a:visited {
   z-index: 2;
 }
 
-.logo {
-}
-
 .navegationContainer {
   display: flex;
   justify-content: space-between;
@@ -82,22 +79,32 @@ a:visited {
   background-size: cover;
 }
 
+.logo {
+  width: 23em;
+}
+
 .text {
   position: absolute;
-  font-size: 1.5em;
-  top: 7em;
-  left: 5em;
+  width: 16em;
+  top: 10em;
+  left: 8em;
 }
 
 .buttonLogin {
-  font-size: 1.5em;
-  text-decoration: underline;
-  /* position: absolute;
-  top: 10em;
-  left: 8.5em; */
-  outline: none;
+  border-radius: 0.5em;
+  width: 5em;
+  height: 2em;
   border: inherit;
-  background-color: white;
+  background-image: url(../../assets/img/png/goBtn.png);
+  background-size: 5em;
+}
+
+.meetTheTeam {
+  margin-top: 1em;
+}
+
+.meet {
+  width: 6em;
 }
 
 .callToActionButtons {
