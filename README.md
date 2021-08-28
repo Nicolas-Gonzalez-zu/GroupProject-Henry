@@ -1,4 +1,4 @@
-# GroupProject-Henry
+# FinanceApp
 
 Este proyecto se encuentra desplegado en:
 https://finance.app.yilmer.work/
